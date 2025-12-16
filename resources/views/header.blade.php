@@ -81,9 +81,12 @@
                                         clip-rule="evenodd" />
                                 </svg>
                                 <span class="text-white font-semibold">{{ Auth::user()->name }}</span>
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
-</svg>
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m19 9-7 7-7-7" />
+                                </svg>
 
                             </button>
 
@@ -119,34 +122,71 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div x-show="open" x-transition class="md:hidden bg-[#151515] shadow-md">
-            <div class="px-4 pt-2 pb-3 space-y-1 text-center">
-
+        <div x-show="open" x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-2"
+            class="md:hidden absolute top-24 left-0 w-full bg-gray-900/95 backdrop-blur-lg border-t border-gray-800 shadow-xl z-50">
+            <div class="px-6 py-6 space-y-2">
                 @guest
-                    <a href="{{ route('class') }}" class="block font-bold text-white hover:text-red-500 py-3">Classes</a>
-                    <a href="#" class="block font-bold text-white hover:text-red-500 py-3">About Us</a>
-                    <a href="#" class="block font-bold text-white hover:text-red-500 py-3">Contact</a>
+                    <a href="{{ route('class') }}"
+                        class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Classes</a>
+                    <a href="{{ route('practical') }}"
+                        class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">About
+                        Us</a>
+                    <a href="#"
+                        class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Contact</a>
 
-                    <button id="openLoginModalMobile"
-                        class="block w-full mt-2 px-4 py-3 bg-[#0E1F8E] text-white rounded-lg hover:bg-indigo-700 transition">
-                        Sign In
-                    </button>
+                    <div class="pt-4 mt-4 border-t border-gray-800">
+                        <button id="openLoginModalMobile"
+                            class="w-full py-3.5 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-500 hover:to-red-600 shadow-lg shadow-red-900/20 transition-all flex items-center justify-center gap-2">
+                            <span>Sign In</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
                 @endguest
 
                 @auth
-                    <a href="{{ route('class') }}" class="block font-bold text-white hover:text-red-500 py-3">Classes</a>
-                    <a href="{{ route('practical') }}"
-                        class="block font-bold text-white hover:text-red-500 py-3">Booking</a>
-                    <a href="#" class="block font-bold text-white hover:text-red-500 py-3">About Us</a>
-                    <a href="#" class="block font-bold text-white hover:text-red-500 py-3">Contact</a>
+                    <div class="flex items-center gap-3 px-4 py-3 mb-4 bg-gray-800/50 rounded-xl border border-gray-700">
+                        <div
+                            class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold text-lg">
+                            {{ substr(Auth::user()->name, 0, 1) }}
+                        </div>
+                        <div>
+                            <p class="text-white font-semibold">{{ Auth::user()->name }}</p>
+                            <p class="text-gray-400 text-sm">Member</p>
+                        </div>
+                    </div>
 
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
-                            class="block w-full mt-2 px-4 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
-                            Logout
-                        </button>
-                    </form>
+                    <a href="{{ route('class') }}"
+                        class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Classes</a>
+                    <a href="{{ route('practical') }}"
+                        class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Booking</a>
+                    <a href="#"
+                        class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">About
+                        Us</a>
+                    <a href="#"
+                        class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Contact</a>
+
+                    <div class="pt-4 mt-4 border-t border-gray-800">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="w-full py-3.5 bg-red-600/10 text-red-500 font-semibold rounded-xl hover:bg-red-600 hover:text-white transition-all flex items-center justify-center gap-2 border border-red-900/30">
+                                <span>Logout</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 @endauth
             </div>
         </div>
@@ -187,8 +227,8 @@
                     <div class="relative">
                         <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
                             <!-- User Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                             </svg>
@@ -201,8 +241,8 @@
                     <div class="relative">
                         <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
                             <!-- Lock Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
                             </svg>
@@ -212,8 +252,8 @@
                         <button type="button" onclick="changeEye()"
                             class="absolute inset-y-0 right-3 flex items-center text-gray-500">
                             <!-- Eye Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                                 <path stroke-linecap="round" stroke-linejoin="round"

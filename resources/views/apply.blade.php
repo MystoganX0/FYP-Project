@@ -932,6 +932,11 @@
             if (paymentRadios) paymentRadios.forEach(radio => radio.addEventListener('change', updateSummary));
             if (packageSelect) packageSelect.addEventListener('change', updateSummary);
 
+            // REDIRECT TO PAYMENT PAGE
+            applyBtn.addEventListener("click", () => {
+                window.location.href = "{{ route('payment') }}";
+            });
+
         });
     </script>
 </body>

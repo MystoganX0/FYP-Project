@@ -50,7 +50,6 @@
     @include('header')
 
     <section id="hero-banner" class="relative overflow-hidden h-[700px]">
-        <!-- Slides container (behind everything) -->
         <div id="slides"
             class="absolute top-0 left-0 w-full h-full flex transition-transform duration-[3000ms] ease-in-out z-0">
             <!-- Slide 1 -->
@@ -79,9 +78,13 @@
             <!-- Slide 2 -->
             <div class="slide w-full flex-shrink-0 relative">
                 <div class="absolute inset-0 bg-cover bg-center"
-                    style="background-image: url('/image/home/banner3.png');"></div>
+                    style="background-image: url('/image/home/banner3.jpg');"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <!-- Optional: add content for this slide or leave empty -->
+                    <div class="max-w-5xl px-6 text-center text-black">
+                        <h1 class="text-4xl font-extrabold sm:text-6xl leading-tight neon-white ">
+                            Ready to Get Your Driving License?
+                        </h1>
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,7 +103,7 @@
 
                 <!-- Button 1: Features -->
                 <a href="#features"
-                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-lg bg-red-500 hover:bg-gray-400 hover:text-black transition">
+                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-3xl bg-red-500 hover:bg-gray-400 hover:text-black transition">
                     <div class="flex items-center">
                         <img src="/image/home/grid.png" alt="grid icon" class="h-12 w-auto">
                     </div>
@@ -109,7 +112,7 @@
 
                 <!-- Button 2: Classes -->
                 <a href="#classes"
-                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-lg bg-red-500 hover:bg-gray-400 hover:text-black transition">
+                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-3xl bg-red-500 hover:bg-gray-400 hover:text-black transition">
                     <div class="flex items-center">
                         <img src="/image/home/car.png" alt="car icon" class="h-12 w-auto">
                     </div>
@@ -118,7 +121,7 @@
 
                 <!-- Button 3: Process -->
                 <a href="#process"
-                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-lg bg-red-500 hover:bg-gray-400 hover:text-black transition">
+                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-3xl bg-red-500 hover:bg-gray-400 hover:text-black transition">
                     <div class="flex items-center">
                         <img src="/image/home/plan.png" alt="plan icon" class="h-12 w-auto">
                     </div>
@@ -127,7 +130,7 @@
 
                 <!-- Button 4: Dress Code -->
                 <a href="#dresscode"
-                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-lg bg-red-500 hover:bg-gray-400 hover:text-black transition">
+                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-3xl bg-red-500 hover:bg-gray-400 hover:text-black transition">
                     <div class="flex items-center">
                         <img src="/image/home/shirt.png" alt="shirt icon" class="h-12 w-auto">
                     </div>
@@ -157,12 +160,11 @@
                 <div class="grid md:grid-cols-2 gap-12 items-center fade-in">
                     <div class="order-2 md:order-1">
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Leading the Way in Driver Education</h3>
-                        <div class="w-12 h-1 bg-red-600 mb-6 rounded-full"></div>
-                        <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                        <p class="text-gray-600 text-lg leading-relaxed mb-6 text-justify">
                             Established in 1998, <span class="font-semibold text-gray-900">Molek Driving Academy</span>
                             is recognized by the Road Transport Department of Malaysia as a premier driving institute.
                         </p>
-                        <p class="text-gray-600 text-lg leading-relaxed">
+                        <p class="text-gray-600 text-lg leading-relaxed text-justify">
                             With strategic campuses in <span class="font-semibold text-gray-900">Kampung Melayu
                                 Subang</span> and <span class="font-semibold text-gray-900">Bandar Bukit Puchong
                                 2</span>, we are dedicated to providing top-tier professional training for both local
@@ -171,7 +173,7 @@
                     </div>
                     <div class="order-1 md:order-2 group relative">
                         <div
-                            class="absolute -inset-4 bg-red-50 rounded-[2rem] transform rotate-3 transition-transform duration-300 group-hover:rotate-6">
+                            class="absolute -inset-4 bg-blue-900 rounded-[2rem] transform rotate-3 transition-transform duration-300 group-hover:rotate-6">
                         </div>
                         <img src="/image/home/intro.png" alt="Driving Training"
                             class="relative rounded-[1.5rem] shadow-2xl w-full h-auto object-cover transform transition-transform duration-300 group-hover:-translate-y-2">
@@ -182,19 +184,18 @@
                 <div class="grid md:grid-cols-2 gap-12 items-center fade-in">
                     <div class="group relative">
                         <div
-                            class="absolute -inset-4 bg-blue-50 rounded-[2rem] transform -rotate-3 transition-transform duration-300 group-hover:-rotate-6">
+                            class="absolute -inset-4 bg-yellow-200 rounded-[2rem] transform -rotate-3 transition-transform duration-300 group-hover:-rotate-6">
                         </div>
                         <img src="/image/home/img1.jpg" alt="Driving Practice"
                             class="relative rounded-[1.5rem] shadow-2xl w-full h-auto object-cover transform transition-transform duration-300 group-hover:-translate-y-2">
                     </div>
                     <div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">World-Class Facilities</h3>
-                        <div class="w-12 h-1 bg-blue-600 mb-6 rounded-full"></div>
-                        <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                        <p class="text-gray-600 text-lg leading-relaxed mb-6 text-justify">
                             We pride ourselves on our comprehensively equipped facilities, featuring professionally
                             designed driving and riding circuits that simulate real-world conditions.
                         </p>
-                        <p class="text-gray-600 text-lg leading-relaxed">
+                        <p class="text-gray-600 text-lg leading-relaxed text-justify">
                             Our curriculum emphasizes <span class="font-semibold text-gray-900">safety, discipline, and
                                 confidence</span>. We go beyond the basics to ensure every student is fully prepared to
                             navigate any road challenge with skill and assurance.
@@ -226,7 +227,7 @@
 
                 <!-- Feature 1 (Green) -->
                 <div
-                    class="group relative bg-white rounded-[2rem] p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 overflow-hidden h-full">
+                    class="group relative bg-white rounded-[2rem] p-8 shadow-lg hover:shadow-2xl hover:border-green-600 hover:border-4 transition-all duration-300 hover:-translate-y-2 border border-gray-100 overflow-hidden h-full">
                     <div class="relative z-10 flex flex-col items-center h-full">
                         <div
                             class="flex h-20 w-20 items-center justify-center rounded-2xl bg-green-50 text-green-600 mb-6 group-hover:bg-green-600 group-hover:text-white transition-colors duration-300 shadow-sm group-hover:shadow-green-200">
@@ -241,7 +242,7 @@
 
                 <!-- Feature 2 (Red) -->
                 <div
-                    class="group relative bg-white rounded-[2rem] p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 overflow-hidden h-full">
+                    class="group relative bg-white rounded-[2rem] p-8 shadow-lg hover:shadow-2xl hover:border-red-600 hover:border-4 transition-all duration-300 hover:-translate-y-2 border border-gray-100 overflow-hidden h-full">
                     <div class="relative z-10 flex flex-col items-center h-full">
                         <div
                             class="flex h-20 w-20 items-center justify-center rounded-2xl bg-red-50 text-red-600 mb-6 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300 shadow-sm group-hover:shadow-red-200">
@@ -261,7 +262,7 @@
 
                 <!-- Feature 3 (Blue) -->
                 <div
-                    class="group relative bg-white rounded-[2rem] p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 overflow-hidden h-full">
+                    class="group relative bg-white rounded-[2rem] p-8 shadow-lg hover:shadow-2xl hover:border-blue-600 hover:border-4 transition-all duration-300 hover:-translate-y-2 border border-gray-100 overflow-hidden h-full">
                     <div class="relative z-10 flex flex-col items-center h-full">
                         <div
                             class="flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 shadow-sm group-hover:shadow-blue-200">
@@ -280,7 +281,7 @@
 
                 <!-- Feature 4 (Yellow) -->
                 <div
-                    class="group relative bg-white rounded-[2rem] p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 overflow-hidden h-full">
+                    class="group relative bg-white rounded-[2rem] p-8 shadow-lg hover:shadow-2xl hover:border-yellow-600 hover:border-4 transition-all duration-300 hover:-translate-y-2 border border-gray-100 overflow-hidden h-full">
                     <div class="relative z-10 flex flex-col items-center h-full">
                         <div
                             class="flex h-20 w-20 items-center justify-center rounded-2xl bg-yellow-50 text-yellow-600 mb-6 group-hover:bg-yellow-500 group-hover:text-white transition-colors duration-300 shadow-sm group-hover:shadow-yellow-200">
@@ -304,7 +305,7 @@
     <section id="classes" class="bg-white py-20 overflow-hidden">
         <div class="mx-auto max-w-screen-xl px-4 text-center">
             <!-- Section Header -->
-            <div class="mb-12">
+            <div class="mb-16">
                 <span class="text-red-600 font-bold tracking-wider uppercase text-sm">Our Courses</span>
                 <h2 class="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
                     Explore Our License Classes
@@ -368,7 +369,7 @@
             <!-- View All Button -->
             <div class="mt-8">
                 <a href="{{ route('class') }}"
-                    class="inline-block rounded-full bg-red-600 px-6 py-3 text-white font-medium shadow hover:bg-red-700 transition">
+                    class="inline-block rounded-3xl bg-red-600 px-12 py-4 text-white font-bold shadow hover:bg-red-500 transition">
                     View All
                 </a>
             </div>
@@ -378,11 +379,13 @@
     <!-- Process Section -->
     <section id="process" class="bg-white py-10">
         <div class="mx-auto max-w-screen-xl px-4 text-center">
-            <div class="mb-12">
+            <div class="mb-16">
+                <span class="text-red-600 font-bold tracking-wider uppercase text-sm">Overview</span>
                 <h2 class="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
                     License Process
                 </h2>
-                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
+                <div class="w-20 h-1.5 bg-red-600 mx-auto mt-4 rounded-full"></div>
+                <p class="mt-6 text-xl text-gray-600 max-w-2xl mx-auto">
                     We are all about our client’s comfort and safety. That’s why we provide the best service you can
                     imagine.
                 </p>
@@ -399,7 +402,8 @@
         <div class="mx-auto max-w-screen-xl px-4 text-center relative z-10">
 
             <!-- Section Header -->
-            <div class="mb-12">
+            <div class="mb-16">
+                <span class="text-red-600 font-bold tracking-wider uppercase text-sm">Our Rules</span>
                 <h2 class="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
                     Dress Code
                 </h2>
@@ -429,8 +433,7 @@
                     <div class="relative p-8 md:p-12 h-full flex flex-col justify-end text-left min-h-[500px]">
                         <div
                             class="mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                            <h4 class="text-4xl font-black text-white mb-2 tracking-tight">MEN</h4>
-                            <div class="w-12 h-1 bg-blue-500 rounded-full mb-6"></div>
+                            <h4 class="text-4xl font-black text-white mb-5 tracking-tight">MEN</h4>
                         </div>
 
                         <div class="space-y-3 opacity-90 group-hover:opacity-100 transition-opacity duration-300">
@@ -496,8 +499,7 @@
                     <div class="relative p-8 md:p-12 h-full flex flex-col justify-end text-left min-h-[500px]">
                         <div
                             class="mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                            <h4 class="text-4xl font-black text-white mb-2 tracking-tight">WOMEN</h4>
-                            <div class="w-12 h-1 bg-pink-500 rounded-full mb-6"></div>
+                            <h4 class="text-4xl font-black text-white mb-5 tracking-tight">WOMEN</h4>
                         </div>
 
                         <div class="space-y-3 opacity-90 group-hover:opacity-100 transition-opacity duration-300">
@@ -551,6 +553,14 @@
 
         </div>
     </section>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" title="Go to top"
+        class="fixed bottom-8 right-8 z-50 p-3 bg-red-600 text-white rounded-full shadow-lg transition-all duration-300 transform translate-y-20 opacity-0 focus:outline-none hover:scale-110">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+    </button>
 
     @include('footer')
 
@@ -633,6 +643,27 @@
                 scrollAmount -= scrollStep;
                 slider.style.transform = `translateX(-${scrollAmount}px)`;
             }
+        });
+    </script>
+    <!-- Back to Top Script -->
+    <script>
+        const backToTopBtn = document.getElementById("backToTop");
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove("translate-y-20", "opacity-0");
+                backToTopBtn.classList.add("translate-y-0", "opacity-100");
+            } else {
+                backToTopBtn.classList.add("translate-y-20", "opacity-0");
+                backToTopBtn.classList.remove("translate-y-0", "opacity-100");
+            }
+        });
+
+        backToTopBtn.addEventListener("click", () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
         });
     </script>
 </body>

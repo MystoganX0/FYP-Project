@@ -6,6 +6,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ApplyController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
@@ -26,7 +27,7 @@ Route::get('/apply', [ApplyController::class, 'create'])->name('apply');
 Route::get('/computer-slot', [BookingController::class, 'computer'])->name('computer');
 Route::get('/practical-slot', [BookingController::class, 'practical'])->name('practical');
 Route::get('/jpj-slot', [BookingController::class, 'jpj'])->name('jpj');
-
+Route::get('/payment', [PaymentController::class, 'view'])->name('payment');
 Route::get('/schedule', [ScheduleController::class, 'view'])->name('schedule');
 Route::get('/edit-class', [ClassController::class, 'view'])->name('editclass');
 
