@@ -75,15 +75,69 @@
                 </div>
             </div>
 
-            <!-- Slide 2 -->
+            <!-- Slide 2: Official License Website Style -->
             <div class="slide w-full flex-shrink-0 relative">
+                <!-- Background & Gradient Overlay -->
                 <div class="absolute inset-0 bg-cover bg-center"
-                    style="background-image: url('/image/home/banner3.jpg');"></div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="max-w-5xl px-6 text-center text-black">
-                        <h1 class="text-4xl font-extrabold sm:text-6xl leading-tight neon-white ">
-                            Ready to Get Your Driving License?
+                    style="background-image: url('/image/home/banner3.jpg');">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-900/95 via-blue-900/80 to-transparent">
+                    </div>
+                </div>
+
+                <!-- Official Pattern Overlay -->
+                <div class="absolute inset-0 opacity-10 pointer-events-none"
+                    style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 24px 24px;">
+                </div>
+
+                <!-- Content -->
+                <div class="absolute inset-0 flex items-center justify-start pl-6 md:pl-20 lg:pl-32">
+                    <div class="max-w-4xl text-left text-white z-10">
+                        <!-- Official Badge/Header -->
+                        <div class="flex items-center gap-4 mb-6">
+                            <span class="h-[2px] w-16 bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"></span>
+                            <span
+                                class="text-yellow-400 font-bold tracking-[0.2em] uppercase text-xs md:text-sm shadow-black drop-shadow-md">
+                                Official Driving Center
+                            </span>
+                        </div>
+
+                        <!-- Main Title -->
+                        <h1
+                            class="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] mb-8 drop-shadow-xl font-poppins">
+                            OBTAIN YOUR <br />
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200">DRIVING
+                                LICENSE</span> <br />
+                            WITH CONFIDENCE.
                         </h1>
+
+                        <!-- Description with border -->
+                        <div
+                            class="flex border-l-4 border-yellow-400 pl-6 py-2 mb-10 bg-white/5 backdrop-blur-sm rounded-r-lg max-w-2xl">
+                            <p class="text-base md:text-lg text-blue-50 font-light leading-relaxed">
+                                Fully accredited by the Road Transport Department. <br />
+                                Experience professional training standards with our ISO 9001 certified curriculum.
+                            </p>
+                        </div>
+
+                        <!-- CTAs -->
+                        <div class="flex flex-wrap gap-5">
+                            <a href="{{ route('register') }}"
+                                class="group relative px-10 py-4 bg-yellow-500 text-blue-900 font-bold uppercase tracking-wider overflow-hidden rounded hover:bg-yellow-400 transition-all shadow-lg hover:shadow-yellow-500/50 hover:-translate-y-1">
+                                <span class="relative z-10 flex items-center gap-2">
+                                    Register Now
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                            </a>
+                            <a href="#classes"
+                                class="px-10 py-4 border-2 border-white/30 text-white font-bold uppercase tracking-wider hover:bg-white hover:text-blue-900 transition-all rounded backdrop-blur-sm hover:-translate-y-1">
+                                License Classes
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

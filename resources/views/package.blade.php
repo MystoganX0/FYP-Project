@@ -49,12 +49,13 @@
     <div class="max-w-7xl mx-auto px-4 py-6">
         <div class="flex flex-col md:flex-row items-center justify-center gap-6">
 
-            <img src="{{ asset($class->image) }}" alt="{{ $class->name }}" class="w-60 hover:scale-110 transition">
+            <img src="{{ asset($class->class_image) }}" alt="{{ $class->class_code }}"
+                class="w-60 hover:scale-110 transition">
 
             <div class="flex flex-col items-center gap-4">
                 <a href="#"
                     class="rounded-full border-2 border-red-600 text-red-600 bg-transparent font-bold px-8 py-4 w-72 text-center hover:scale-110 transition">
-                    Class {{ $class->name }}
+                    Class {{ $class->class_code }}
                 </a>
                 <a href="{{ route('apply') }}"
                     class="rounded-full border-2 border-white text-white bg-red-600 font-bold px-8 py-4 w-72 text-center hover:scale-110 transition">

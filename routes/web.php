@@ -11,28 +11,24 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
 
+//user routes
 Route::get('/', function () {
     return view('home');
 })->name('home');
-
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
-
-
 Route::get('/classes', [ClassController::class, 'index'])->name('class');
 Route::get('/classes/{id}', [ClassController::class, 'show'])->name('package');
 Route::get('/apply', [ApplyController::class, 'create'])->name('apply');
 
+//user booking routes
 Route::get('/computer-slot', [BookingController::class, 'computer'])->name('computer');
 Route::get('/practical-slot', [BookingController::class, 'practical'])->name('practical');
 Route::get('/jpj-slot', [BookingController::class, 'jpj'])->name('jpj');
 Route::get('/payment', [PaymentController::class, 'view'])->name('payment');
 Route::get('/schedule', [ScheduleController::class, 'view'])->name('schedule');
 Route::get('/edit-class', [ClassController::class, 'view'])->name('editclass');
+Route::get('/applied-dashboard', [ApplyController::class, 'applied'])->name('applied');
 
-
-
+//admin routes
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

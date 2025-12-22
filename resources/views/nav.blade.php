@@ -29,106 +29,137 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </head>
 
-<body class="font-poppins bg-blue-900">
+<body class="font-poppins bg-gray-50">
     <!-- SUB NAV (tabs) -->
     <div class="bg-[#e9e9e9] border-b border-gray-200">
         <div
             class="px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
 
-            <!-- Responsive Breadcrumb with Horizontal Scroll -->
-            <nav class="flex-1 overflow-x-auto pb-2 md:pb-0" aria-label="Breadcrumb">
-                <ol
-                    class="flex items-center gap-3 sm:gap-4 px-3 py-2 text-blue-700 bg-white md:bg-[#e9e9e9] border border-gray-200 rounded-lg min-w-max">
-                    <li class="flex items-center text-lg font-bold text-black mr-4">
-                        Booking
-                    </li>
+                <!-- Navigation Links -->
+                <nav class="flex-1 w-full md:w-auto overflow-x-auto no-scrollbar">
+                    <div class="flex items-center gap-2 p-1">
 
-                    <!-- Computer Test -->
-                    <li class="flex items-center">
+                        <!-- Label -->
+                        <span class="font-medium text-base font-bold text-gray-400 uppercase tracking-widest mr-4 hidden md:block">
+                            Booking Checkpoints
+                        </span>
+
+                        <!-- Computer Test -->
                         <a href="{{ route('computer') }}"
-                            class="inline-flex items-center text-sm sm:text-base font-medium whitespace-nowrap border-b-[6px] py-1 transition-all duration-300 ease-in-out {{ request()->routeIs('computer') ? 'text-black border-blue-600' : 'text-gray-700 border-transparent hover:text-blue-600 hover:border-blue-200' }}">
+                            class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('computer') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
+                            <div
+                                class="mr-2.5 {{ request()->routeIs('computer') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
                             Computer Test
                         </a>
-                    </li>
 
-                    <!-- Practical Slot -->
-                    <li class="flex items-center">
-                        <svg class="w-3 h-3 mx-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 9 4-4-4-4" />
+                        <!-- Divider Arrow -->
+                        <svg class="w-5 h-5 text-black hidden sm:block" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
+
+                        <!-- Practical Slot -->
                         <a href="{{ route('practical') }}"
-                            class="ms-1 text-sm sm:text-base font-medium md:ms-2 whitespace-nowrap border-b-[6px] py-1 transition-all duration-300 ease-in-out {{ request()->routeIs('practical') ? 'text-black border-blue-600' : 'text-gray-700 border-transparent hover:text-blue-600 hover:border-blue-200' }}">
+                            class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('practical') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
+                            <div
+                                class="mr-2.5 {{ request()->routeIs('practical') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8h3c0 2.76 2.24 5 5 5s5-2.24 5-5h3c0 4.41-3.59 8-8 8z">
+                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12v-5"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l4 4"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l-4 4"></path>
+                                </svg>
+                            </div>
                             Practical Slot
                         </a>
-                    </li>
 
-                    <!-- JPJ Test -->
-                    <li class="flex items-center">
-                        <svg class="w-3 h-3 mx-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 9 4-4-4-4" />
+                        <!-- Divider Arrow -->
+                        <svg class="w-5 h-5 text-black hidden sm:block" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
+
+                        <!-- JPJ Test -->
                         <a href="{{ route('jpj') }}"
-                            class="ms-1 text-sm sm:text-base font-medium md:ms-2 whitespace-nowrap border-b-[6px] py-1 transition-all duration-300 ease-in-out {{ request()->routeIs('jpj') ? 'text-black border-blue-600' : 'text-gray-700 border-transparent hover:text-blue-600 hover:border-blue-200' }}">
+                            class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('jpj') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
+                            <div
+                                class="mr-2.5 {{ request()->routeIs('jpj') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
                             JPJ Test
                         </a>
-                    </li>
-                </ol>
-            </nav>
+                    </div>
+                </nav>
 
-            <button data-modal-target="paymentModal" data-modal-toggle="paymentModal"
+                <button data-modal-target="paymentModal" data-modal-toggle="paymentModal"
                 class="flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95">
-                <span>Next Payment</span>
+                    <span>Next Payment</span>
                 <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 14 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M1 5h12m0 0L9 1m4 4L9 9" />
-                </svg>
-            </button>
+                    </svg>
+                </button>
 
+            </div>
         </div>
     </div>
 
     <!-- Payment Modal -->
     <div id="paymentModal" tabindex="-1" aria-hidden="true"
-        class="hidden fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30 p-4 sm:p-6">
+        class="hidden fixed inset-0 z-[60] flex items-center justify-center backdrop-blur-md p-4 sm:p-6 transition-opacity duration-300">
         <div
-            class="relative bg-white rounded-3xl shadow-xl w-full max-w-md p-6 text-center transform transition-all scale-100">
+            class="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-8 text-center transform transition-all scale-100 overflow-hidden">
+
+            <!-- Decorative circle -->
+            <div
+                class="absolute -top-10 -right-10 w-32 h-32 bg-blue-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
+            </div>
+            <div
+                class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
+            </div>
 
             <!-- Close Button -->
             <button type="button" data-modal-hide="paymentModal"
-                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 rounded-lg p-1.5 hover:bg-gray-100 transition-colors">
-                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clip-rule="evenodd"></path>
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 bg-transparent hover:bg-gray-50 rounded-full p-2 transition-colors z-10">
+                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
                 </svg>
                 <span class="sr-only">Close modal</span>
             </button>
 
             <!-- Modal Content -->
-            <div class="mt-4">
-                <div class="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-6">
-                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            <div class="relative z-10 mt-2">
+                <div
+                    class="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-6 shadow-inner ring-4 ring-white">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                        </path>
                     </svg>
                 </div>
 
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Next Payment Required</h3>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Payment Required</h3>
 
-                <p class="text-gray-500 mb-8 leading-relaxed">
-                    Please proceed to complete your next payment to unlock more slots and features.
+                <p class="text-gray-500 mb-8 leading-relaxed text-sm">
+                    Complete your payment to unlock the next stage of your driving course. Secure and instant.
                 </p>
 
                 <button data-modal-hide="paymentModal" type="button"
-                    class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-xl text-base px-5 py-3.5 text-center transition-colors">
-                    Proceed
+                    class="w-full text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:ring-4 focus:ring-blue-300 font-bold rounded-2xl text-base px-5 py-4 text-center shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300">
+                    Proceed to Payment
                 </button>
             </div>
         </div>

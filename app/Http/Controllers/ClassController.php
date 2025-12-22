@@ -15,7 +15,7 @@ class ClassController extends Controller
 
     public function show($id)
     {
-        $class = Classes::findOrFail($id); // get one record
+        $class = Classes::findOrFail($id); 
         return view('package', compact('class'));
     }
 

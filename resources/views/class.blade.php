@@ -60,13 +60,13 @@
 
     <section class="w-full flex flex-col lg:flex-row gap-4 md:gap-8 py-4 md:py-6 px-4 md:px-8 lg:px-12 xl:px-48">
         <!-- Sidebar -->
-        <div class="lg:flex-shrink-0 lg:w-auto w-full mb-4 lg:mb-0">
+        <div class="lg:flex-shrink-0 lg:w-64 w-full mb-6 lg:mb-0">
             <!-- Mobile Filter Label -->
             <div
-                class="flex flex-row lg:flex-col items-center lg:items-start bg-[#150480] py-4 md:py-6 px-4 md:px-4 rounded-3xl shadow-2xl space-x-3 md:space-x-0 lg:space-y-3.5 lg:space-x-0 lg:sticky lg:top-20 lg:self-start overflow-x-auto lg:overflow-x-visible">
+                class="flex flex-row lg:flex-col items-center lg:items-start bg-blue-900 py-4 md:py-6 px-4 md:px-4 rounded-3xl shadow-2xl space-x-3 md:space-x-0 lg:space-y-3.5 lg:space-x-0 lg:sticky lg:top-24 lg:self-start overflow-x-auto lg:overflow-x-visible">
                 <!-- All Icon -->
                 <button
-                    class="filter-btn flex items-center justify-start gap-2 md:gap-3 min-w-[100px] lg:w-full px-4 md:px-3 py-3 md:py-3 rounded-xl bg-[#ffbb0d] text-[#150480] shadow-md transition flex-shrink-0 lg:flex-shrink"
+                    class="filter-btn group flex items-center justify-start gap-2 md:gap-3 min-w-[100px] lg:w-full px-4 md:px-5 py-3 md:py-4 rounded-2xl bg-yellow-400 text-blue-900 shadow-md transition-all duration-300 transform hover:scale-105 flex-shrink-0 lg:flex-shrink"
                     data-filter="all">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -79,7 +79,7 @@
 
                 <!-- Refresher Icon -->
                 <button
-                    class="filter-btn flex items-center justify-start gap-2 md:gap-3 min-w-[120px] lg:w-full px-4 md:px-3 py-3 md:py-3 rounded-xl text-white transition flex-shrink-0 lg:flex-shrink"
+                    class="filter-btn group flex items-center justify-start gap-2 md:gap-3 min-w-[120px] lg:w-full px-4 md:px-5 py-3 md:py-4 rounded-2xl text-white hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 flex-shrink-0 lg:flex-shrink"
                     data-filter="DA - Automatic Car,D - Manual Car,B - Motorcycle,B2 - Motorcycle">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -91,7 +91,7 @@
 
                 <!-- Heavy Vehicle Icon -->
                 <button
-                    class="filter-btn flex items-center justify-start gap-2 md:gap-3 min-w-[140px] lg:w-full px-4 md:px-3 py-3 md:py-3 rounded-xl text-white transition flex-shrink-0 lg:flex-shrink"
+                    class="filter-btn group flex items-center justify-start gap-2 md:gap-3 min-w-[140px] lg:w-full px-4 md:px-5 py-3 md:py-4 rounded-2xl text-white hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 flex-shrink-0 lg:flex-shrink"
                     data-filter="available">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -105,7 +105,7 @@
 
                 <!-- Combo Icon -->
                 <button
-                    class="filter-btn flex items-center justify-start gap-2 md:gap-3 min-w-[100px] lg:w-full px-4 md:px-3 py-3 md:py-3 rounded-xl text-white transition flex-shrink-0 lg:flex-shrink"
+                    class="filter-btn group flex items-center justify-start gap-2 md:gap-3 min-w-[100px] lg:w-full px-4 md:px-5 py-3 md:py-4 rounded-2xl text-white hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 flex-shrink-0 lg:flex-shrink"
                     data-filter="B2 + DA - Automatic Car,B2 + D - Manual Car">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -122,12 +122,12 @@
         <div id="class-grid"
             class="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 justify-center text-center">
             @foreach ($classes as $class)
-                <a href="{{ route('package', $class->id) }}"
+                <a href="{{ route('package', $class->class_id) }}"
                     class="class-item bg-transparent rounded-3xl shadow-xl p-3 md:p-4 border-[3px] border-transparent hover:border-red-600 transition transform hover:scale-105 block"
-                    data-name="{{ $class->name }}" data-status="available">
-                    <img src="{{ asset($class->image) }}" alt="{{ $class->name }}"
+                    data-name="{{ $class->class_code }}" data-status="available">
+                    <img src="{{ asset($class->class_image) }}" alt="{{ $class->class_code }}"
                         class="mx-auto mb-2 md:mb-4 rounded-lg w-full h-auto object-cover">
-                    <p class="font-medium text-xs md:text-base">{{ $class->name }}</p>
+                    <p class="font-medium text-xs md:text-base">{{ $class->class_code }}</p>
                 </a>
             @endforeach
         </div>
@@ -149,13 +149,13 @@
 
                 // Remove active state from all buttons
                 buttons.forEach(b => {
-                    b.classList.remove('bg-[#ffbb0d]', 'text-[#150480]', 'shadow-md');
-                    b.classList.add('text-white');
+                    b.classList.remove('bg-yellow-400', 'text-blue-900', 'shadow-md');
+                    b.classList.add('text-white', 'hover:bg-blue-800');
                 });
 
                 // Add active state to clicked button
-                btn.classList.add('bg-[#ffbb0d]', 'text-[#150480]', 'shadow-md');
-                btn.classList.remove('text-white');
+                btn.classList.add('bg-yellow-400', 'text-blue-900', 'shadow-md');
+                btn.classList.remove('text-white', 'hover:bg-blue-800');
 
                 // Filter items
                 items.forEach(item => {

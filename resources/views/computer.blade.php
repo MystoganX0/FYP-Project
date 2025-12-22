@@ -149,9 +149,13 @@
                                 </div>
 
                                 <span
-                                    class="px-4 py-3 border-2 border-green-800 rounded-full text-xs font-bold uppercase tracking-wider bg-green-400 text-green-800">
+                                    class="inline-flex items-center gap-2 px-4 py-3 border-2 border-green-800 rounded-full text-xs font-bold uppercase tracking-wider bg-green-400 text-green-800">
+                                    <span
+                                        class="w-3 h-3 rounded-full bg-green-800 shadow-[0_0_10px_rgba(250,204,21,0.5)]">
+                                    </span>
                                     Done
                                 </span>
+
                             </div>
 
                             <!-- ITEM: Pending -->
@@ -276,7 +280,7 @@
                     <div id="desktopTable"
                         class="hidden sm:block w-full text-sm text-gray-700 p-5 space-y-4 px-6 sm:px-8 lg:px-12">
                         <div
-                            class="hidden md:grid md:grid-cols-7 bg-blue-100 rounded-lg px-4 py-2 text-sm font-semibold text-gray-500 uppercase tracking-wider text-center">
+                            class="hidden md:grid md:grid-cols-7 bg-white rounded-lg px-4 py-2 text-sm font-semibold text-gray-500 uppercase tracking-wider text-center">
                             <div class="md:col-span-2 text-left md:px-4"></div>
                             <div class="md:col-span-1 md:px-4">Date</div>
                             <div class="md:col-span-1 md:px-4">Start Time</div>

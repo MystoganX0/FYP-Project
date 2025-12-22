@@ -226,11 +226,13 @@
                                     <path d="M4 7h16M4 12h16M4 17h16" />
                                 </svg>
                             </span>
-                            <select id="licenseClass" name="licenseClass"
+                            <select id="licenseClass" name="class_id"
                                 class="w-full rounded-xl p-3 pl-16 bg-white border-2 border-gray-200 focus:border-4 focus:border-blue-900 focus:outline-none appearance-none">
                                 <option value="" disabled selected>Select Class</option>
                                 @foreach ($classes as $class)
-                                    <option value="{{ $class->name }}">{{ $class->name }}</option>
+                                    <option value="{{ $class->class_id }}" data-price="{{ $class->class_price }}">
+                                        {{ $class->class_code }}
+                                    </option>
                                 @endforeach
                             </select>
                             <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none">
@@ -255,12 +257,15 @@
                                     <path d="M4 7h16M4 12h16M4 17h16" />
                                 </svg>
                             </span>
-                            <select id="package"
+                            <select id="package" name="package_id"
                                 class="w-full rounded-xl p-3 pl-16 bg-white border-2 border-gray-200 focus:border-4 focus:border-blue-900 focus:outline-none appearance-none">
                                 <option value="" disabled selected>Select Package</option>
-                                <option value="preffered">Package Preffered</option>
-                                <option value="premium">Package Premium</option>
-                                <option value="basic">Package Basic</option>
+                                @foreach ($packages as $pkg)
+                                    <option value="{{ $pkg->package_id }}" data-type="{{ strtolower($pkg->package_type) }}"
+                                        data-price="{{ $pkg->package_price }}">
+                                        {{ $pkg->package_type }} - RM {{ $pkg->package_price }}
+                                    </option>
+                                @endforeach
                             </select>
                             <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -319,7 +324,7 @@
                                     <div class="w-full py-2 px-3 bg-gray-50 rounded-lg border border-gray-100">
                                         <div class="flex justify-between items-center">
                                             <span class="text-sm font-semibold text-gray-600">Total</span>
-                                            <span class="text-base font-bold text-blue-900">RM 1599</span>
+                                            <span class="text-base font-bold text-blue-900">RM 0</span>
                                         </div>
                                     </div>
                                 </div>
@@ -366,19 +371,19 @@
                                         <div class="w-full py-2 px-3 bg-gray-50 rounded-lg border border-gray-100">
                                             <div class="flex justify-between items-center">
                                                 <span class="text-sm font-semibold text-gray-600">Stage 1</span>
-                                                <span class="text-base font-bold text-blue-900">RM 1000</span>
+                                                <span class="text-base font-bold text-blue-900">RM 0</span>
                                             </div>
                                         </div>
                                         <div class="w-full py-2 px-3 bg-gray-50 rounded-lg border border-gray-100">
                                             <div class="flex justify-between items-center">
                                                 <span class="text-sm font-semibold text-gray-600">Stage 2</span>
-                                                <span class="text-base font-bold text-blue-900">RM 600</span>
+                                                <span class="text-base font-bold text-blue-900">RM 0</span>
                                             </div>
                                         </div>
                                         <div class="w-full py-2 px-3 bg-gray-50 rounded-lg border border-gray-100">
                                             <div class="flex justify-between items-center">
                                                 <span class="text-sm font-semibold text-gray-600">Stage 3</span>
-                                                <span class="text-base font-bold text-blue-900">RM 500</span>
+                                                <span class="text-base font-bold text-blue-900">RM 0</span>
                                             </div>
                                         </div>
                                     </div>
@@ -488,7 +493,7 @@
                             class="text-6xl font-extrabold tracking-tighter text-white drop-shadow-lg">0</span>
                     </div>
                     <div class="ext-sm font-medium text-blue-200/60 uppercase tracking-widest">
-                        Pay with Online Banking
+                        Pay with PayPal
                     </div>
                 </div>
             </div>
@@ -519,23 +524,108 @@
     @include('footer')
 
     <script>
-        const packageSelect = document.getElementById('package');
-        packageSelect.addEventListener('change', function () {
-            this.style.backgroundColor = '';
-            this.style.color = '';
-            switch (this.value) {
-                case 'preffered':
-                    this.style.backgroundColor = '#3f0275';
-                    this.style.color = 'white';
-                    break;
-                case 'premium':
-                    this.style.backgroundColor = '#facc15';
-                    this.style.color = 'black';
-                    break;
-                case 'basic':
-                    this.style.backgroundColor = '#3bce6d';
-                    this.style.color = 'black';
-                    break;
+        document.addEventListener("DOMContentLoaded", () => {
+            const packageSelect = document.getElementById('package');
+            const classSelect = document.getElementById('licenseClass');
+            const summaryAmount = document.getElementById('summaryAmount');
+            const fullPaymentAmount = document.querySelector('label[for="payment-full"] .text-blue-900.font-bold'); // Selects the RM 1599
+
+            // Installment elements
+            const installmentStage1 = document.querySelector('label[for="payment-installment"] .space-y-2 > div:nth-child(1) .text-blue-900');
+            const installmentStage2 = document.querySelector('label[for="payment-installment"] .space-y-2 > div:nth-child(2) .text-blue-900');
+            const installmentStage3 = document.querySelector('label[for="payment-installment"] .space-y-2 > div:nth-child(3) .text-blue-900');
+
+            const paymentRadios = document.querySelectorAll('input[name="payment_type"]');
+
+            function calculateTotal() {
+                const classOption = classSelect.options[classSelect.selectedIndex];
+                const packageOption = packageSelect.options[packageSelect.selectedIndex];
+
+                // Check if options are valid (disabled 'Select Class' has no data-price)
+                if (!classOption || classOption.disabled || !packageOption || packageOption.disabled) {
+                    return; // Don't calculate if valid options aren't selected
+                }
+
+                const classPrice = parseFloat(classOption.getAttribute('data-price')) || 0;
+                const packagePrice = parseFloat(packageOption.getAttribute('data-price')) || 0;
+
+                const total = classPrice + packagePrice;
+
+                // Calculate Installment Stages (50% / 30% / 20%)
+                const stage1 = total * 0.5;
+                const stage2 = total * 0.3;
+                const stage3 = total * 0.2;
+
+                // Determine which amount to show in Summary Box
+                const selectedPaymentType = document.querySelector('input[name="payment_type"]:checked');
+                let displayAmount = 0;
+
+                if (selectedPaymentType) {
+                    if (selectedPaymentType.value === 'installment') {
+                        displayAmount = stage1;
+                    } else {
+                        displayAmount = total;
+                    }
+                }
+
+                // Debugging Logs
+                console.log('Class:', classOption.text, 'Price:', classPrice);
+                console.log('Package:', packageOption.text, 'Price:', packagePrice);
+                console.log('Total:', total);
+                console.log('Selected Payment Type:', selectedPaymentType ? selectedPaymentType.value : 'None');
+
+                // Update Summary Box
+                if (summaryAmount) summaryAmount.textContent = displayAmount.toFixed(2);
+
+                // Update Full Payment Display
+                if (fullPaymentAmount) {
+                    fullPaymentAmount.textContent = 'RM ' + total.toFixed(2);
+                }
+
+                // Update Installment Display
+                if (installmentStage1) installmentStage1.textContent = 'RM ' + stage1.toFixed(2);
+                if (installmentStage2) installmentStage2.textContent = 'RM ' + stage2.toFixed(2);
+                if (installmentStage3) installmentStage3.textContent = 'RM ' + stage3.toFixed(2);
+            }
+
+            // Attach Listeners
+            if (classSelect) {
+                classSelect.addEventListener('change', calculateTotal);
+                console.log('Class Select Listener Attached');
+            }
+
+            if (paymentRadios) {
+                paymentRadios.forEach(radio => {
+                    radio.addEventListener('change', calculateTotal);
+                });
+                console.log('Payment Radio Listeners Attached');
+            }
+
+            if (packageSelect) {
+                packageSelect.addEventListener('change', function () {
+                    this.style.backgroundColor = '';
+                    this.style.color = '';
+
+                    const selectedOption = this.options[this.selectedIndex];
+                    const type = selectedOption.getAttribute('data-type');
+
+                    switch (type) {
+                        case 'preffered':
+                            this.style.backgroundColor = '#3f0275';
+                            this.style.color = 'white';
+                            break;
+                        case 'premium':
+                            this.style.backgroundColor = '#facc15';
+                            this.style.color = 'black';
+                            break;
+                        case 'basic':
+                            this.style.backgroundColor = '#3bce6d';
+                            this.style.color = 'black';
+                            break;
+                    }
+                    calculateTotal();
+                });
+                console.log('Package Select Listener Attached');
             }
         });
     </script>
@@ -899,38 +989,12 @@
             const paymentRadios = document.querySelectorAll('input[name="payment_type"]');
             const packageSelect = document.getElementById('package');
 
-            function updateSummary() {
-                const selectedPayment = document.querySelector('input[name="payment_type"]:checked')?.value;
-                const selectedPackage = packageSelect ? packageSelect.value : 'preferred';
-
-                // Update Label
-                if (summaryLabel) {
-                    if (selectedPayment === 'full') {
-                        summaryLabel.textContent = 'Total';
-                    } else if (selectedPayment === 'installment') {
-                        summaryLabel.textContent = 'Stage 1';
-                    }
-                }
-
-                // Update Amount
-                let amount = 0;
-                if (selectedPayment === 'full') {
-                    if (selectedPackage === 'preferred') amount = 3799;
-                    else if (selectedPackage === 'premium') amount = 3499;
-                    else if (selectedPackage === 'basic') amount = 3499;
-                    else amount = 3799;
-                } else if (selectedPayment === 'installment') {
-                    amount = 1000;
-                }
-
-                if (selectedPayment && summaryAmount) {
-                    summaryAmount.textContent = amount;
-                }
-            }
-
-            // Listeners
-            if (paymentRadios) paymentRadios.forEach(radio => radio.addEventListener('change', updateSummary));
-            if (packageSelect) packageSelect.addEventListener('change', updateSummary);
+            // Legacy code removed to allow calculateTotal() to work correctly
+            
+            // REDIRECT TO PAYMENT PAGE
+            applyBtn.addEventListener("click", () => {
+                window.location.href = "{{ route('payment') }}";
+            });
 
             // REDIRECT TO PAYMENT PAGE
             applyBtn.addEventListener("click", () => {

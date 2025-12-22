@@ -22,81 +22,125 @@
             },
         };
     </script>
+    <style>
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: #fff;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+    </style>
 </head>
 
 <body class="font-poppins">
     <!-- Navbar -->
-    <nav x-data="{ open: false }">
+    <nav x-data="{ open: false, scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 20)"
+        :class="{ 'bg-primary/95 shadow-md backdrop-blur-md': scrolled, 'bg-primary/90 backdrop-blur-sm': !scrolled }"
+        class="sticky w-full top-0 z-50 transition-all duration-300">
+
         <div class="w-full px-4 sm:px-6 lg:px-8 bg-gray-900 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
             <div class="flex justify-between items-center h-24">
 
                 <!-- Logo -->
-                <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="/image/icon/logo.png" alt="logo" class="h-12 w-auto">
-                    <span class="text-lg pl-3 font-bold text-white">Molek Driving Academy</span>
+                <a href="{{ route('home') }}" class="flex items-center group">
+                    <div class="relative w-10 h-10 mr-3 transition-transform group-hover:scale-110">
+                        <img src="/image/icon/logo.png" alt="logo" class="w-full h-full object-contain">
+                    </div>
+                    <span class="text-base md:text-xl font-bold text-white tracking-wide">Molek Driving Academy</span>
                 </a>
 
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-6">
+                <div class="hidden md:flex items-center space-x-10">
 
                     @guest
-                        <a href="{{ route('class') }}" class="text-white hover:text-red-500 px-3 py-2">
-                            Classes
-                        </a>
-                        <a href="{{ route('practical') }}" class="text-white hover:text-red-500 px-3 py-2">
-                            About Us
-                        </a>
-                        <a href="#" class="text-white hover:text-red-500 px-3 py-2">
-                            Contact
-                        </a>
+                        <div class="flex items-center space-x-10">
+                            <a href="{{ route('class') }}"
+                                class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
+                                CLASSES
+                            </a>
+                            <a href="{{ route('practical') }}"
+                                class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
+                                ABOUT US
+                            </a>
+                            <a href="#"
+                                class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
+                                CONTACT
+                            </a>
+                        </div>
 
                         <button id="openLoginModal"
-                            class="ml-4 px-4 py-2 bg-[#0E1F8E] text-white font-medium rounded-full hover:bg-indigo-700 transition">
-                            Sign In
+                            class="ml-6 px-6 py-2.5 bg-white text-primary font-bold rounded-full hover:bg-gray-100 hover:-translate-y-0.5 transition-all shadow-lg text-base">
+                            SIGN IN
                         </button>
                     @endguest
 
                     @auth
-                        <a href="{{ route('class') }}" class="text-white hover:text-red-500 px-3 py-2">
-                            Classes
-                        </a>
-                        <a href="{{ route('practical') }}" class="text-white hover:text-red-500 px-3 py-2">
-                            Booking
-                        </a>
-                        <a href="#" class="text-white hover:text-red-500 px-3 py-2">
-                            About Us
-                        </a>
-                        <a href="#" class="text-white hover:text-red-500 px-3 py-2">
-                            Contact
-                        </a>
+                        <div class="flex items-center space-x-10">
+                            <a href="{{ route('class') }}"
+                                class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
+                                CLASSES
+                            </a>
+                            <a href="{{ route('practical') }}"
+                                class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
+                                BOOKING
+                            </a>
+                            <a href="#"
+                                class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
+                                HISTORY
+                            </a>
+                        </div>
 
                         <!-- User Dropdown -->
-                        <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="flex items-center space-x-2 px-3 py-2">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z"
-                                        clip-rule="evenodd" />
+                        <div x-data="{ open: false }" class="relative ml-4">
+                            <button @click="open = !open" @click.away="open = false"
+                                class="flex items-center space-x-3 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-all border border-white/10">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs font-bold ring-2 ring-white/30">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                                <span
+                                    class="text-white font-semibold text-sm pr-1">{{ explode(' ', Auth::user()->name)[0] }}</span>
+                                <svg class="w-4 h-4 text-white/70 transition-transform duration-200"
+                                    :class="{'rotate-180': open}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
                                 </svg>
-                                <span class="text-white font-semibold">{{ Auth::user()->name }}</span>
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                    viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m19 9-7 7-7-7" />
-                                </svg>
-
                             </button>
 
-                            <div x-show="open" @click.away="open = false"
-                                class="absolute right-0 mt-2 w-40 bg-red-600 rounded-xl shadow-lg py-2 z-50">
+                            <div x-show="open" x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="transform opacity-100 scale-100"
+                                x-transition:leave-end="transform opacity-0 scale-95"
+                                class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl py-1 z-50 ring-1 ring-black ring-opacity-5 overflow-hidden">
+                                <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                                    <p class="text-xs text-gray-500 uppercase font-semibold">Signed in as</p>
+                                    <p class="text-sm font-bold text-gray-900 truncate">{{ Auth::user()->email }}</p>
+                                </div>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">Profile</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">Settings</a>
+                                <div class="border-t border-gray-100 my-1"></div>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit"
-                                        class="block w-full text-left px-4 py-2 text-base font-bold text-white">
-                                        Logout
+                                        class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-medium transition-colors">
+                                        Sign out
                                     </button>
                                 </form>
                             </div>
@@ -107,12 +151,12 @@
                 <!-- Mobile button -->
                 <div class="flex items-center md:hidden">
                     <button @click="open = !open" type="button"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-gray-100">
-                        <svg x-show="!open" class="w-6 h-6 text-white" fill="none" stroke="currentColor">
+                        class="inline-flex items-center justify-center p-2 rounded-lg text-white hover:bg-white/10 transition-colors focus:outline-none">
+                        <svg x-show="!open" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
-                        <svg x-show="open" class="w-6 h-6 text-white" fill="none" stroke="currentColor">
+                        <svg x-show="open" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -224,57 +268,72 @@
                     @csrf
 
                     <!-- Email -->
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
-                            <!-- User Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                            </svg>
-                        </span>
-                        <input id="email" type="email" name="email" required placeholder="Email"
-                            class="w-full pl-10 p-3 rounded-lg bg-gray-100 border border-gray-200 focus:ring-2 focus:ring-[#0E1F8E] focus:outline-none">
+                    <div class="group">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 ml-1">Email
+                            Address</label>
+                        <div class="relative">
+                            <span
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                                </svg>
+                            </span>
+                            <input id="email" type="email" name="email" required placeholder="name@example.com"
+                                class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 focus:bg-white focus:border-primary focus:ring-4 focus:ring-blue-500/10 transition-all outline-none font-medium placeholder-gray-400">
+                        </div>
                     </div>
 
                     <!-- Password -->
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
-                            <!-- Lock Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-                            </svg>
-                        </span>
-                        <input id="password" type="password" name="password" required placeholder="Password"
-                            class="w-full pl-10 pr-10 p-3 rounded-lg bg-gray-100 border border-gray-200 focus:ring-2 focus:ring-[#0E1F8E] focus:outline-none">
-                        <button type="button" onclick="changeEye()"
-                            class="absolute inset-y-0 right-3 flex items-center text-gray-500">
-                            <!-- Eye Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                        </button>
+                    <div class="group">
+                        <label
+                            class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 ml-1">Password</label>
+                        <div class="relative">
+                            <span
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                                </svg>
+                            </span>
+                            <input id="password" type="password" name="password" required placeholder="••••••••"
+                                class="w-full pl-11 pr-12 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 focus:bg-white focus:border-primary focus:ring-4 focus:ring-blue-500/10 transition-all outline-none font-medium placeholder-gray-400">
+                            <button type="button" onclick="changeEye()"
+                                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Submit Button -->
                     <button type="submit"
-                        class="mt-6 bg-[#0E1F8E] text-white w-full py-3 rounded-lg font-medium hover:bg-blue-900 transition">
-                        LOGIN
+                        class="w-full py-4 bg-blue-800 text-white font-bold rounded-xl hover:bg-blue-900 hover:shadow-lg transform active:scale-[0.98] transition-all flex justify-center items-center gap-2 group">
+                        <span>LOGIN</span>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
                     </button>
                 </form>
 
                 <!-- Footer -->
-                <p class="text-center text-sm text-gray-600 mt-10">
-                    No Account?
-                    <a href="{{ route('register') }}" class="text-[#0E1F8E] font-medium hover:underline">Create
-                        Now</a>
-                </p>
+                <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+                    <p class="text-sm text-gray-500">
+                        Don't have an account yet?
+                        <a href="{{ route('register') }}"
+                            class="text-primary font-bold hover:underline hover:text-blue-700 ml-1">Create Account</a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>

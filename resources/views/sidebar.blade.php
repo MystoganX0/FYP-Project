@@ -22,13 +22,14 @@
     </script>
 </head>
 
-<body class="font-poppins">
+<body class="font-poppins bg-gray-50">
 
-    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" data-drawer-backdrop="false"
-        aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm">
+    <!-- Mobile Toggle Button -->
+    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
+        type="button"
+        class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
         <span class="sr-only">Open sidebar</span>
-        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg">
+        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
             <path clip-rule="evenodd" fill-rule="evenodd"
                 d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
             </path>
@@ -36,123 +37,135 @@
     </button>
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-72 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        class="fixed top-0 left-0 z-50 w-72 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#0E1F8E] text-white shadow-xl"
         aria-label="Sidebar">
-        <div class="flex flex-col h-full px-3 py-6 overflow-y-auto bg-blue-50 dark:bg-blue-900">
-            <section class="flex py-6">
-                <a href="#" class="flex items-center ps-2.5 space-x-3">
-                    <img src="/image/icon/logo.png" alt="logo" class="h-16 w-16 object-contain">
-                    <div class="flex flex-col justify-center leading-tight">
-                        <span class="text-base font-semibold text-gray-900 dark:text-white">Molek Driving</span>
-                        <span class="text-base font-semibold text-gray-900 dark:text-white">Academy</span>
-                    </div>
-                </a>
-            </section>
 
-            <ul class="space-y-2 font-medium">
+        <div class="h-full flex flex-col px-4 py-8 overflow-y-auto">
+
+            <!-- Logo Section -->
+            <div class="flex items-center gap-3 px-2 mb-10">
+                <div
+                    class="w-12 h-12 flex items-center justify-center bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
+                    <img src="/image/icon/logo.png" alt="logo" class="w-8 h-8 object-contain">
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="text-lg font-bold text-white tracking-tight">Molek Driving</span>
+                    <span class="text-sm font-medium text-blue-200 uppercase tracking-widest">Academy</span>
+                </div>
+            </div>
+
+            <!-- Navigation List -->
+            <ul class="space-y-2 font-medium flex-1">
+
+                <!-- Dashboard -->
                 <li>
-                    <a href="#"
-                        class="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="w-5 h-5 text-white transition duration-75" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                            <path
-                                d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                            <path
-                                d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                    <a href="{{ route('dashboard') }}"
+                        class="flex items-center p-3 rounded-xl group transition-all duration-200 border border-transparent {{ request()->routeIs('dashboard') ? 'bg-white text-blue-900 shadow-lg scale-[1.02]' : 'text-white hover:bg-white/10 hover:border-white/5' }}">
+                        <svg class="w-6 h-6 transition-colors {{ request()->routeIs('dashboard') ? 'text-[#0E1F8E]' : 'text-blue-200 group-hover:text-white' }}"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                            </path>
                         </svg>
-                        <span class="ms-3">Dashboard</span>
+                        <span class="ms-3 font-semibold">Dashboard</span>
                     </a>
                 </li>
 
+                <!-- Classes -->
                 <li>
                     <a href="{{ route('editclass') }}"
-                        class="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="shrink-0 w-5 h-5 text-white transition duration-75" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                            <path
-                                d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                        class="flex items-center p-3 rounded-xl group transition-all duration-200 border border-transparent {{ request()->routeIs('editclass') ? 'bg-white text-blue-900 shadow-lg scale-[1.02]' : 'text-white hover:bg-white/10 hover:border-white/5' }}">
+                        <svg class="w-6 h-6 transition-colors {{ request()->routeIs('editclass') ? 'text-[#0E1F8E]' : 'text-blue-200 group-hover:text-white' }}"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            </path>
                         </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Classes</span>
+                        <span class="ms-3 font-bold">Classes</span>
                     </a>
                 </li>
 
+                <!-- Application -->
                 <li>
-                    <a href="#"
-                        class="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="shrink-0 w-5 h-5 text-white transition duration-75" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                            <path
-                                d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                    <a href="{{ route('applied') }}"
+                        class="flex items-center p-3 rounded-xl group transition-all duration-200 border border-transparent {{ request()->routeIs('applied') ? 'bg-white text-blue-900 shadow-lg scale-[1.02]' : 'text-white hover:bg-white/10 hover:border-white/5' }}">
+                        <svg class="w-6 h-6 transition-colors {{ request()->routeIs('applied') ? 'text-[#0E1F8E]' : 'text-blue-200 group-hover:text-white' }}"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Registration</span>
+                        <span class="ms-3 font-semibold">Application</span>
                     </a>
                 </li>
 
+                <!-- Booking Dropdown -->
                 <li>
                     <button type="button"
-                        class="flex items-center w-full p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group transition duration-75"
-                        aria-controls="dropdown-booking" data-collapse-toggle="dropdown-booking">
-                        <svg class="shrink-0 w-5 h-5 text-white transition duration-75" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Z" />
-                            <path fill-rule="evenodd"
-                                d="M11 7V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm4.707 5.707a1 1 0 0 0-1.414-1.414L11 14.586l-1.293-1.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4Z"
-                                clip-rule="evenodd" />
+                        class="flex items-center w-full p-3 rounded-xl group transition-all duration-200 border border-transparent {{ (request()->routeIs('computer') || request()->routeIs('practical') || request()->routeIs('jpj')) ? 'bg-white text-blue-900 shadow-lg' : 'text-white hover:bg-white/10 hover:border-white/5' }}"
+                        aria-controls="dropdown-booking" data-collapse-toggle="dropdown-booking"
+                        aria-expanded="{{ (request()->routeIs('computer') || request()->routeIs('practical') || request()->routeIs('jpj')) ? 'true' : 'false' }}">
+                        <svg class="w-6 h-6 transition-colors {{ (request()->routeIs('computer') || request()->routeIs('practical') || request()->routeIs('jpj')) ? 'text-[#0E1F8E]' : 'text-blue-200 group-hover:text-white' }}"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
                         </svg>
-                        <span class="flex-1 ms-3 text-left whitespace-nowrap">Booking</span>
-                        <svg class="w-3 h-3 ms-auto text-white transition-transform duration-200 group-[aria-expanded=true]:rotate-180"
+                        <span class="flex-1 ms-3 text-left font-semibold whitespace-nowrap">Booking</span>
+                        <svg class="w-3 h-3 transition-transform duration-200 group-[aria-expanded=true]:rotate-180 {{ (request()->routeIs('computer') || request()->routeIs('practical') || request()->routeIs('jpj')) ? 'text-[#0E1F8E]' : 'text-blue-200 group-hover:text-white' }}"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m1 1 4 4 4-4" />
                         </svg>
                     </button>
 
-                    <ul id="dropdown-booking" class="hidden py-2 space-y-2">
+                    <ul id="dropdown-booking"
+                        class="{{ (request()->routeIs('computer') || request()->routeIs('practical') || request()->routeIs('jpj')) ? 'py-2 space-y-1 pl-4' : 'hidden py-2 space-y-1 pl-4' }}">
                         <li>
-                            <a href="#upcoming"
-                                class="flex items-center w-full p-3 ps-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                Computer Test 
+                            <a href="{{ route('computer') }}"
+                                class="flex items-center w-full p-2.5 text-base transition-colors rounded-lg pl-11 group {{ request()->routeIs('computer') ? 'bg-white/10 text-white font-semibold' : 'text-blue-100 hover:text-white hover:bg-white/10' }}">
+                                Computer Test
                             </a>
                         </li>
                         <li>
-                            <a href="#history"
-                                class="flex items-center w-full p-3 ps-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                Practical Slot 
+                            <a href="{{ route('practical') }}"
+                                class="flex items-center w-full p-2.5 text-base transition-colors rounded-lg pl-11 group {{ request()->routeIs('practical') ? 'bg-white/10 text-white font-semibold' : 'text-blue-100 hover:text-white hover:bg-white/10' }}">
+                                Practical Slot
                             </a>
                         </li>
                         <li>
-                            <a href="#new"
-                                class="flex items-center w-full p-3 ps-11 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                JPJ Test 
+                            <a href="{{ route('jpj') }}"
+                                class="flex items-center w-full p-2.5 text-base transition-colors rounded-lg pl-11 group {{ request()->routeIs('jpj') ? 'bg-white/10 text-white font-semibold' : 'text-blue-100 hover:text-white hover:bg-white/10' }}">
+                                JPJ Test
                             </a>
                         </li>
                     </ul>
                 </li>
 
+                <!-- Schedule -->
                 <li>
                     <a href="#"
-                        class="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="w-5 h-5 text-white transition duration-75" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 21">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 15v3c0 .5523.4477 1 1 1h9.5M3 15v-4m0 4h9m-9-4V6c0-.5523.4477-1 1-1h16c.5523 0 1 .4477 1 1v5H3Zm5 0v8m4-8v8m7.0999-1.0999L21 16m0 0-1.9001-1.9001M21 16h-5" />
+                        class="flex items-center p-3 text-white rounded-xl hover:bg-white/10 group transition-all duration-200 border border-transparent hover:border-white/5">
+                        <svg class="w-6 h-6 text-blue-200 group-hover:text-white transition-colors" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Schedule</span>
+                        <span class="ms-3 font-semibold">Schedule</span>
                     </a>
                 </li>
-
-
-
             </ul>
-            <div class="mt-auto pt-4 font-medium">
+
+            <!-- Footer / Sign Out -->
+            <div class="mt-auto pt-6 border-t border-white/10">
                 <a href="#"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="shrink-0 w-5 h-5 text-white transition duration-75" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 18 16">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 8H6m0 0 4-4m-4 4 4 4m-4-11H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3" />
+                    class="flex items-center p-3 text-red-300 rounded-xl hover:bg-red-500/10 hover:text-red-200 group transition-all duration-200">
+                    <svg class="w-6 h-6 text-red-300 group-hover:text-red-200 transition-colors" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                        </path>
                     </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
+                    <span class="ms-3 font-semibold">Sign Out</span>
                 </a>
             </div>
 
@@ -160,45 +173,15 @@
     </aside>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const sidebar = document.getElementById("logo-sidebar");
             const toggleBtn = document.querySelector('[data-drawer-toggle="logo-sidebar"]');
-            const links = sidebar.querySelectorAll("a");
 
-            // --- Handle Flowbite toggle manually ---
-            toggleBtn.addEventListener("click", () => {
-                const isOpen = !sidebar.classList.contains("-translate-x-full");
-                if (isOpen) {
-                    sidebar.classList.add("-translate-x-full");
-                } else {
-                    sidebar.classList.remove("-translate-x-full");
-                }
-            });
-
-            // --- Close sidebar on link click (mobile only) ---
-            links.forEach(link => {
-                link.addEventListener("click", () => {
-                    if (window.innerWidth < 640) {
-                        sidebar.classList.add("-translate-x-full");
-                    }
+            if (toggleBtn && sidebar) {
+                toggleBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('-translate-x-full');
                 });
-            });
-
-            // --- Close sidebar when clicking outside (mobile only) ---
-            document.addEventListener("click", (event) => {
-                const isClickInside = sidebar.contains(event.target) || toggleBtn.contains(event.target);
-                if (!isClickInside && window.innerWidth < 640 && !sidebar.classList.contains(
-                        "-translate-x-full")) {
-                    sidebar.classList.add("-translate-x-full");
-                }
-            });
-
-            // --- Close on ESC key (optional) ---
-            document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape" && window.innerWidth < 640) {
-                    sidebar.classList.add("-translate-x-full");
-                }
-            });
+            }
         });
     </script>
 </body>
