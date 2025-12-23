@@ -38,11 +38,11 @@
 <body class="font-poppins bg-gray-100 text-gray-800">
     @include('header')
 
-    <div class="px-4 md:px-8 lg:px-12 xl:px-48 py-8 flex items-center justify-between">
+    <div class="px-4 md:px-8 lg:px-12 xl:px-48 py-4 md:py-8 flex items-center justify-between gap-2">
         <a href="{{ route('home') }}" class="text-blue-900 hover:text-blue-900 flex items-center">
             <div
-                class="inline-flex items-center justify-center w-12 h-12 bg-white border-2 border-blue-900 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-blue-900"
+                class="inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-blue-900 rounded-full flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 md:w-6 md:h-6 text-blue-900"
                     stroke="currentColor" stroke-width="2" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
@@ -50,12 +50,13 @@
                 </svg>
             </div>
         </a>
-        <div class="flex-1 flex justify-center">
-            <div class="flex items-center space-x-3 border-2 border-blue-900 rounded-xl bg-blue-100 px-6 py-3">
-                <h2 class="text-xl font-bold text-blue-900">LICENSE CLASS OPTIONS</h2>
+        <div class="flex-1 flex justify-center min-w-0">
+            <div
+                class="flex items-center space-x-2 md:space-x-3 border-2 border-blue-900 rounded-xl bg-blue-100 px-4 py-2 md:px-6 md:py-3 truncate max-w-full">
+                <h2 class="text-sm sm:text-lg md:text-xl font-bold text-blue-900 truncate">LICENSE CLASS OPTIONS</h2>
             </div>
         </div>
-        <div class="w-12"></div>
+        <div class="w-10 md:w-12 flex-shrink-0"></div>
     </div>
 
     <section class="w-full flex flex-col lg:flex-row gap-4 md:gap-8 py-4 md:py-6 px-4 md:px-8 lg:px-12 xl:px-48">
@@ -80,7 +81,7 @@
                 <!-- Refresher Icon -->
                 <button
                     class="filter-btn group flex items-center justify-start gap-2 md:gap-3 min-w-[120px] lg:w-full px-4 md:px-5 py-3 md:py-4 rounded-2xl text-white hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 flex-shrink-0 lg:flex-shrink"
-                    data-filter="DA - Automatic Car,D - Manual Car,B - Motorcycle,B2 - Motorcycle">
+                    data-filter="DA,D,B2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -92,7 +93,7 @@
                 <!-- Heavy Vehicle Icon -->
                 <button
                     class="filter-btn group flex items-center justify-start gap-2 md:gap-3 min-w-[140px] lg:w-full px-4 md:px-5 py-3 md:py-4 rounded-2xl text-white hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 flex-shrink-0 lg:flex-shrink"
-                    data-filter="available">
+                    data-filter="heavy">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -106,7 +107,7 @@
                 <!-- Combo Icon -->
                 <button
                     class="filter-btn group flex items-center justify-start gap-2 md:gap-3 min-w-[100px] lg:w-full px-4 md:px-5 py-3 md:py-4 rounded-2xl text-white hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 flex-shrink-0 lg:flex-shrink"
-                    data-filter="B2 + DA - Automatic Car,B2 + D - Manual Car">
+                    data-filter="B2 + DA,B2 + D">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -121,13 +122,26 @@
         <!-- License Class Grid -->
         <div id="class-grid"
             class="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 justify-center text-center">
+
+            <div id="no-classes-message" class="hidden col-span-full py-10">
+                <p class="text-gray-500 text-lg">Currently not available</p>
+            </div>
+
             @foreach ($classes as $class)
                 <a href="{{ route('package', $class->class_id) }}"
-                    class="class-item bg-transparent rounded-3xl shadow-xl p-3 md:p-4 border-[3px] border-transparent hover:border-red-600 transition transform hover:scale-105 block"
+                    class="class-item group bg-white rounded-2xl shadow-sm hover:shadow-xl p-4 border-[3px] border-transparent hover:border-red-600 transition-all duration-300 transform hover:-translate-y-1 block"
                     data-name="{{ $class->class_code }}" data-status="available">
-                    <img src="{{ asset($class->class_image) }}" alt="{{ $class->class_code }}"
-                        class="mx-auto mb-2 md:mb-4 rounded-lg w-full h-auto object-cover">
-                    <p class="font-medium text-xs md:text-base">{{ $class->class_code }}</p>
+                    <div class="relative overflow-hidden rounded-xl mb-4 bg-gray-50">
+                        <img src="{{ asset($class->class_image) }}" alt="{{ $class->class_code }}"
+                            class="w-full h-auto transform transition-transform duration-500 group-hover:scale-105">
+                    </div>
+                    <div class="space-y-1">
+                        <p
+                            class="font-bold text-gray-900 text-lg md:text-xl tracking-tight group-hover:text-red-600 transition-colors">
+                            {{ $class->class_code }}
+                        </p>
+                        <!-- <p class="text-xs text-gray-500 uppercase tracking-wider font-medium">Driving License</p> -->
+                    </div>
                 </a>
             @endforeach
         </div>
@@ -146,6 +160,7 @@
         buttons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const filter = btn.dataset.filter;
+                const noClassesMsg = document.getElementById('no-classes-message');
 
                 // Remove active state from all buttons
                 buttons.forEach(b => {
@@ -157,18 +172,26 @@
                 btn.classList.add('bg-yellow-400', 'text-blue-900', 'shadow-md');
                 btn.classList.remove('text-white', 'hover:bg-blue-800');
 
+                // Handle Heavy/No Classes case
+                if (filter === 'heavy') {
+                    noClassesMsg.classList.remove('hidden');
+                    items.forEach(item => item.style.display = 'none');
+                    return;
+                }
+
+                // Hide message for other cases
+                noClassesMsg.classList.add('hidden');
+
                 // Filter items
                 items.forEach(item => {
                     const name = item.dataset.name;
 
                     if (filter === 'all') {
                         item.style.display = 'block';
-                    } else if (filter === 'available') {
-                        const status = item.dataset.status.toLowerCase();
-                        item.style.display = status !== 'unavailable' ? 'block' : 'none';
                     } else {
-                        const filterArr = filter.split(',');
-                        const show = filterArr.some(f => f.trim() === name);
+                        // Split by comma and trim whitespace to handle multiple filters
+                        const filterArr = filter.split(',').map(f => f.trim());
+                        const show = filterArr.includes(name);
                         item.style.display = show ? 'block' : 'none';
                     }
                 });

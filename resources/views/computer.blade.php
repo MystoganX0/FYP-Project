@@ -150,9 +150,6 @@
 
                                 <span
                                     class="inline-flex items-center gap-2 px-4 py-3 border-2 border-green-800 rounded-full text-xs font-bold uppercase tracking-wider bg-green-400 text-green-800">
-                                    <span
-                                        class="w-3 h-3 rounded-full bg-green-800 shadow-[0_0_10px_rgba(250,204,21,0.5)]">
-                                    </span>
                                     Done
                                 </span>
 
@@ -219,8 +216,13 @@
                     class="text-xl sm:text-2xl font-bold mb-6 text-white text-center flex justify-center items-center gap-3">
                     <span>Practical Driving Slot</span>
                     <span class="w-0.5 h-6 bg-white/30 hidden sm:block"></span>
-                    <span class="hidden sm:block">D - Manual Car</span>
-                    <span class="sm:hidden block">- D (Manual)</span>
+                    <span class="hidden sm:block">
+                        {{ optional($application->class)->class_code ?? 'N/A' }} -
+                        {{ optional($application->class)->class_name ?? 'N/A' }}
+                    </span>
+                    <span class="sm:hidden block">
+                        - {{ optional($application->class)->class_code ?? 'N/A' }}
+                    </span>
                 </h1>
                 <div class="overflow-x-auto bg-white shadow-md rounded-3xl flex-1">
                     <!-- Search Bar -->
@@ -328,8 +330,8 @@
                             <div class="md:px-4 md:py-2 md:col-span-1 text-right">
                                 <p class="text-black text-sm font-semibold">Slots</p>
                                 <p class="text-gray-600 text-sm mb-2">10 Slots Available</p>
-                                <button data-modal-target="confirmModal" data-modal-toggle="confirmModal"
-                                    class="bg-[#0E1F8E] hover:bg-indigo-700 text-white px-9 py-2 rounded-xl font-medium hover:bg-[#0abc76] transition">
+                                <button
+                                    class="open-confirm-modal bg-[#0E1F8E] hover:bg-indigo-700 text-white px-9 py-2 rounded-xl font-medium hover:bg-[#0abc76] transition">
                                     BOOK
                                 </button>
                             </div>
@@ -372,8 +374,8 @@
 
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-500 text-sm">Slots: 10</span>
-                                <button data-modal-target="confirmModal" data-modal-toggle="confirmModal"
-                                    class="px-4 py-2 bg-[#0E1F8E] text-white rounded-xl font-medium hover:bg-[#0abc76] transition">
+                                <button
+                                    class="open-confirm-modal px-4 py-2 bg-[#0E1F8E] text-white rounded-xl font-medium hover:bg-[#0abc76] transition">
                                     BOOK
                                 </button>
                             </div>
@@ -398,34 +400,46 @@
 
     <!-- Popup Modal -->
     <div id="confirmModal" tabindex="-1" aria-hidden="true"
-        class="hidden fixed inset-0 z-50 flex items-center justify-center bg-opacity-80 p-4 sm:p-6">
-        <div
-            class="relative bg-white rounded-2xl shadow-lg w-[90%] sm:w-[70%] md:w-[50%] lg:w-[40%] max-w-lg p-6 sm:p-8 text-center">
+        class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div id="modalContent"
+            class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full mx-4 transform scale-90 transition-transform duration-300 text-center relative">
 
-            <button type="button" data-modal-hide="confirmModal"
-                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 rounded-full p-1.5 focus:outline-none focus:ring-2 focus:ring-gray-200">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" class="w-4 h-4">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 1 12 12M13 1 1 13" />
+            <!-- Close Button -->
+            <button type="button"
+                class="close-confirm-modal absolute top-5 right-5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
 
-            <div class="mt-2 sm:mt-4">
-                <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">
-                    Booking Confirmation
+            <!-- Icon -->
+            <div
+                class="mx-auto w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-6 ring-8 ring-blue-50/50">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-8 h-8 text-blue-600">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                </svg>
+            </div>
+
+            <div class="mt-2">
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">
+                    Confirm Booking
                 </h3>
-                <p class="text-sm sm:text-base text-gray-500 mb-8">
-                    You can cancel this slot through contacting the customer service.
+                <p class="text-sm text-gray-500 mb-8 leading-relaxed px-4">
+                    Are you sure you want to book this slot? <br>
+                    <span class="text-xs text-gray-400 mt-1 block">You can cancel later by contacting support.</span>
                 </p>
             </div>
 
-            <div class="flex justify-center items-center gap-3">
-                <button data-modal-hide="confirmModal"
-                    class="w-1/2 px-5 sm:px-6 py-4 rounded-full bg-gray-200 text-red-500 font-medium hover:bg-gray-300 transition">
+            <div class="grid grid-cols-2 gap-4">
+                <button
+                    class="close-confirm-modal w-full px-6 py-3.5 rounded-xl bg-gray-50 text-gray-700 font-bold hover:bg-gray-100 hover:text-gray-900 transition-all border border-gray-200">
                     Cancel
                 </button>
-                <button data-modal-hide="confirmModal"
-                    class="w-1/2 px-5 sm:px-6 py-4 rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
+                <button
+                    class="close-confirm-modal w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 text-white font-bold hover:from-blue-800 hover:to-blue-700 shadow-lg shadow-blue-600/30 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all">
                     Confirm
                 </button>
             </div>
@@ -433,30 +447,54 @@
     </div>
 
     <script>
-        // Get the dropdown element
-        const dropdownEl = document.getElementById("historyDropdown");
+        document.addEventListener('DOMContentLoaded', () => {
+            const confirmModal = document.getElementById('confirmModal');
+            const modalContent = document.getElementById('modalContent');
+            const openBtns = document.querySelectorAll('.open-confirm-modal');
+            const closeBtns = document.querySelectorAll('[data-modal-hide="confirmModal"]'); // Also support data-modal-hide for close buttons inside/outside
 
-        // Get the Flowbite-generated dropdown instance
-        const historyDropdown = window.FlowbiteInstances.getInstance(
-            "Dropdown",
-            dropdownEl
-        );
+            function openModal() {
+                confirmModal.classList.remove('hidden');
+                // Trigger reflow
+                void confirmModal.offsetWidth;
 
-        document.querySelectorAll(".filter-option").forEach(option => {
-            option.addEventListener("click", function (e) {
-                e.preventDefault();
+                confirmModal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-90');
+                modalContent.classList.add('scale-100');
+            }
 
-                const filter = this.getAttribute("data-filter");
-                const items = document.querySelectorAll(".history-item");
+            function closeModal() {
+                confirmModal.classList.add('opacity-0');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-90');
 
-                items.forEach(item => {
-                    const status = item.getAttribute("data-status");
+                setTimeout(() => {
+                    confirmModal.classList.add('hidden');
+                }, 300);
+            }
 
-                    item.style.display =
-                        filter === "all" || filter === status ? "flex" : "none";
+            // Attach open listeners
+            openBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
                 });
+            });
 
-                historyDropdown.hide();
+            // Attach close listeners
+            const closeConfirmBtns = document.querySelectorAll('.close-confirm-modal');
+            closeConfirmBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closeModal();
+                });
+            });
+
+            // Close on backdrop click
+            confirmModal.addEventListener('click', (e) => {
+                if (e.target === confirmModal) {
+                    closeModal();
+                }
             });
         });
     </script>

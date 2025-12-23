@@ -8,9 +8,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Application;
 
 class ProfileController extends Controller
 {
+    public function history()
+    {
+        $studentId = Auth::id();
+        $application = Application::with(['class', 'package', 'payment', 'payment.details'])
+            ->where('student_id', $studentId)
+            ->latest()
+            ->first();
+
+        return view('history', compact('application'));
+    }
+
     /**
      * Display the user's profile form.
      */

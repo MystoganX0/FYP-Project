@@ -57,19 +57,22 @@
                 <div class="absolute inset-0 bg-cover bg-center"
                     style="background-image: url('/image/home/banner.gif');"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="max-w-3xl px-6 text-center text-white">
-                        <h1 class="text-4xl font-extrabold sm:text-6xl leading-tight neon-white">
-                            Welcome to Driving Academy
+                    <div class="max-w-4xl px-6 text-center text-white z-10">
+                        <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight neon-white drop-shadow-2xl mb-6">
+                            Get Your License With Us <br class="hidden md:block" />
                         </h1>
                         <p class="mt-5 text-lg">
                             <span class="font-semibold">One Stop Center</span> to get your license.
                         </p>
-                        <div class="mt-6 space-x-4">
+                        <div class="mt-10 flex flex-wrap justify-center gap-5">
                             <a href="#classes"
-                                class="inline-block rounded-full bg-red-600 px-8 py-3 text-white font-medium transition">Learn
-                                More</a>
+                                class="px-10 py-4 bg-red-600 text-white font-bold rounded-full hover:bg-red-700 shadow-lg shadow-red-600/40 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm">
+                                Learn More
+                            </a>
                             <a href="{{ route('apply') }}"
-                                class="inline-block rounded-full border border-red-600 px-8 py-3 text-red-600 font-medium transition hover:bg-red-600 hover:text-white">Apply</a>
+                                class="px-10 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-red-900 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm shadow-lg">
+                                Apply
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -80,13 +83,13 @@
                 <!-- Background & Gradient Overlay -->
                 <div class="absolute inset-0 bg-cover bg-center"
                     style="background-image: url('/image/home/banner3.jpg');">
-                    <div class="absolute inset-0 bg-gradient-to-r from-blue-900/95 via-blue-900/80 to-transparent">
+                    <div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent">
                     </div>
                 </div>
 
                 <!-- Official Pattern Overlay -->
-                <div class="absolute inset-0 opacity-10 pointer-events-none"
-                    style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 24px 24px;">
+                <div class="absolute inset-0 opacity-20 pointer-events-none"
+                    style="background-image: radial-gradient(#ef4444 1px, transparent 1px); background-size: 24px 24px;">
                 </div>
 
                 <!-- Content -->
@@ -94,48 +97,41 @@
                     <div class="max-w-4xl text-left text-white z-10">
                         <!-- Official Badge/Header -->
                         <div class="flex items-center gap-4 mb-6">
-                            <span class="h-[2px] w-16 bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"></span>
+                            <span class="h-[3px] w-16 bg-red-600 shadow-[0_0_15px_rgba(220,38,38,0.8)]"></span>
                             <span
-                                class="text-yellow-400 font-bold tracking-[0.2em] uppercase text-xs md:text-sm shadow-black drop-shadow-md">
-                                Official Driving Center
+                                class="text-white font-bold tracking-[0.2em] uppercase text-xs md:text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                                ONE STOP CENTER
                             </span>
                         </div>
 
                         <!-- Main Title -->
                         <h1
-                            class="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] mb-8 drop-shadow-xl font-poppins">
-                            OBTAIN YOUR <br />
-                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200">DRIVING
-                                LICENSE</span> <br />
-                            WITH CONFIDENCE.
+                            class="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] mb-8 drop-shadow-2xl font-poppins text-white">
+                            WELCOME TO <br />
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">DRIVING
+                                ACADEMY</span>
                         </h1>
 
                         <!-- Description with border -->
                         <div
-                            class="flex border-l-4 border-yellow-400 pl-6 py-2 mb-10 bg-white/5 backdrop-blur-sm rounded-r-lg max-w-2xl">
-                            <p class="text-base md:text-lg text-blue-50 font-light leading-relaxed">
-                                Fully accredited by the Road Transport Department. <br />
-                                Experience professional training standards with our ISO 9001 certified curriculum.
+                            class="flex border-l-4 border-red-600 pl-6 py-2 mb-10 bg-black/20 backdrop-blur-sm rounded-r-lg max-w-2xl">
+                            <p class="text-base md:text-lg text-gray-200 font-light leading-relaxed">
+                                Get your license with verified professional instructors. <br />
+                                Experience top-tier safety and training standards.
                             </p>
                         </div>
 
                         <!-- CTAs -->
                         <div class="flex flex-wrap gap-5">
-                            <a href="{{ route('register') }}"
-                                class="group relative px-10 py-4 bg-yellow-500 text-blue-900 font-bold uppercase tracking-wider overflow-hidden rounded hover:bg-yellow-400 transition-all shadow-lg hover:shadow-yellow-500/50 hover:-translate-y-1">
+                            <a href="#learn-more"
+                                class="group relative px-10 py-4 bg-red-600 text-white font-bold uppercase tracking-wider overflow-hidden rounded-full hover:bg-red-700 transition-all shadow-lg hover:shadow-red-600/50 hover:-translate-y-1">
                                 <span class="relative z-10 flex items-center gap-2">
-                                    Register Now
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
+                                    Learn More
                                 </span>
                             </a>
-                            <a href="#classes"
-                                class="px-10 py-4 border-2 border-white/30 text-white font-bold uppercase tracking-wider hover:bg-white hover:text-blue-900 transition-all rounded backdrop-blur-sm hover:-translate-y-1">
-                                License Classes
+                            <a href="{{ route('apply') }}"
+                                class="px-10 py-4 border-2 border-white/20 text-white font-bold uppercase tracking-wider hover:bg-red-600 hover:border-red-600 transition-all rounded-full backdrop-blur-sm hover:-translate-y-1">
+                                Apply
                             </a>
                         </div>
                     </div>
@@ -157,38 +153,42 @@
 
                 <!-- Button 1: Features -->
                 <a href="#features"
-                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-3xl bg-red-500 hover:bg-gray-400 hover:text-black transition">
-                    <div class="flex items-center">
-                        <img src="/image/home/grid.png" alt="grid icon" class="h-12 w-auto">
+                    class="group relative flex flex-col items-center justify-center h-32 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-3xl shadow-lg shadow-red-600/30 border border-white/20 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-105 hover:shadow-red-600/50 hover:from-red-500 hover:to-red-600">
+                    <div class="flex items-center mb-2 transform transition-transform group-hover:scale-110">
+                        <img src="/image/home/grid.png" alt="grid icon" class="h-10 w-auto drop-shadow-md">
                     </div>
-                    <span class="text-sm font-extrabold font-medium">Overview</span>
+                    <span
+                        class="text-sm font-bold tracking-wider uppercase text-white/90 group-hover:text-white">Overview</span>
                 </a>
 
                 <!-- Button 2: Classes -->
                 <a href="#classes"
-                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-3xl bg-red-500 hover:bg-gray-400 hover:text-black transition">
-                    <div class="flex items-center">
-                        <img src="/image/home/car.png" alt="car icon" class="h-12 w-auto">
+                    class="group relative flex flex-col items-center justify-center h-32 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-3xl shadow-lg shadow-red-600/30 border border-white/20 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-105 hover:shadow-red-600/50 hover:from-red-500 hover:to-red-600">
+                    <div class="flex items-center mb-2 transform transition-transform group-hover:scale-110">
+                        <img src="/image/home/car.png" alt="car icon" class="h-10 w-auto drop-shadow-md">
                     </div>
-                    <span class="text-sm font-extrabold font-medium">Class</span>
+                    <span
+                        class="text-sm font-bold tracking-wider uppercase text-white/90 group-hover:text-white">Class</span>
                 </a>
 
                 <!-- Button 3: Process -->
                 <a href="#process"
-                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-3xl bg-red-500 hover:bg-gray-400 hover:text-black transition">
-                    <div class="flex items-center">
-                        <img src="/image/home/plan.png" alt="plan icon" class="h-12 w-auto">
+                    class="group relative flex flex-col items-center justify-center h-32 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-3xl shadow-lg shadow-red-600/30 border border-white/20 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-105 hover:shadow-red-600/50 hover:from-red-500 hover:to-red-600">
+                    <div class="flex items-center mb-2 transform transition-transform group-hover:scale-110">
+                        <img src="/image/home/plan.png" alt="plan icon" class="h-10 w-auto drop-shadow-md">
                     </div>
-                    <span class="text-sm font-extrabold font-medium">Process</span>
+                    <span
+                        class="text-sm font-bold tracking-wider uppercase text-white/90 group-hover:text-white">Process</span>
                 </a>
 
                 <!-- Button 4: Dress Code -->
                 <a href="#dresscode"
-                    class="flex flex-col items-center justify-center h-32 text-white border-[2px] border-white rounded-3xl bg-red-500 hover:bg-gray-400 hover:text-black transition">
-                    <div class="flex items-center">
-                        <img src="/image/home/shirt.png" alt="shirt icon" class="h-12 w-auto">
+                    class="group relative flex flex-col items-center justify-center h-32 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-3xl shadow-lg shadow-red-600/30 border border-white/20 transform transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-105 hover:shadow-red-600/50 hover:from-red-500 hover:to-red-600">
+                    <div class="flex items-center mb-2 transform transition-transform group-hover:scale-110">
+                        <img src="/image/home/shirt.png" alt="shirt icon" class="h-10 w-auto drop-shadow-md">
                     </div>
-                    <span class="text-sm font-extrabold font-medium">Dress Code</span>
+                    <span class="text-sm font-bold tracking-wider uppercase text-white/90 group-hover:text-white">Dress
+                        Code</span>
                 </a>
             </div>
         </div>
@@ -208,52 +208,117 @@
             </div>
 
             <!-- Content Grid -->
-            <div class="space-y-20">
+            <div class="space-y-24">
 
                 <!-- Block 1 -->
-                <div class="grid md:grid-cols-2 gap-12 items-center fade-in">
+                <div class="grid md:grid-cols-2 gap-16 items-center fade-in">
                     <div class="order-2 md:order-1">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Leading the Way in Driver Education</h3>
-                        <p class="text-gray-600 text-lg leading-relaxed mb-6 text-justify">
-                            Established in 1998, <span class="font-semibold text-gray-900">Molek Driving Academy</span>
-                            is recognized by the Road Transport Department of Malaysia as a premier driving institute.
-                        </p>
-                        <p class="text-gray-600 text-lg leading-relaxed text-justify">
-                            With strategic campuses in <span class="font-semibold text-gray-900">Kampung Melayu
-                                Subang</span> and <span class="font-semibold text-gray-900">Bandar Bukit Puchong
-                                2</span>, we are dedicated to providing top-tier professional training for both local
-                            and international candidates.
-                        </p>
-                    </div>
-                    <div class="order-1 md:order-2 group relative">
-                        <div
-                            class="absolute -inset-4 bg-blue-900 rounded-[2rem] transform rotate-3 transition-transform duration-300 group-hover:rotate-6">
+                        <div class="mb-6">
+                            <h3 class="text-3xl font-extrabold text-gray-900 mb-4 leading-tight">
+                                Leading the Way in <br>Driver Education
+                            </h3>
                         </div>
-                        <img src="/image/home/intro.png" alt="Driving Training"
-                            class="relative rounded-[1.5rem] shadow-2xl w-full h-auto object-cover transform transition-transform duration-300 group-hover:-translate-y-2">
+
+                        <p class="text-gray-600 text-lg leading-relaxed mb-6 text-justify">
+                            Established in 1998, Molek Driving Academy is recognized by the Road Transport Department of Malaysia as a premier driving institute.
+                        </p>
+                        <p class="text-gray-600 text-lg leading-relaxed text-justify mb-8">
+                            With strategic campuses in Kampung Melayu Subang and Bandar Bukit Puchong 2, we are dedicated to providing top-tier professional training for both local and international candidates.
+                        </p>
+
+                        <ul class="space-y-3">
+                            <li class="flex items-center text-gray-700 font-medium">
+                                <div
+                                    class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-[#0E1F8E]" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <span>RTD (JPJ) Recognized Material</span>
+                            </li>
+                            <li class="flex items-center text-gray-700 font-medium">
+                                <div
+                                    class="flex-shrink-0 w-10 h-10 rounded-full bg-red-50 flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <span>Certified Professional Instructors</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="order-1 md:order-2 relative group">
+                        <!-- Clean Design Image 1 -->
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-100 group">
+                            <div
+                                class="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors duration-500">
+                            </div>
+                            <img src="/image/home/intro.png" alt="Driving Training"
+                                class="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105">
+                        </div>
+                        <!-- Decorative Element -->
+                        <div
+                            class="absolute -bottom-6 -right-6 w-24 h-24 bg-red-50 rounded-full -z-10 blur-xl opacity-70">
+                        </div>
+                        <div class="absolute -top-6 -left-6 w-32 h-32 bg-blue-50 rounded-full -z-10 blur-xl opacity-70">
+                        </div>
                     </div>
                 </div>
 
                 <!-- Block 2 -->
-                <div class="grid md:grid-cols-2 gap-12 items-center fade-in">
-                    <div class="group relative">
-                        <div
-                            class="absolute -inset-4 bg-yellow-200 rounded-[2rem] transform -rotate-3 transition-transform duration-300 group-hover:-rotate-6">
+                <div class="grid md:grid-cols-2 gap-16 items-center fade-in">
+                    <div class="relative group">
+                        <!-- Clean Design Image 2 -->
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-100 group">
+                            <div
+                                class="absolute inset-0 bg-yellow-500/10 group-hover:bg-transparent transition-colors duration-500">
+                            </div>
+                            <img src="/image/home/img1.jpg" alt="Driving Practice"
+                                class="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105">
                         </div>
-                        <img src="/image/home/img1.jpg" alt="Driving Practice"
-                            class="relative rounded-[1.5rem] shadow-2xl w-full h-auto object-cover transform transition-transform duration-300 group-hover:-translate-y-2">
+                        <!-- Decorative Element -->
+                        <div
+                            class="absolute -bottom-6 -left-6 w-24 h-24 bg-yellow-50 rounded-full -z-10 blur-xl opacity-70">
+                        </div>
+                        <div
+                            class="absolute -top-6 -right-6 w-32 h-32 bg-gray-100 rounded-full -z-10 blur-xl opacity-70">
+                        </div>
                     </div>
+
                     <div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4">World-Class Facilities</h3>
+                        <div class="mb-6">
+                            <h3 class="text-3xl font-extrabold text-gray-900 mb-4 leading-tight">
+                                World-Class Facilities
+                            </h3>
+                        </div>
+
                         <p class="text-gray-600 text-lg leading-relaxed mb-6 text-justify">
                             We pride ourselves on our comprehensively equipped facilities, featuring professionally
                             designed driving and riding circuits that simulate real-world conditions.
                         </p>
-                        <p class="text-gray-600 text-lg leading-relaxed text-justify">
-                            Our curriculum emphasizes <span class="font-semibold text-gray-900">safety, discipline, and
-                                confidence</span>. We go beyond the basics to ensure every student is fully prepared to
-                            navigate any road challenge with skill and assurance.
+                        <p class="text-gray-600 text-lg leading-relaxed text-justify mb-8">
+                            Our curriculum emphasizes safety, discipline, and confidence. We go beyond the basics to
+                            ensure every student is fully prepared to navigate any road challenge with skill and
+                            assurance.
                         </p>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div
+                                class="bg-gray-50 p-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
+                                <div class="font-bold text-gray-900 text-lg mb-1">Modern Fleet</div>
+                                <div class="text-sm text-gray-500">Reliable vehicles for best experience</div>
+                            </div>
+                            <div
+                                class="bg-gray-50 p-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
+                                <div class="font-bold text-gray-900 text-lg mb-1">Safety First</div>
+                                <div class="text-sm text-gray-500">Top-tier safety standards</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -396,26 +461,12 @@
                 <!-- Slider Wrapper -->
                 <div id="slider" class="flex transition-transform duration-500 ease-in-out space-x-6">
                     <!-- Slides -->
-                    <div class="min-w-[320px]">
-                        <img src="/image/class1.png" class="w-[320px] h-[320px] rounded-lg shadow-md object-cover"
-                            alt="Class 1">
-                    </div>
-                    <div class="min-w-[320px]">
-                        <img src="/image/class1.png" class="w-[320px] h-[320px] rounded-lg shadow-md object-cover"
-                            alt="Class 2">
-                    </div>
-                    <div class="min-w-[320px]">
-                        <img src="/image/class1.png" class="w-[320px] h-[320px] rounded-lg shadow-md object-cover"
-                            alt="Class 3">
-                    </div>
-                    <div class="min-w-[320px]">
-                        <img src="/image/class1.png" class="w-[320px] h-[320px] rounded-lg shadow-md object-cover"
-                            alt="Class 4">
-                    </div>
-                    <div class="min-w-[320px]">
-                        <img src="/image/class1.png" class="w-[320px] h-[320px] rounded-lg shadow-md object-cover"
-                            alt="Class 5">
-                    </div>
+                    @foreach($classes as $class)
+                        <div class="min-w-[320px]">
+                            <img src="{{ asset($class->class_image) }}" alt="{{ $class->class_code }}"
+                                class="mx-auto mb-2 md:mb-4 rounded-lg w-full h-auto object-cover">
+                        </div>
+                    @endforeach
 
                 </div>
             </div>
@@ -674,7 +725,6 @@
             appearOnScroll.observe(fader);
         });
     </script>
-
     <!-- Slide Animation -->
     <script>
         const slider = document.getElementById("slider");

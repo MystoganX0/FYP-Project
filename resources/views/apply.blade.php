@@ -68,11 +68,11 @@
 <body class="font-poppins bg-gray-100 text-white">
     @include('header')
 
-    <div class="px-4 md:px-8 lg:px-12 xl:px-48 py-8 flex items-center justify-between">
+    <div class="px-4 md:px-8 lg:px-12 xl:px-48 py-4 md:py-8 flex items-center justify-between gap-2">
         <a href="{{ url()->previous() }}" class="text-blue-900 hover:text-blue-900 flex items-center">
             <div
-                class="inline-flex items-center justify-center w-12 h-12 bg-white border-2 border-blue-900 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-blue-900"
+                class="inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-blue-900 rounded-full flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 md:w-6 md:h-6 text-blue-900"
                     stroke="currentColor" stroke-width="2" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
@@ -80,38 +80,52 @@
                 </svg>
             </div>
         </a>
-        <div class="flex-1 flex justify-center">
-            <div class="flex items-center space-x-3 border-2 border-blue-900 rounded-xl bg-blue-100 px-6 py-3">
-                <h2 class="text-xl font-bold text-blue-900">APPLICATION FORM</h2>
+        <div class="flex-1 flex justify-center min-w-0">
+            <div
+                class="flex items-center space-x-2 md:space-x-3 border-2 border-blue-900 rounded-xl bg-blue-100 px-4 py-2 md:px-6 md:py-3 truncate max-w-full">
+                <h2 class="text-sm sm:text-lg md:text-xl font-bold text-blue-900 truncate">APPLICATION FORM</h2>
             </div>
         </div>
-        <div class="w-12"></div>
+        <div class="w-10 md:w-12 flex-shrink-0"></div>
     </div>
 
     <section class="w-full flex flex-col lg:flex-row gap-4 md:gap-8 py-4 md:py-6 px-4 md:px-8 lg:px-12 xl:px-48 mb-10">
         <div id="formSection" class="w-full min-w-0 bg-white rounded-3xl p-8 text-black hover:shadow-2xl">
 
-            <form id="registrationForm" class="space-y-5 text-base px-2 md:px-6 lg:px-8">
-                <div class="relative flex flex-col md:flex-row items-center justify-center py-3 px-4">
+            <form id="registrationForm" action="{{ route('apply.store') }}" method="POST" enctype="multipart/form-data"
+                class="space-y-5 text-base px-2 md:px-6 lg:px-8">
+                @csrf
+                <div class="relative flex flex-col md:flex-row items-center justify-center py-3 px-4 gap-2 md:gap-0">
                     <div class="md:absolute md:left-4">
-                        <img src="/image/icon/logo.png" alt="logo" class="h-16 w-auto mb-2 md:mb-0">
+                        <img src="/image/icon/logo.png" alt="logo" class="h-14 md:h-16 w-auto">
                     </div>
                     <div class="flex flex-col items-center text-center w-full">
-                        <span class="text-xl font-semibold">MOLEK DRIVING ACADEMY SDN BHD</span>
-                        <span class="text-2xl font-bold">PERMOHONAN PENDAFTARAN LESEN MEMANDU</span>
+                        <span class="text-xs sm:text-base md:text-xl font-semibold text-gray-800 tracking-wide">MOLEK
+                            DRIVING ACADEMY SDN BHD</span>
+                        <span class="text-sm sm:text-lg md:text-2xl font-bold text-gray-900 mt-1 md:mt-0">PERMOHONAN
+                            PENDAFTARAN LESEN MEMANDU</span>
                     </div>
                 </div>
 
                 <div class="flex justify-center">
-                    <div class="border border-blue-900 rounded-lg px-10 py-1 bg-blue-100 text-blue-900 text-center">
-                        You need to verify the information first before you can proceed
+                    <div
+                        class="flex items-center gap-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-4 rounded-r shadow-sm max-w-2xl w-full">
+                        <svg class="w-6 h-6 flex-shrink-0 text-yellow-500" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="font-medium text-sm md:text-base">
+                            Note: You need to verify the information first before you can proceed with the application.
+                        </p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- IC Number -->
                     <div class="relative">
-                        <label for="icNumber" class="block mb-2 text-base font-medium text-gray-800">IC Number</label>
+                        <label for="icNumber" class="block mb-1.5 text-base font-semibold text-gray-700 uppercase">IC
+                            Number</label>
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -120,17 +134,17 @@
                                         d="M4.5 3.75a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V6.75a3 3 0 0 0-3-3h-15Zm4.125 3a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Zm-3.873 8.703a4.126 4.126 0 0 1 7.746 0 .75.75 0 0 1-.351.92 7.47 7.47 0 0 1-3.522.877 7.47 7.47 0 0 1-3.522-.877.75.75 0 0 1-.351-.92ZM15 8.25a.75.75 0 0 0 0 1.5h3.75a.75.75 0 0 0 0-1.5H15ZM14.25 12a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H15a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5h3.75a.75.75 0 0 0 0-1.5H15Z"
                                         clip-rule="evenodd" />
                                 </svg>
-
                             </span>
-                            <input id="icNumber" type="text"
-                                class="w-full rounded-xl pl-14 p-3 bg-white border-2 border-gray-200 focus:border-4 focus:border-blue-900 focus:outline-none">
+                            <input id="icNumber" name="ic" type="text" placeholder="e.g. 990101011234"
+                                class="w-full rounded-lg pl-14 p-3 bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all shadow-sm text-gray-900 placeholder-gray-400 font-medium text-base">
                         </div>
-                        <p id="icError" class="text-red-500 text-base mt-1 hidden">IC must be numeric, 12 digits.</p>
+                        <p id="icError" class="text-red-500 text-xs mt-1 hidden">IC must be numeric, 12 digits.</p>
                     </div>
 
                     <!-- Age -->
                     <div class="relative">
-                        <label for="age" class="block mb-2 text-base font-medium text-gray-800">Age</label>
+                        <label for="age"
+                            class="block mb-1.5 text-base font-semibold text-gray-700 uppercase">Age</label>
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                                 <svg class="size-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -140,11 +154,11 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </span>
-                            <input id="age" type="text" readonly
-                                class="w-full rounded-xl pl-14 p-3 bg-gray-100 border-2 border-gray-200 cursor-not-allowed focus:outline-none">
+                            <input id="age" name="age" type="text" readonly
+                                class="w-full rounded-lg pl-14 p-3 bg-gray-50 border border-gray-300 text-gray-500 cursor-not-allowed focus:outline-none shadow-sm text-base font-medium">
                         </div>
-                        <p id="ageError" class="text-red-500 text-base mt-1 hidden">
-                            You eligable to take the license class.
+                        <p id="ageError" class="text-green-600 text-xs mt-1 hidden font-medium">
+                            You eligible to take the license class.
                         </p>
                     </div>
                 </div>
@@ -152,7 +166,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Full Name -->
                     <div class="relative">
-                        <label for="fullName" class="block mb-2 text-base font-medium text-gray-800">Full Name</label>
+                        <label for="fullName" class="block mb-1.5 text-base font-semibold text-gray-700 uppercase">Full
+                            Name</label>
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -162,31 +177,32 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </span>
-                            <input id="fullName" type="text"
-                                class="w-full rounded-xl pl-14 p-3 bg-white border-2 border-gray-200 focus:border-4 focus:border-blue-900 focus:outline-none">
+                            <input id="fullName" name="full_name" type="text" placeholder="As per IC"
+                                class="w-full rounded-lg pl-14 p-3 bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all shadow-sm text-gray-900 placeholder-gray-400 font-medium text-base">
                         </div>
-                        <p id="nameError" class="text-red-500 text-base mt-1 hidden">
+                        <p id="nameError" class="text-red-500 text-xs mt-1 hidden">
                             Name should contain only letters and spaces.
                         </p>
                     </div>
 
                     <!-- Phone -->
                     <div class="relative">
-                        <label for="phoneNumber" class="block mb-2 text-base font-medium text-gray-800">Phone
+                        <label for="phoneNumber"
+                            class="block mb-1.5 text-base font-semibold text-gray-700 uppercase">Phone
                             Number</label>
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="size-6">
+                                    class="size-7">
                                     <path fill-rule="evenodd"
                                         d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
                                         clip-rule="evenodd" />
                                 </svg>
                             </span>
-                            <input id="phoneNumber" type="text"
-                                class="w-full rounded-xl pl-14 p-3 bg-white border-2 border-gray-200 focus:border-4 focus:border-blue-900 focus:outline-none">
+                            <input id="phoneNumber" name="phone" type="text" placeholder="0123456789"
+                                class="w-full rounded-lg pl-14 p-3 bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all shadow-sm text-gray-900 placeholder-gray-400 font-medium text-base">
                         </div>
-                        <p id="phoneError" class="text-red-500 text-base mt-1 hidden">
+                        <p id="phoneError" class="text-red-500 text-xs mt-1 hidden">
                             Phone number must be 9–11 digits.
                         </p>
                     </div>
@@ -194,7 +210,8 @@
 
                 <!-- Address -->
                 <div class="relative">
-                    <label for="address" class="block mb-2 text-base font-medium text-gray-800">Address</label>
+                    <label for="address"
+                        class="block mb-1.5 text-base font-semibold text-gray-700 uppercase">Address</label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -206,10 +223,10 @@
                             </svg>
                         </span>
 
-                        <input id="address" type="text"
-                            class="w-full rounded-xl pl-14 p-3 bg-white border-2 border-gray-200 focus:border-4 focus:border-blue-900 focus:outline-none">
+                        <input id="address" name="address" type="text" placeholder="Full residential address"
+                            class="w-full rounded-lg pl-14 p-3 bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all shadow-sm text-gray-900 placeholder-gray-400 font-medium text-base">
                     </div>
-                    <p id="addressError" class="text-red-500 text-base mt-1 hidden">
+                    <p id="addressError" class="text-red-500 text-xs mt-1 hidden">
                         Address must be at least 5 characters.
                     </p>
                 </div>
@@ -217,17 +234,18 @@
                 <!-- License Class -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="relative">
-                        <label for="licenseClass" class="block mb-2 text-base font-medium text-gray-800">License
+                        <label for="licenseClass"
+                            class="block mb-1.5 text-base font-semibold text-gray-700 uppercase">License
                             Class</label>
                         <div class="relative">
-                            <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="size-7" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="2">
                                     <path d="M4 7h16M4 12h16M4 17h16" />
                                 </svg>
                             </span>
                             <select id="licenseClass" name="class_id"
-                                class="w-full rounded-xl p-3 pl-16 bg-white border-2 border-gray-200 focus:border-4 focus:border-blue-900 focus:outline-none appearance-none">
+                                class="w-full rounded-lg p-3 pl-14 bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none appearance-none transition-all shadow-sm text-gray-900 font-medium text-base cursor-pointer">
                                 <option value="" disabled selected>Select Class</option>
                                 @foreach ($classes as $class)
                                     <option value="{{ $class->class_id }}" data-price="{{ $class->class_price }}">
@@ -235,53 +253,117 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="h-6 w-6">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="size-5">
                                     <path fill-rule="evenodd"
-                                        d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
+                                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
                                         clip-rule="evenodd" />
                                 </svg>
                             </span>
                         </div>
                     </div>
 
-                    <!-- Package -->
-                    <div class="relative">
-                        <label for="package" class="block mb-2 text-base font-medium text-gray-800">License
-                            Package</label>
-                        <div class="relative">
-                            <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor" stroke-width="2">
-                                    <path d="M4 7h16M4 12h16M4 17h16" />
-                                </svg>
-                            </span>
-                            <select id="package" name="package_id"
-                                class="w-full rounded-xl p-3 pl-16 bg-white border-2 border-gray-200 focus:border-4 focus:border-blue-900 focus:outline-none appearance-none">
-                                <option value="" disabled selected>Select Package</option>
-                                @foreach ($packages as $pkg)
-                                    <option value="{{ $pkg->package_id }}" data-type="{{ strtolower($pkg->package_type) }}"
-                                        data-price="{{ $pkg->package_price }}">
-                                        {{ $pkg->package_type }} - RM {{ $pkg->package_price }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="h-6 w-6">
-                                    <path fill-rule="evenodd"
-                                        d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </span>
+                    <!-- Package Selection (Cards) -->
+                    <div class="col-span-1 md:col-span-2">
+                        <span class="block mb-3 text-base font-semibold text-gray-700 uppercase">Select Package</span>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            @foreach ($packages as $pkg)
+                                @php
+                                    $type = strtolower($pkg->package_type);
+                                    // Default styles
+                                    $borderColor = 'border-gray-200';
+                                    $checkedBorder = 'peer-checked:border-blue-900';
+                                    $checkedBg = 'peer-checked:bg-blue-50';
+                                    $iconColor = 'text-gray-400';
+                                    $checkedIconColor = 'peer-checked:text-blue-900';
+                                    $hoverBorder = 'hover:border-blue-400';
+
+                                    // Validation/Theme logic based on type name (Basic, Premium, Preferred etc)
+                                    if (Str::contains($type, 'premium')) {
+                                        $checkedBorder = 'peer-checked:border-yellow-500';
+                                        $checkedBg = 'peer-checked:bg-yellow-50';
+                                        $checkedIconColor = 'peer-checked:text-yellow-600';
+                                        $hoverBorder = 'hover:border-yellow-400';
+                                    } elseif (Str::contains($type, 'basic')) {
+                                        $checkedBorder = 'peer-checked:border-green-500';
+                                        $checkedBg = 'peer-checked:bg-green-50';
+                                        $checkedIconColor = 'peer-checked:text-green-600';
+                                        $hoverBorder = 'hover:border-green-400';
+                                    } elseif (Str::contains($type, 'preferred') || Str::contains($type, 'preffered')) {
+                                        $checkedBorder = 'peer-checked:border-purple-500';
+                                        $checkedBg = 'peer-checked:bg-purple-50';
+                                        $checkedIconColor = 'peer-checked:text-purple-600';
+                                        $hoverBorder = 'hover:border-purple-400';
+                                    }
+                                @endphp
+                                <label class="cursor-pointer group relative">
+                                    <input type="radio" name="package_id" value="{{ $pkg->package_id }}"
+                                        data-type="{{ $type }}" data-name="{{ $pkg->package_type }}"
+                                        data-price="{{ $pkg->package_price }}" class="peer sr-only">
+
+                                    <div
+                                        class="p-5 rounded-2xl border {{ $borderColor }} bg-white transition-all duration-300 shadow-sm 
+                                                                                        {{ $hoverBorder }} hover:shadow-md 
+                                                                                        {{ $checkedBorder }} {{ $checkedBg }} peer-checked:shadow-lg h-full flex flex-col justify-between">
+
+                                        <div class="flex justify-between items-start mb-3">
+                                            <div class="p-2 rounded-lg bg-gray-50 group-hover:bg-white transition-colors">
+                                                <!-- Dynamic Icon based on type -->
+                                                @if (Str::contains($type, 'premium'))
+                                                    <svg class="w-6 h-6 {{ $iconColor }} group-hover:text-yellow-500 {{ $checkedIconColor }} transition-colors"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                                                    </svg>
+                                                @elseif (Str::contains($type, 'basic'))
+                                                    <svg class="w-6 h-6 {{ $iconColor }} group-hover:text-green-500 {{ $checkedIconColor }} transition-colors"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                @else
+                                                    <svg class="w-6 h-6 {{ $iconColor }} group-hover:text-purple-500 {{ $checkedIconColor }} transition-colors"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                @endif
+                                            </div>
+                                            <div class="opacity-0 peer-checked:opacity-100 transition-opacity">
+                                                <div
+                                                    class="w-6 h-6 rounded-full bg-current text-current flex items-center justify-center {{ $checkedIconColor }}">
+                                                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"
+                                                        stroke="currentColor" stroke-width="3">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <h4
+                                                class="font-bold text-gray-900 text-lg mb-1 group-hover:text-blue-900 transition-colors">
+                                                {{ $pkg->package_type }}
+                                            </h4>
+                                            <span
+                                                class="block text-2xl font-black text-gray-900 group-hover:scale-105 origin-left transition-transform">
+                                                <span
+                                                    class="text-sm font-medium text-gray-500 align-top mr-1">RM</span>{{ $pkg->package_price }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </label>
+                            @endforeach
                         </div>
+                        <!-- Hidden input to maintain compatibility if logic expects specific select/input behavior elsewhere, though radios usually standard -->
                     </div>
                 </div>
 
                 <!-- Payment Type -->
                 <div>
-                    <span class="block mb-2 font-medium text-base text-black">Payment Type</span>
+                    <span class="block mb-1.5 text-base font-semibold text-gray-700 uppercase">Payment Type</span>
 
                     <ul class="grid w-full gap-4 md:grid-cols-2 items-stretch">
 
@@ -398,22 +480,26 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Upload MyKad -->
                     <div class="w-full">
-                        <label for="myKad" class="block mb-2 text-base font-medium text-gray-800">Upload MyKad</label>
-                        <input id="myKad" type="file" aria-describedby="myKad_help" class="block w-full text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-xl cursor-pointer 
-                            focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent accent-blue-900 shadow-sm
-                            file:mr-4 file:py-3 file:px-6
-                            file:rounded-l-xl file:border-0
+                        <label for="myKad" class="block mb-1.5 text-base font-semibold text-gray-700 uppercase">Upload
+                            MyKad</label>
+                        <input id="myKad" name="ic_file" type="file" aria-describedby="myKad_help"
+                            class="block w-full text-base text-gray-500
+                            file:mr-4 file:py-3 file:px-4
+                            file:rounded-l-lg file:border-0
                             file:text-sm file:font-semibold
-                            file:bg-blue-900 file:text-white
-                            hover:file:bg-blue-800 transition-all duration-200">
+                            file:bg-blue-50 file:text-blue-700
+                            hover:file:bg-blue-100
+                            bg-white border border-gray-300 rounded-lg cursor-pointer 
+                            focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 shadow-sm transition-all duration-200">
                         <p id="myKad_help" class="mt-1 text-sm text-gray-600">
                             JPG, PNG, or PDF (MAX. 2MB)
                         </p>
-                        <p id="myKadICNotification" class="text-red-500 text-base mt-1 hidden">
+                        <p id="myKadICNotification" class="text-red-500 text-xs mt-1 hidden font-medium">
                             IC number not found in the uploaded file. Please check your document.
                         </p>
 
-                        <p id="myKadError" class="text-red-500 text-base mt-1 hidden">Please upload your MyKad.</p>
+                        <p id="myKadError" class="text-red-500 text-xs mt-1 hidden font-medium">Please upload your
+                            MyKad.</p>
                     </div>
                 </div>
 
@@ -470,35 +556,76 @@
 
         <div id="verifySection"
             class="w-0 flex-[0] min-w-0 space-y-4 opacity-0 overflow-hidden transition-all duration-[3000ms] ease-in-out z-0">
-            <!-- Summary Total -->
+            <!-- Invoice Summary Card -->
             <div
-                class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-blue-950 to-blue-900 text-white rounded-2xl shadow-2xl p-6 md:p-8 transform transition-all hover:scale-[1.01] duration-300">
-                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white opacity-5 rounded-full blur-2xl">
+                class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-blue-950 to-blue-900 text-white rounded-2xl shadow-2xl p-6 md:p-8 transform transition-all hover:scale-[1.01] duration-300 border border-blue-800/50">
+                <!-- Decorative Elements -->
+                <div class="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-blue-400 opacity-10 rounded-full blur-3xl">
                 </div>
-                <div class="absolute bottom-0 left-0 -mb-4 -ml-4 w-32 h-32 bg-blue-500 opacity-5 rounded-full blur-3xl">
+                <div
+                    class="absolute bottom-0 left-0 -mb-8 -ml-8 w-40 h-40 bg-purple-500 opacity-10 rounded-full blur-3xl">
                 </div>
 
-                <div class="relative flex flex-col items-center justify-center gap-6 text-center">
-                    <div class="flex flex-col items-center gap-3">
+                <div class="relative flex flex-col gap-6">
+                    <!-- Header -->
+                    <div class="flex items-center gap-3 border-b border-blue-700/50 pb-4">
+                        <div class="p-2 bg-blue-800/30 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-300" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
                         <div>
-                            <h3 id="summaryLabel" class="text-xl font-semibold text-gray-100 uppercase tracking-wider">
-                                Payment type</h3>
-                            <p class="text-sm text-blue-200/80 font-light">Total Amount Need to Pay</p>
+                            <h3 class="text-lg font-bold uppercase tracking-wider text-gray-100">Application Summary
+                            </h3>
+                            <p class="text-xs text-blue-300/80 font-light">Invoice Breakdown</p>
                         </div>
                     </div>
 
-                    <div class="flex items-start justify-center">
-                        <span class="text-2xl font-medium text-blue-300 mt-2 mr-1">RM</span>
-                        <span id="summaryAmount"
-                            class="text-6xl font-extrabold tracking-tighter text-white drop-shadow-lg">0</span>
+                    <!-- Line Items -->
+                    <div class="space-y-3 text-sm">
+                        <!-- Class Item -->
+                        <div class="flex justify-between items-start">
+                            <div class="flex flex-col">
+                                <span class="text-gray-300">License Class</span>
+                                <span id="summaryClassName" class="font-medium text-white text-base">Select a
+                                    class</span>
+                            </div>
+                            <span id="summaryClassPrice" class="font-semibold text-blue-200">RM 0.00</span>
+                        </div>
+
+                        <!-- Package Item -->
+                        <div class="flex justify-between items-start">
+                            <div class="flex flex-col">
+                                <span class="text-gray-300">Package Type</span>
+                                <span id="summaryPackageName" class="font-medium text-white text-base">Select a
+                                    package</span>
+                            </div>
+                            <span id="summaryPackagePrice" class="font-semibold text-blue-200">RM 0.00</span>
+                        </div>
                     </div>
-                    <div class="ext-sm font-medium text-blue-200/60 uppercase tracking-widest">
-                        Pay with PayPal
+
+                    <!-- Divider -->
+                    <div class="border-t-2 border-dashed border-blue-800/50"></div>
+
+                    <!-- Total -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-2 md:gap-0">
+                        <div class="flex flex-col">
+                            <span class="text-blue-300 text-sm uppercase tracking-wider font-semibold">Total
+                                Payable</span>
+                            <span class="text-xs text-blue-400 font-light" id="paymentTypeLabel">Full Payment</span>
+                        </div>
+                        <div class="flex items-baseline">
+                            <span class="text-base md:text-lg font-medium text-blue-300 mr-1">RM</span>
+                            <span id="summaryAmount"
+                                class="text-xl md:text-xl font-extrabold text-white tracking-tight drop-shadow-md">0.00</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <button id="apply" type="button" disabled
+            <button id="apply" type="submit" form="registrationForm" disabled
                 class="w-full group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-gradient-to-r from-blue-500 to-blue-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none">
                 <span id="btnText">Apply Now</span>
             </button>
@@ -525,7 +652,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const packageSelect = document.getElementById('package');
+            const packageRadios = document.querySelectorAll('input[name="package_id"]');
             const classSelect = document.getElementById('licenseClass');
             const summaryAmount = document.getElementById('summaryAmount');
             const fullPaymentAmount = document.querySelector('label[for="payment-full"] .text-blue-900.font-bold'); // Selects the RM 1599
@@ -537,17 +664,24 @@
 
             const paymentRadios = document.querySelectorAll('input[name="payment_type"]');
 
+            const summaryClassName = document.getElementById('summaryClassName');
+            const summaryClassPrice = document.getElementById('summaryClassPrice');
+            const summaryPackageName = document.getElementById('summaryPackageName');
+            const summaryPackagePrice = document.getElementById('summaryPackagePrice');
+            const paymentTypeLabel = document.getElementById('paymentTypeLabel');
+
             function calculateTotal() {
                 const classOption = classSelect.options[classSelect.selectedIndex];
-                const packageOption = packageSelect.options[packageSelect.selectedIndex];
+                const selectedPackageRadio = document.querySelector('input[name="package_id"]:checked');
 
                 // Check if options are valid (disabled 'Select Class' has no data-price)
-                if (!classOption || classOption.disabled || !packageOption || packageOption.disabled) {
+                if (!classOption || classOption.disabled || !selectedPackageRadio) {
                     return; // Don't calculate if valid options aren't selected
                 }
 
                 const classPrice = parseFloat(classOption.getAttribute('data-price')) || 0;
-                const packagePrice = parseFloat(packageOption.getAttribute('data-price')) || 0;
+                const packagePrice = parseFloat(selectedPackageRadio.getAttribute('data-price')) || 0;
+                const packageName = selectedPackageRadio.getAttribute('data-name') || 'Unknown Package';
 
                 const total = classPrice + packagePrice;
 
@@ -559,22 +693,33 @@
                 // Determine which amount to show in Summary Box
                 const selectedPaymentType = document.querySelector('input[name="payment_type"]:checked');
                 let displayAmount = 0;
+                let paymentLabelText = "Full Payment";
 
                 if (selectedPaymentType) {
                     if (selectedPaymentType.value === 'installment') {
                         displayAmount = stage1;
+                        paymentLabelText = "Installment (Stage 1)";
                     } else {
                         displayAmount = total;
+                        paymentLabelText = "Full Payment";
                     }
                 }
 
                 // Debugging Logs
                 console.log('Class:', classOption.text, 'Price:', classPrice);
-                console.log('Package:', packageOption.text, 'Price:', packagePrice);
+                console.log('Package:', packageName, 'Price:', packagePrice);
                 console.log('Total:', total);
-                console.log('Selected Payment Type:', selectedPaymentType ? selectedPaymentType.value : 'None');
 
-                // Update Summary Box
+                // Update Invoice Line Items
+                if (summaryClassName) summaryClassName.textContent = classOption.text;
+                if (summaryClassPrice) summaryClassPrice.textContent = 'RM ' + classPrice.toFixed(2);
+
+                if (summaryPackageName) summaryPackageName.textContent = packageName;
+                if (summaryPackagePrice) summaryPackagePrice.textContent = 'RM ' + packagePrice.toFixed(2);
+
+                if (paymentTypeLabel) paymentTypeLabel.textContent = paymentLabelText;
+
+                // Update Summary Box Total
                 if (summaryAmount) summaryAmount.textContent = displayAmount.toFixed(2);
 
                 // Update Full Payment Display
@@ -586,46 +731,25 @@
                 if (installmentStage1) installmentStage1.textContent = 'RM ' + stage1.toFixed(2);
                 if (installmentStage2) installmentStage2.textContent = 'RM ' + stage2.toFixed(2);
                 if (installmentStage3) installmentStage3.textContent = 'RM ' + stage3.toFixed(2);
+
+
             }
 
             // Attach Listeners
             if (classSelect) {
                 classSelect.addEventListener('change', calculateTotal);
-                console.log('Class Select Listener Attached');
             }
 
             if (paymentRadios) {
                 paymentRadios.forEach(radio => {
                     radio.addEventListener('change', calculateTotal);
                 });
-                console.log('Payment Radio Listeners Attached');
             }
 
-            if (packageSelect) {
-                packageSelect.addEventListener('change', function () {
-                    this.style.backgroundColor = '';
-                    this.style.color = '';
-
-                    const selectedOption = this.options[this.selectedIndex];
-                    const type = selectedOption.getAttribute('data-type');
-
-                    switch (type) {
-                        case 'preffered':
-                            this.style.backgroundColor = '#3f0275';
-                            this.style.color = 'white';
-                            break;
-                        case 'premium':
-                            this.style.backgroundColor = '#facc15';
-                            this.style.color = 'black';
-                            break;
-                        case 'basic':
-                            this.style.backgroundColor = '#3bce6d';
-                            this.style.color = 'black';
-                            break;
-                    }
-                    calculateTotal();
+            if (packageRadios) {
+                packageRadios.forEach(radio => {
+                    radio.addEventListener('change', calculateTotal);
                 });
-                console.log('Package Select Listener Attached');
             }
         });
     </script>
@@ -646,7 +770,7 @@
             const verifySection = document.getElementById("verifySection");
             const applyBtn = document.getElementById("apply");
             const licenseClass = document.getElementById("licenseClass");
-            const licensePackage = document.getElementById("package");
+
             const ageInput = document.getElementById("age");
 
             ic.addEventListener("input", () => {
@@ -875,7 +999,8 @@
                         text: "Please select a License Class."
                     });
 
-                if (licensePackage.value !== "")
+                const selectedPackage = document.querySelector('input[name="package_id"]:checked');
+                if (selectedPackage)
                     messages.push({
                         type: "success",
                         text: "License Package selected."
@@ -990,7 +1115,7 @@
             const packageSelect = document.getElementById('package');
 
             // Legacy code removed to allow calculateTotal() to work correctly
-            
+
             // REDIRECT TO PAYMENT PAGE
             applyBtn.addEventListener("click", () => {
                 window.location.href = "{{ route('payment') }}";

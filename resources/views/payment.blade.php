@@ -137,15 +137,21 @@
                     <div class="space-y-4">
                         <div class="flex justify-between items-center pb-4 border-b border-gray-100">
                             <span class="text-gray-600">License Class</span>
-                            <span class="font-semibold text-gray-900">Class D (Car)</span>
+                            <span class="font-semibold text-gray-900">{{ $payment->application->class->class_code }} -
+                                {{ $payment->application->class->class_name }}</span>
                         </div>
                         <div class="flex justify-between items-center pb-4 border-b border-gray-100">
                             <span class="text-gray-600">Package</span>
-                            <span class="font-semibold text-gray-900">Preferred++</span>
+                            <span
+                                class="font-semibold text-gray-900">{{ $payment->application->package->package_type }}</span>
                         </div>
                         <div class="flex justify-between items-center pt-2">
                             <span class="text-lg font-bold text-gray-900">Total</span>
-                            <span class="text-2xl font-extrabold text-blue-600">RM 3,899.00</span>
+                            @php
+                                $amountToPay = $payment->details->where('status', 'pending')->first()?->amount ?? $payment->total_amount;
+                            @endphp
+                            <span class="text-2xl font-extrabold text-blue-600">RM
+                                {{ number_format($amountToPay, 2) }}</span>
                         </div>
                     </div>
                 </div>
@@ -211,7 +217,9 @@
                     </div>
                 </div>
 
-                <form>
+                <form id="paymentForm">
+                    @csrf
+                    <input type="hidden" name="payment_id" value="{{ $payment->payment_id }}">
                     <div class="space-y-5">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
@@ -240,7 +248,7 @@
 
                         <button type="submit"
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-600/30 transform hover:-translate-y-0.5 transition-all duration-200 mt-4 flex items-center justify-center gap-2 group">
-                            <span>Pay RM 3,899.00</span>
+                            <span>Pay RM {{ number_format($amountToPay, 2) }}</span>
                             <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -275,9 +283,9 @@
                         class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-600/30 transition-all duration-200">
                         Download Receipt
                     </a>
-                    <a href="/"
+                    <a href="{{ route('history') }}"
                         class="block w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl transition-all duration-200">
-                        Back to Home
+                        View History
                     </a>
                 </div>
             </div>
@@ -294,8 +302,6 @@
         paymentForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            // Validate inputs here if needed
-
             // Show loading state
             const originalBtnContent = payButton.innerHTML;
             payButton.innerHTML = `<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -304,20 +310,40 @@
             </svg> Processing...`;
             payButton.disabled = true;
 
-            // Simulate API call delay
-            setTimeout(() => {
-                // Hide modal loading, show success
-                payButton.innerHTML = originalBtnContent;
-                payButton.disabled = false;
+            const formData = new FormData(paymentForm);
 
-                successModal.classList.remove('hidden');
-                // Trigger reflow
-                void successModal.offsetWidth;
+            // Fetch request
+            fetch("{{ route('payment.process') }}", {
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                    'Accept': 'application/json',
+                },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    payButton.innerHTML = originalBtnContent;
+                    payButton.disabled = false;
 
-                successModal.classList.remove('opacity-0');
-                modalContent.classList.remove('scale-90');
-                modalContent.classList.add('scale-100');
-            }, 2000);
+                    if (data.success) {
+                        successModal.classList.remove('hidden');
+                        // Trigger reflow
+                        void successModal.offsetWidth;
+
+                        successModal.classList.remove('opacity-0');
+                        modalContent.classList.remove('scale-90');
+                        modalContent.classList.add('scale-100');
+                    } else {
+                        alert(data.message || 'Payment failed. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    payButton.innerHTML = originalBtnContent;
+                    payButton.disabled = false;
+                    alert('An error occurred. Please try again.');
+                });
         });
 
         // Simple input formatting script

@@ -12,8 +12,7 @@ class PaymentDetail extends Model
         'payment_id',
         'stage',
         'amount',
-        'status',
-        'payment_date'
+        'status'
     ];
 
     public function payment()

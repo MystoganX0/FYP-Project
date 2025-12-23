@@ -71,7 +71,7 @@
                                 class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
                                 CLASSES
                             </a>
-                            <a href="{{ route('practical') }}"
+                            <a href="{{ route('computer') }}"
                                 class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
                                 ABOUT US
                             </a>
@@ -93,11 +93,11 @@
                                 class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
                                 CLASSES
                             </a>
-                            <a href="{{ route('practical') }}"
+                            <a href="{{ route('computer') }}"
                                 class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
                                 BOOKING
                             </a>
-                            <a href="#"
+                            <a href="{{ route('history') }}"
                                 class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
                                 HISTORY
                             </a>
@@ -175,7 +175,7 @@
                 @guest
                     <a href="{{ route('class') }}"
                         class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Classes</a>
-                    <a href="{{ route('practical') }}"
+                    <a href="{{ route('computer') }}"
                         class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">About
                         Us</a>
                     <a href="#"
@@ -208,7 +208,7 @@
 
                     <a href="{{ route('class') }}"
                         class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Classes</a>
-                    <a href="{{ route('practical') }}"
+                    <a href="{{ route('computer') }}"
                         class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Booking</a>
                     <a href="#"
                         class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">About
@@ -238,12 +238,14 @@
 
     <!-- Login Modal -->
     <div id="loginModal"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden overflow-y-auto">
-        <div class="bg-white p-8 rounded-3xl shadow-lg w-[90%] sm:w-11/12 md:max-w-xl relative mx-4 my-8">
+        class="fixed inset-0 z-[60] flex items-center justify-center bg-gray-900/60 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div id="loginModalContent"
+            class="relative bg-white rounded-3xl sm:rounded-[2rem] shadow-2xl w-[90%] sm:w-full max-w-xl p-6 sm:p-8 text-center transform scale-90 transition-transform duration-300 overflow-hidden">
             <!-- Close Button -->
-            <button id="closeLoginModal" class="absolute top-6 right-8 text-gray-500 hover:text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
+            <button id="closeLoginModal"
+                class="absolute top-4 right-4 sm:top-6 sm:right-8 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
             </button>
@@ -268,7 +270,7 @@
                     @csrf
 
                     <!-- Email -->
-                    <div class="group">
+                    <div class="group text-left">
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 ml-1">Email
                             Address</label>
                         <div class="relative">
@@ -286,7 +288,7 @@
                     </div>
 
                     <!-- Password -->
-                    <div class="group">
+                    <div class="group text-left">
                         <label
                             class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 ml-1">Password</label>
                         <div class="relative">
@@ -344,34 +346,52 @@
         const openBtnMobile = document.getElementById("openLoginModalMobile");
         const closeBtn = document.getElementById("closeLoginModal");
         const loginModal = document.getElementById("loginModal");
-        const modalContent = loginModal.querySelector("div"); // inner content box
+        const loginModalContent = document.getElementById("loginModalContent"); // inner content box
+
+        function openLoginModal() {
+            loginModal.classList.remove("hidden");
+            loginModal.classList.add("flex");
+            // Trigger reflow
+            void loginModal.offsetWidth;
+
+            loginModal.classList.remove("opacity-0");
+            loginModalContent.classList.remove("scale-90");
+            loginModalContent.classList.add("scale-100");
+        }
+
+        function closeLoginModal() {
+            loginModal.classList.add("opacity-0");
+            loginModalContent.classList.remove("scale-100");
+            loginModalContent.classList.add("scale-90");
+
+            setTimeout(() => {
+                loginModal.classList.add("hidden");
+                loginModal.classList.remove("flex");
+            }, 300);
+        }
 
         if (openBtn) {
             openBtn.addEventListener("click", () => {
-                loginModal.classList.remove("hidden");
-                loginModal.classList.add("flex");
+                openLoginModal();
             });
         }
 
         if (openBtnMobile) {
             openBtnMobile.addEventListener("click", () => {
-                loginModal.classList.remove("hidden");
-                loginModal.classList.add("flex");
+                openLoginModal();
             });
         }
 
         if (closeBtn) {
             closeBtn.addEventListener("click", () => {
-                loginModal.classList.add("hidden");
-                loginModal.classList.remove("flex");
+                closeLoginModal();
             });
         }
 
         // Close modal when clicking outside the content
         loginModal.addEventListener("click", (e) => {
-            if (!modalContent.contains(e.target)) {
-                loginModal.classList.add("hidden");
-                loginModal.classList.remove("flex");
+            if (!loginModalContent.contains(e.target)) {
+                closeLoginModal();
             }
         });
 
@@ -409,8 +429,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             @if ($errors->any())
                 const loginModal = document.getElementById("loginModal");
-                loginModal.classList.remove("hidden");
-                loginModal.classList.add("flex");
+                openLoginModal();
             @endif
         });
     </script>
