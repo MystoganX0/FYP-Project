@@ -13,9 +13,9 @@ class ClassController extends Controller
         return view('class', compact('classes'));
     }
 
-    public function show($id)
+    public function show($class_code)
     {
-        $class = Classes::findOrFail($id);
+        $class = Classes::where('class_code', $class_code)->firstOrFail();
         $packages = \App\Models\Package::all();
         return view('package', compact('class', 'packages'));
     }

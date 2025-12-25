@@ -5,8 +5,9 @@ use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
+
     public function view()
     {
-        return view('schedule'); 
+        return view('schedule');
     }
 }

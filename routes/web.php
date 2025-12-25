@@ -17,9 +17,10 @@ Route::get('/', function () {
     return view('home', compact('classes'));
 })->name('home');
 Route::get('/classes', [ClassController::class, 'index'])->name('class');
-Route::get('/classes/{id}', [ClassController::class, 'show'])->name('package');
+Route::get('/classes/{class_code}', [ClassController::class, 'show'])->name('package');
 Route::get('/apply', [ApplyController::class, 'create'])->name('apply');
 Route::post('/apply', [ApplyController::class, 'store'])->name('apply.store');
+Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
 
 //user booking routes
 Route::get('/computer-slot', [BookingController::class, 'computer'])->name('computer');

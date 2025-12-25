@@ -16,7 +16,13 @@ class ApplyController extends Controller
     {
         $classes = Classes::all();
         $packages = Package::all();
-        return view('apply', compact('classes', 'packages'));
+
+        $hasActiveApplication = false;
+        if (Auth::check()) {
+            $hasActiveApplication = Application::where('student_id', Auth::id())->exists();
+        }
+
+        return view('apply', compact('classes', 'packages', 'hasActiveApplication'));
     }
 
     public function store(Request $request)

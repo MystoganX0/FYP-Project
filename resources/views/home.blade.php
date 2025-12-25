@@ -54,32 +54,6 @@
             class="absolute top-0 left-0 w-full h-full flex transition-transform duration-[3000ms] ease-in-out z-0">
             <!-- Slide 1 -->
             <div class="slide w-full flex-shrink-0 relative">
-                <div class="absolute inset-0 bg-cover bg-center"
-                    style="background-image: url('/image/home/banner.gif');"></div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="max-w-4xl px-6 text-center text-white z-10">
-                        <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight neon-white drop-shadow-2xl mb-6">
-                            Get Your License With Us <br class="hidden md:block" />
-                        </h1>
-                        <p class="mt-5 text-lg">
-                            <span class="font-semibold">One Stop Center</span> to get your license.
-                        </p>
-                        <div class="mt-10 flex flex-wrap justify-center gap-5">
-                            <a href="#classes"
-                                class="px-10 py-4 bg-red-600 text-white font-bold rounded-full hover:bg-red-700 shadow-lg shadow-red-600/40 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm">
-                                Learn More
-                            </a>
-                            <a href="{{ route('apply') }}"
-                                class="px-10 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-red-900 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm shadow-lg">
-                                Apply
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 2: Official License Website Style -->
-            <div class="slide w-full flex-shrink-0 relative">
                 <!-- Background & Gradient Overlay -->
                 <div class="absolute inset-0 bg-cover bg-center"
                     style="background-image: url('/image/home/banner3.jpg');">
@@ -123,7 +97,7 @@
 
                         <!-- CTAs -->
                         <div class="flex flex-wrap gap-5">
-                            <a href="#learn-more"
+                            <a href="#features"
                                 class="group relative px-10 py-4 bg-red-600 text-white font-bold uppercase tracking-wider overflow-hidden rounded-full hover:bg-red-700 transition-all shadow-lg hover:shadow-red-600/50 hover:-translate-y-1">
                                 <span class="relative z-10 flex items-center gap-2">
                                     Learn More
@@ -137,6 +111,39 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Slide 2: Official License Website Style -->
+             <div class="slide w-full flex-shrink-0 relative">
+                <div class="absolute inset-0 bg-cover bg-center"
+                    style="background-image: url('/image/home/banner.gif');"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="max-w-5xl px-6 text-center text-white z-10">
+                        <div class="flex justify-center items-center gap-4 mb-6">
+                            <span class="h-[3px] w-16 bg-red-600 shadow-[0_0_15px_rgba(220,38,38,0.8)]"></span>
+                            <span
+                                class="text-white font-bold tracking-[0.2em] uppercase text-xs md:text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                                ONE STEP CLOSER
+                            </span>
+                            <span class="h-[3px] w-16 bg-red-600 shadow-[0_0_15px_rgba(220,38,38,0.8)]"></span>
+                        </div>
+                        <h1 class="text-5xl md:text-6xl font-black leading-tight tracking-tight neon-white drop-shadow-2xl mb-6 uppercase">
+                            " Get Your License With Us " <br class="hidden md:block" />
+                        </h1>
+                        
+                        <div class="mt-10 flex flex-wrap justify-center gap-5">
+                            <!-- <a href="#classes"
+                                class="px-10 py-4 bg-red-600 text-white font-bold rounded-full hover:bg-red-700 shadow-lg shadow-red-600/40 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm">
+                                Learn More
+                            </a> -->
+                            <a href="{{ route('apply') }}"
+                                class="px-10 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-red-900 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm shadow-lg">
+                                Apply Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
 
         <!-- Carousel indicators -->
@@ -225,32 +232,6 @@
                         <p class="text-gray-600 text-lg leading-relaxed text-justify mb-8">
                             With strategic campuses in Kampung Melayu Subang and Bandar Bukit Puchong 2, we are dedicated to providing top-tier professional training for both local and international candidates.
                         </p>
-
-                        <ul class="space-y-3">
-                            <li class="flex items-center text-gray-700 font-medium">
-                                <div
-                                    class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-4">
-                                    <svg class="w-6 h-6 text-[#0E1F8E]" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <span>RTD (JPJ) Recognized Material</span>
-                            </li>
-                            <li class="flex items-center text-gray-700 font-medium">
-                                <div
-                                    class="flex-shrink-0 w-10 h-10 rounded-full bg-red-50 flex items-center justify-center mr-4">
-                                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <span>Certified Professional Instructors</span>
-                            </li>
-                        </ul>
                     </div>
                     <div class="order-1 md:order-2 relative group">
                         <!-- Clean Design Image 1 -->
@@ -306,19 +287,6 @@
                             ensure every student is fully prepared to navigate any road challenge with skill and
                             assurance.
                         </p>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div
-                                class="bg-gray-50 p-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-                                <div class="font-bold text-gray-900 text-lg mb-1">Modern Fleet</div>
-                                <div class="text-sm text-gray-500">Reliable vehicles for best experience</div>
-                            </div>
-                            <div
-                                class="bg-gray-50 p-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-                                <div class="font-bold text-gray-900 text-lg mb-1">Safety First</div>
-                                <div class="text-sm text-gray-500">Top-tier safety standards</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

@@ -93,13 +93,19 @@
                                 class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
                                 CLASSES
                             </a>
-                            <a href="{{ route('computer') }}"
+                            <a href="{{ route($bookingRoute) }}"
                                 class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
                                 BOOKING
                             </a>
                             <a href="{{ route('history') }}"
-                                class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
+                                class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors relative">
                                 HISTORY
+                                @if(isset($historyNotificationCount) && $historyNotificationCount > 0)
+                                    <span
+                                        class="absolute -top-2 -right-3 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-gray-900 leading-none">
+                                        {{ $historyNotificationCount }}
+                                    </span>
+                                @endif
                             </a>
                         </div>
 
@@ -208,13 +214,18 @@
 
                     <a href="{{ route('class') }}"
                         class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Classes</a>
-                    <a href="{{ route('computer') }}"
+                    <a href="{{ route($bookingRoute) }}"
                         class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Booking</a>
-                    <a href="#"
-                        class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">About
-                        Us</a>
-                    <a href="#"
-                        class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors">Contact</a>
+                    <a href="{{ route('history') }}"
+                        class="block text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-3 rounded-lg transition-colors flex justify-between items-center">
+                        History
+                        @if(isset($historyNotificationCount) && $historyNotificationCount > 0)
+                            <span
+                                class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full border border-gray-900 leading-none">
+                                {{ $historyNotificationCount }}
+                            </span>
+                        @endif
+                    </a>
 
                     <div class="pt-4 mt-4 border-t border-gray-800">
                         <form method="POST" action="{{ route('logout') }}">

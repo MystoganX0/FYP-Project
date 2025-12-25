@@ -20,7 +20,36 @@ class ProfileController extends Controller
             ->latest()
             ->first();
 
-        return view('history', compact('application'));
+        $computerTest = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
+            $query->where('student_id', $studentId);
+        })
+            ->where('phase_type', 'Computer Test')
+            ->where('booking_status', 'Done')
+            ->with('schedule')
+            ->latest()
+            ->first();
+
+        // 3. Fetch Completed Practical Training Bookings
+        $practicalBookings = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
+            $query->where('student_id', $studentId);
+        })
+            ->where('phase_type', 'Practical Slot')
+            ->where('booking_status', 'Done')
+            ->with('schedule')
+            ->orderBy('created_at', 'asc') // Order by completion sequence
+            ->get();
+
+        // 4. Fetch Passed JPJ Test
+        $jpjTest = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
+            $query->where('student_id', $studentId);
+        })
+            ->where('phase_type', 'Jpj Test')
+            ->where('booking_status', 'Done')
+            ->with('schedule')
+            ->latest()
+            ->first();
+
+        return view('history', compact('application', 'computerTest', 'practicalBookings', 'jpjTest'));
     }
 
     /**

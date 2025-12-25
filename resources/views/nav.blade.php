@@ -42,7 +42,7 @@
                     <!-- Label -->
                     <span
                         class="font-medium text-base font-bold text-gray-400 uppercase tracking-widest mr-4 hidden md:block">
-                        License Checkpoints
+                        License Phases
                     </span>
 
                     <!-- Computer Test -->
@@ -106,15 +106,56 @@
                 </div>
             </nav>
 
-            <button
-                class="open-payment-modal flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95">
-                <span>Next Payment</span>
-                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M1 5h12m0 0L9 1m4 4L9 9" />
-                </svg>
-            </button>
+            @php
+                $studentId = \Illuminate\Support\Facades\Auth::id();
+
+                // Get Application to check payment type
+                $application = \App\Models\Application::where('student_id', $studentId)
+                    ->with('payment')
+                    ->latest()
+                    ->first();
+
+                $paymentType = $application && $application->payment ? $application->payment->payment_type : null;
+
+                // Check if user has passed Computer Test
+                $isComputerTestDone = \App\Models\Booking::whereHas('application', function ($q) use ($studentId) {
+                    $q->where('student_id', $studentId);
+                })
+                    ->where('phase_type', 'Computer Test')
+                    ->where('booking_status', 'Done')
+                    ->exists();
+            @endphp
+
+            @if($isComputerTestDone)
+                @if($paymentType === 'full')
+                    <a href="{{ route('practical') }}"
+                        class="flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95 font-semibold">
+                        <span>Next Phase</span>
+                        <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                @else
+                    <button
+                        class="open-payment-modal font-semibold flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95">
+                        <span>Next Phase</span>
+                        <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                @endif
+            @else
+                <button disabled title="Complete Computer Test to unlock"
+                    class="flex items-center justify-center gap-2 px-5 py-3 bg-gray-300 text-gray-500 cursor-not-allowed text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm transition-all opacity-70">
+                    <span>Next Phase</span>
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </button>
+            @endif
 
         </div>
     </div>
@@ -200,7 +241,9 @@
             openBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    openPaymentModal();
+                    if (!btn.disabled) {
+                        openPaymentModal();
+                    }
                 });
             });
 

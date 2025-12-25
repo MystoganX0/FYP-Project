@@ -31,7 +31,90 @@
 
 <body class="font-poppins bg-[#002D81]">
     @include('header')
-    @include('nav')
+    <!-- SUB NAV (tabs) -->
+    <div class="bg-white border-b border-gray-200">
+        <div
+            class="px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 w-full md:w-auto">
+                <div class="flex flex-wrap justify-center md:justify-start items-center gap-2 p-1">
+
+                    <!-- Label -->
+                    <span
+                        class="font-medium text-base font-bold text-gray-400 uppercase tracking-widest mr-4 hidden md:block">
+                        License Phases
+                    </span>
+
+                    <!-- Computer Test -->
+                    <a href="{{ route('computer') }}"
+                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('computer') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
+                        <div
+                            class="mr-2.5 {{ request()->routeIs('computer') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        Computer Test
+                    </a>
+                </div>
+            </nav>
+
+            @php
+                $studentId = \Illuminate\Support\Facades\Auth::id();
+
+                // Get Application to check payment type
+                $application = \App\Models\Application::where('student_id', $studentId)
+                    ->with('payment')
+                    ->latest()
+                    ->first();
+
+                $paymentType = $application && $application->payment ? $application->payment->payment_type : null;
+
+                // Check if user has passed Computer Test
+                $isComputerTestDone = \App\Models\Booking::whereHas('application', function ($q) use ($studentId) {
+                    $q->where('student_id', $studentId);
+                })
+                    ->where('phase_type', 'Computer Test')
+                    ->where('booking_status', 'Done')
+                    ->exists();
+            @endphp
+
+            @if($isComputerTestDone)
+                @if($paymentType === 'full')
+                    <a href="{{ route('practical') }}"
+                        class="flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95 font-semibold">
+                        <span>Next Phase</span>
+                        <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                @else
+                    <button
+                        class="open-payment-modal font-semibold flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95">
+                        <span>Next Phase</span>
+                        <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                @endif
+            @else
+                <button disabled title="Complete Computer Test to unlock"
+                    class="flex items-center justify-center gap-2 px-5 py-3 bg-gray-300 text-gray-500 cursor-not-allowed text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm transition-all opacity-70">
+                    <span>Next Phase</span>
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </button>
+            @endif
+
+        </div>
+    </div>
 
     <div class="px-4 sm:px-6 lg:px-32 py-6 md:py-14">
 
@@ -41,7 +124,7 @@
                     <div class="flex justify-between mb-3">
                         <div class="flex justify-center items-center mb-3 w-full">
                             <h5 class="text-2xl font-bold leading-none text-white text-center pe-2">
-                                Your Training Slot
+                                Your Computer Test Slot
                             </h5>
                         </div>
 
@@ -70,7 +153,7 @@
                     <div class="flex flex-col" id="devices">
                         <div class="flex justify-center items-center text-center">
                             <span class="text-xl font-semibold text-gray-300">Total Slot:</span>
-                            <span class="text-xl font-bold text-blue-500 ms-2">5</span>
+                            <span class="text-xl font-bold text-blue-500 ms-2">1</span>
                         </div>
                     </div>
 
@@ -128,83 +211,49 @@
 
                         <!-- History List -->
                         <div id="historyList" class="space-y-4">
+                            @forelse($bookings as $booking)
+                                @php
+                                    $statusColor = match ($booking->booking_status) {
+                                        'Done' => 'green',
+                                        'Pending' => 'gray',
+                                        'Failed' => 'red',
+                                        default => 'blue'
+                                    };
+                                    $iconColor = match ($booking->booking_status) {
+                                        'Done' => 'text-green-600 bg-green-50 group-hover:bg-green-600',
+                                        'Pending' => 'text-gray-600 bg-gray-50 group-hover:bg-gray-600',
+                                        'Failed' => 'text-red-600 bg-red-50 group-hover:bg-red-600',
+                                        default => 'text-blue-600 bg-blue-50 group-hover:bg-blue-600'
+                                    };
+                                @endphp
 
-                            <!-- ITEM: Done -->
-                            <div class="history-item group flex justify-between items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
-                                data-status="Done">
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
+                                <div class="history-item group flex justify-between items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
+                                    data-status="{{ $booking->booking_status }}">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="h-10 w-10 rounded-full flex items-center justify-center {{ $iconColor }} group-hover:text-white transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-sm text-gray-400 font-medium leading-none">Date</span>
+                                            <span class="text-base font-bold text-gray-800 leading-tight mt-1">
+                                                {{ \Carbon\Carbon::parse($booking->schedule->date)->format('d/m/Y') }}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="flex flex-col">
-                                        <span class="text-sm text-gray-400 font-medium leading-none">Date</span>
-                                        <span
-                                            class="text-base font-bold text-gray-800 leading-tight mt-1">4/9/2025</span>
-                                    </div>
+
+                                    <span
+                                        class="inline-flex items-center gap-2 px-4 py-3 border-2 border-{{ $statusColor }}-{{ $booking->booking_status == 'Done' ? '800' : ($booking->booking_status == 'Failed' ? '700' : '700') }} rounded-full text-xs font-bold uppercase tracking-wider bg-{{ $statusColor }}-{{ $booking->booking_status == 'Done' ? '400' : ($booking->booking_status == 'Failed' ? '500' : '300') }} text-{{ $statusColor }}-{{ $booking->booking_status == 'Done' ? '800' : ($booking->booking_status == 'Failed' ? 'white' : '700') }}">
+                                        {{ $booking->booking_status }}
+                                    </span>
                                 </div>
-
-                                <span
-                                    class="inline-flex items-center gap-2 px-4 py-3 border-2 border-green-800 rounded-full text-xs font-bold uppercase tracking-wider bg-green-400 text-green-800">
-                                    Done
-                                </span>
-
-                            </div>
-
-                            <!-- ITEM: Pending -->
-                            <div class="history-item group flex justify-between items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
-                                data-status="Pending">
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                    </div>
-                                    <div class="flex flex-col">
-                                        <span class="text-sm text-gray-400 font-medium leading-none">Date</span>
-                                        <span
-                                            class="text-base font-bold text-gray-800 leading-tight mt-1">5/9/2025</span>
-                                    </div>
-                                </div>
-
-                                <span
-                                    class="px-4 py-3 border-2 border-gray-700 rounded-full text-xs font-bold uppercase tracking-wider bg-gray-300 text-gray-700">
-                                    Pending
-                                </span>
-                            </div>
-
-                            <!-- ITEM: Failed -->
-                            <div class="history-item group flex justify-between items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
-                                data-status="Failed">
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                    </div>
-                                    <div class="flex flex-col">
-                                        <span class="text-sm text-gray-400 font-medium leading-none">Date</span>
-                                        <span
-                                            class="text-base font-bold text-gray-800 leading-tight mt-1">6/9/2025</span>
-                                    </div>
-                                </div>
-
-                                <span
-                                    class="px-4 py-3 border-2 border-red-700 rounded-full text-xs font-bold uppercase tracking-wider bg-red-500 text-white">
-                                    Failed
-                                </span>
-                            </div>
-
+                            @empty
+                                <div class="text-center text-gray-400 py-4">No history found.</div>
+                            @endforelse
                         </div>
                     </div>
 
@@ -214,7 +263,7 @@
             <main class="lg:col-span-8 flex flex-col">
                 <h1
                     class="text-xl sm:text-2xl font-bold mb-6 text-white text-center flex justify-center items-center gap-3">
-                    <span>Practical Driving Slot</span>
+                    <span>Computer Slot</span>
                     <span class="w-0.5 h-6 bg-white/30 hidden sm:block"></span>
                     <span class="hidden sm:block">
                         {{ optional($application->class)->class_code ?? 'N/A' }} -
@@ -224,14 +273,46 @@
                         - {{ optional($application->class)->class_code ?? 'N/A' }}
                     </span>
                 </h1>
+
+                @if(session('success'))
+                    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                        role="alert">
+                        <span class="font-medium">Success!</span> {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                        role="alert">
+                        <span class="font-medium">Error!</span> {{ session('error') }}
+                    </div>
+                @endif
+
+                @if(isset($hasActiveBooking) && $hasActiveBooking)
+                    <div class="flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                        role="alert">
+                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                            <span class="font-medium">Note:</span> You currently have an active booking. You cannot book
+                            another slot until your previous test is completed or failed.
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Schedule Table -->
                 <div class="overflow-x-auto bg-white shadow-md rounded-3xl flex-1">
-                    <!-- Search Bar -->
+
                     <div
-                        class="bg-black px-6 sm:px-8 lg:px-12 py-5 flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-gray-100">
+                        class="bg-gray-900 px-6 sm:px-8 lg:px-12 py-5 flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-gray-100">
 
                         <!-- Automate Button -->
                         <button
-                            class="w-full sm:w-auto text-gray-900 bg-yellow-400 font-semibold focus:outline-none hover:bg-yellow-300 focus:ring-4 focus:ring-yellow-300 font-medium rounded-xl text-sm px-6 py-3 mr-auto sm:mr-0 transition-all shadow-sm flex items-center gap-2">
+                            class="w-full sm:w-auto text-gray-900 bg-gradient-to-r from-yellow-400 to-amber-500 font-semibold focus:outline-none hover:from-yellow-300 hover:to-amber-400 focus:ring-4 focus:ring-yellow-300 font-medium rounded-2xl text-sm px-6 py-3 mr-auto sm:mr-0 transition-all shadow-lg shadow-yellow-400/30 hover:-translate-y-0.5 flex items-center gap-2">
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <rect width="18" height="10" x="3" y="11" rx="2" />
@@ -254,9 +335,11 @@
                                 </div>
                                 <select id="month"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-[#0BCE83] focus:border-[#0BCE83] block w-full pl-10 pr-10 p-2.5 outline-none transition-all appearance-none cursor-pointer hover:bg-white hover:border-gray-400">
-                                    <option>September 2025</option>
-                                    <option>October 2025</option>
-                                    <option>November 2025</option>
+                                    <option value="all">All Months</option>
+                                    @foreach($availableMonths as $month)
+                                        <option value="{{ \Carbon\Carbon::parse($month)->format('n-Y') }}">{{ $month }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                     <svg class="w-4 h-4 text-gray-500" aria-hidden="true" fill="none"
@@ -267,7 +350,7 @@
                                 </div>
                             </div>
                             <button id="searchBtn"
-                                class="w-full sm:w-auto text-white bg-[#0E1F8E] hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-xl text-sm px-7 py-3 text-center inline-flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg transform active:scale-95">
+                                class="w-full sm:w-auto text-white bg-gradient-to-r from-[#0E1F8E] to-blue-800 hover:from-indigo-900 hover:to-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-7 py-3 text-center inline-flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-900/30 hover:shadow-blue-900/50 hover:-translate-y-0.5 active:scale-95">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -286,99 +369,234 @@
                             <div class="md:col-span-2 text-left md:px-4"></div>
                             <div class="md:col-span-1 md:px-4">Date</div>
                             <div class="md:col-span-1 md:px-4">Start Time</div>
-                            <div class="md:col-span-1 md:px-4">End Time</div>
+                            <div class="md:col-span-1 md:px-4">Time Out</div>
                             <div class="md:col-span-1 md:px-4">Duration</div>
                             <div class="md:col-span-1 md:px-4">Slots</div>
                         </div>
 
-                        <div
-                            class="bg-white border rounded-lg shadow p-4 px-4 md:grid md:grid-cols-7 md:items-center md:text-center hover:border-blue-900 hover:border-[3px]">
-                            <!-- Academy -->
-                            <div class="flex items-center gap-4 md:px-4 text-left md:col-span-2">
-                                <img src="/image/icon/logo.png" class="h-14" alt="MDA Logo" />
-                                <div>
-                                    <p class="font-bold text-gray-800 text-base">Molek Driving Academy</p>
-                                    <p class="text-sm text-gray-500">Practical Slot</p>
+                        @forelse($schedules as $schedule)
+                            <div
+                                class="bg-white border rounded-lg shadow p-4 px-4 md:grid md:grid-cols-7 md:items-center md:text-center hover:border-blue-900 hover:border-[3px]">
+                                <!-- Academy -->
+                                <div class="flex items-center gap-4 md:px-4 text-left md:col-span-2">
+                                    <img src="/image/icon/logo.png" class="h-14" alt="MDA Logo" />
+                                    <div>
+                                        <p class="font-bold text-gray-800 text-base">Molek Driving Academy</p>
+                                        <p class="text-sm text-gray-500">Computer Test</p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- Date -->
-                            <div class="md:px-4 md:py-2 md:col-span-1">
-                                <p class="font-semibold text-base">5/9/2025</p>
-                                <p class="text-sm text-gray-500">Sunday</p>
-                            </div>
+                                <!-- Date -->
+                                <div class="md:px-4 md:py-2 md:col-span-1">
+                                    <p class="font-semibold text-base"
+                                        data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('n-Y') }}">
+                                        {{ \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') }}
+                                    </p>
+                                    <p class="text-sm text-gray-500">{{ $schedule->day }}</p>
+                                </div>
 
-                            <!-- Time Start -->
-                            <div class="md:px-4 md:py-2 md:col-span-1">
-                                <p class="font-semibold text-base">09:00</p>
-                                <p class="text-sm text-gray-500">Start</p>
-                            </div>
+                                <!-- Time Start -->
+                                <div class="md:px-4 md:py-2 md:col-span-1">
+                                    <p class="font-semibold text-base">
+                                        {{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}
+                                    </p>
+                                    <p class="text-sm text-gray-500">Start</p>
+                                </div>
 
-                            <!-- Time End -->
-                            <div class="md:px-4 md:py-2 md:col-span-1">
-                                <p class="font-semibold text-base">16:00</p>
-                                <p class="text-sm text-gray-500">End</p>
-                            </div>
+                                <!-- Time End -->
+                                <div class="md:px-4 md:py-2 md:col-span-1">
+                                    <p class="font-semibold text-base">
+                                        {{ \Carbon\Carbon::parse($schedule->time_out)->format('H:i') }}
+                                    </p>
+                                    <p class="text-sm text-gray-500">End</p>
+                                </div>
 
-                            <!-- Duration -->
-                            <div class="md:px-4 md:py-2 md:col-span-1">
-                                <p class="font-semibold text-base">2h</p>
-                                <p class="text-sm text-gray-500">Each Slot</p>
-                            </div>
+                                <!-- Duration -->
+                                <div class="md:px-4 md:py-2 md:col-span-1">
+                                    <p class="font-semibold text-base">{{ $schedule->duration }} hours</p>
+                                    <p class="text-sm text-gray-500">Each Slot</p>
+                                </div>
 
-                            <!-- Slots -->
-                            <div class="md:px-4 md:py-2 md:col-span-1 text-right">
-                                <p class="text-black text-sm font-semibold">Slots</p>
-                                <p class="text-gray-600 text-sm mb-2">10 Slots Available</p>
-                                <button
-                                    class="open-confirm-modal bg-[#0E1F8E] hover:bg-indigo-700 text-white px-9 py-2 rounded-xl font-medium hover:bg-[#0abc76] transition">
-                                    BOOK
-                                </button>
-                            </div>
+                                <!-- Slots -->
+                                <div class="md:px-4 md:py-2 md:col-span-1 text-right">
+                                    <p class="text-gray-600 text-sm mb-2">
+                                        <span class="font-semibold">{{ $schedule->slot }} Slots</span> Available
+                                    </p>
+                                    @if(in_array($schedule->schedule_id, $bookedScheduleIds))
+                                        <button disabled
+                                            class="inline-flex items-center justify-center px-5 py-2.5 rounded-full font-bold text-sm text-red-500 bg-red-50 border border-red-100 cursor-not-allowed opacity-80 shadow-sm transition-all">
+                                            <span class="mr-2">Booked</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    @elseif(isset($hasActiveBooking) && $hasActiveBooking)
+                                        <button disabled
+                                            class="inline-flex items-center justify-center px-5 py-2.5 rounded-full font-bold text-sm text-gray-500 bg-gray-100 border border-gray-200 cursor-not-allowed opacity-80 shadow-sm transition-all">
+                                            <span class="mr-2">Book</span>
+                                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                            </svg>
+                                        </button>
+                                    @else
+                                        <button data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') }}"
+                                            data-day="{{ $schedule->day }}"
+                                            data-start="{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}"
+                                            data-end="{{ \Carbon\Carbon::parse($schedule->time_out)->format('H:i') }}"
+                                            data-type="{{ $schedule->schedule_type }}" data-id="{{ $schedule->schedule_id }}"
+                                            class="open-confirm-modal group relative inline-flex items-center justify-center px-6 py-2.5 overflow-hidden font-bold text-white transition-all duration-300 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full hover:from-blue-500 hover:to-indigo-500 focus:outline-none ring-offset-2 focus:ring-4 ring-blue-300 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transform">
+                                            <span class="mr-2">Book</span>
+                                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                            </svg>
+                                        </button>
+                                    @endif
+                                </div>
 
+                            </div>
+                        @empty
+                            <div class="text-center text-gray-500 py-8">
+                                No schedules available specifically for 'Computer Test'.
+                            </div>
+                        @endforelse
+
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div
+                        class="pagination-controls px-6 sm:px-8 lg:px-12 pb-6 flex flex-col sm:flex-row justify-end items-center gap-4 hidden">
+                        <span class="page-indicator text-sm font-medium text-gray-400 font-poppins order-2 sm:order-1">
+                            Page <span class="current-page-user font-bold text-black">1</span> of <span
+                                class="total-pages-user font-bold text-black">1</span>
+                        </span>
+
+                        <div class="flex gap-2 order-1 sm:order-2">
+                            <button
+                                class="prev-btn flex items-center justify-center px-4 py-2 text-sm font-bold text-black bg-blue-100 border border-gray-700 rounded-xl hover:bg-blue-200 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7" />
+                                </svg>
+                                Previous
+                            </button>
+                            <button
+                                class="next-btn flex items-center justify-center px-4 py-2 text-sm font-bold text-black bg-blue-100 border border-gray-700 rounded-xl hover:bg-blue-200 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                                Next
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
                         </div>
-
                     </div>
 
                     <!--  Mobile Cards -->
                     <div id="mobileCards" class="sm:hidden space-y-4 p-4">
-                        <div
-                            class="bg-white p-4 rounded-lg shadow border flex flex-col gap-4 hover:border-blue-900 hover:border-[3px] transition">
+                        @forelse($schedules as $schedule)
+                            <div
+                                class="bg-white p-4 rounded-lg shadow border flex flex-col gap-4 hover:border-blue-900 hover:border-[3px] transition">
 
 
-                            <div class="flex items-center gap-4">
-                                <img src="/image/icon/logo.png" class="h-14 w-14" alt="MDA Logo" />
-                                <div>
-                                    <p class="font-bold text-gray-800">Molek Driving Academy</p>
-                                    <p class="text-sm text-gray-500">Practical Slot</p>
+                                <div class="flex items-center gap-4">
+                                    <img src="/image/icon/logo.png" class="h-14 w-14" alt="MDA Logo" />
+                                    <div>
+                                        <p class="font-bold text-gray-800">Molek Driving Academy</p>
+                                        <p class="text-sm text-gray-500">Computer Test</p>
+                                    </div>
+                                </div>
+
+
+                                <div class="flex flex-col gap-2 text-sm">
+                                    <div>
+                                        <p class="text-gray-500 font-medium">Date</p>
+                                        <p class="font-semibold"
+                                            data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('n-Y') }}">
+                                            {{ \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') }}
+                                            ({{ $schedule->day }})
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p class="text-gray-500 font-medium">Time</p>
+                                        <p class="font-semibold">
+                                            {{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }} –
+                                            {{ \Carbon\Carbon::parse($schedule->time_out)->format('H:i') }}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p class="text-gray-500 font-medium">Duration</p>
+                                        <p class="font-semibold">{{ $schedule->duration }} Hours (each slot)</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-500 text-sm">Slots: {{ $schedule->slot }}</span>
+                                    @if(in_array($schedule->schedule_id, $bookedScheduleIds))
+                                        <button disabled
+                                            class="inline-flex items-center justify-center px-4 py-2 rounded-full font-bold text-xs text-red-500 bg-red-50 border border-red-100 cursor-not-allowed uppercase tracking-wider">
+                                            Booked
+                                        </button>
+                                    @elseif(isset($hasActiveBooking) && $hasActiveBooking)
+                                        <button disabled
+                                            class="inline-flex items-center justify-center px-4 py-2 rounded-full font-bold text-xs text-gray-500 bg-gray-100 border border-gray-200 cursor-not-allowed uppercase tracking-wider">
+                                            <span class="mr-2">Book</span>
+                                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                            </svg>
+                                        </button>
+                                    @else
+                                        <button data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') }}"
+                                            data-day="{{ $schedule->day }}"
+                                            data-start="{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}"
+                                            data-end="{{ \Carbon\Carbon::parse($schedule->time_out)->format('H:i') }}"
+                                            data-type="{{ $schedule->schedule_type }}" data-id="{{ $schedule->schedule_id }}"
+                                            class="open-confirm-modal inline-flex items-center justify-center px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold rounded-full shadow-md shadow-blue-500/30 hover:shadow-blue-500/50 transition-all hover:-translate-y-0.5">
+                                            Book
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
-
-
-                            <div class="flex flex-col gap-2 text-sm">
-                                <div>
-                                    <p class="text-gray-500 font-medium">Date</p>
-                                    <p class="font-semibold">5/9/2025 (Sunday)</p>
-                                </div>
-
-                                <div>
-                                    <p class="text-gray-500 font-medium">Time</p>
-                                    <p class="font-semibold">09:00 – 16:00</p>
-                                </div>
-
-                                <div>
-                                    <p class="text-gray-500 font-medium">Duration</p>
-                                    <p class="font-semibold">2 Hours (each slot)</p>
-                                </div>
+                        @empty
+                            <div class="text-center text-gray-500 py-4">
+                                No schedules available.
                             </div>
+                        @endforelse
+                    </div>
 
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-500 text-sm">Slots: 10</span>
-                                <button
-                                    class="open-confirm-modal px-4 py-2 bg-[#0E1F8E] text-white rounded-xl font-medium hover:bg-[#0abc76] transition">
-                                    BOOK
-                                </button>
-                            </div>
+                    <!-- Pagination Controls (Mobile) -->
+                    <div
+                        class="pagination-controls mt-4 flex flex-col sm:flex-row justify-center items-center gap-4 hidden sm:hidden">
+                        <span class="page-indicator text-sm font-medium text-gray-400 font-poppins order-2 sm:order-1">
+                            Page <span class="current-page-user font-bold text-black">1</span> of <span
+                                class="total-pages-user font-bold text-black">1</span>
+                        </span>
+
+                        <div class="flex gap-2 order-1 sm:order-2">
+                            <button
+                                class="prev-btn flex items-center justify-center px-4 py-2 text-sm font-bold text-gray-300 bg-gray-800 border border-gray-700 rounded-xl hover:bg-gray-700 hover:text-white focus:z-10 focus:ring-2 focus:ring-blue-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7" />
+                                </svg>
+                                Previous
+                            </button>
+                            <button
+                                class="next-btn flex items-center justify-center px-4 py-2 text-sm font-bold text-gray-300 bg-gray-800 border border-gray-700 rounded-xl hover:bg-gray-700 hover:text-white focus:z-10 focus:ring-2 focus:ring-blue-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                                Next
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
 
@@ -427,10 +645,27 @@
                 <h3 class="text-2xl font-bold text-gray-900 mb-2">
                     Confirm Booking
                 </h3>
-                <p class="text-sm text-gray-500 mb-8 leading-relaxed px-4">
-                    Are you sure you want to book this slot? <br>
-                    <span class="text-xs text-gray-400 mt-1 block">You can cancel later by contacting support.</span>
+                <p class="text-sm text-gray-500 mb-6 leading-relaxed px-4">
+                    Are you sure you want to book this slot?
                 </p>
+
+                <!-- Slot Detail Card -->
+                <div class="bg-gray-50 rounded-xl p-4 mb-8 text-sm border border-gray-100">
+                    <div class="grid grid-cols-2 gap-y-3 text-left">
+                        <div class="text-gray-500">Phase</div>
+                        <div class="font-semibold text-gray-900 text-right" id="modalType">-</div>
+
+                        <div class="text-gray-500">Date</div>
+                        <div class="font-semibold text-gray-900 text-right" id="modalDate">-</div>
+
+                        <div class="text-gray-500">Day</div>
+                        <div class="font-semibold text-gray-900 text-right" id="modalDay">-</div>
+
+                        <div class="text-gray-500">Time</div>
+                        <div class="font-semibold text-gray-900 text-right" id="modalTime">-</div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -438,22 +673,165 @@
                     class="close-confirm-modal w-full px-6 py-3.5 rounded-xl bg-gray-50 text-gray-700 font-bold hover:bg-gray-100 hover:text-gray-900 transition-all border border-gray-200">
                     Cancel
                 </button>
-                <button
-                    class="close-confirm-modal w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 text-white font-bold hover:from-blue-800 hover:to-blue-700 shadow-lg shadow-blue-600/30 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all">
-                    Confirm
-                </button>
+                <form method="POST" action="{{ route('booking.store') }}" class="w-full">
+                    @csrf
+                    <input type="hidden" name="schedule_id" id="modalScheduleId">
+                    <input type="hidden" name="phase_type" id="modalPhaseTypeVal">
+                    <button type="submit"
+                        class="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 text-white font-bold hover:from-blue-800 hover:to-blue-700 shadow-lg shadow-blue-600/30 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all">
+                        Confirm
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" tabindex="-1" aria-hidden="true"
+        class="fixed inset-0 z-[60] flex items-center justify-center bg-gray-900/60 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div id="paymentModalContent"
+            class="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-8 text-center transform scale-90 transition-transform duration-300 overflow-hidden">
+
+            <!-- Decorative circle -->
+            <div
+                class="absolute -top-10 -right-10 w-32 h-32 bg-blue-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
+            </div>
+            <div
+                class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
+            </div>
+
+            <!-- Close Button -->
+            <button type="button"
+                class="close-payment-modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 bg-transparent hover:bg-gray-50 rounded-full p-2 transition-colors z-10">
+                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+
+            <!-- Modal Content -->
+            <div class="relative z-10 mt-2">
+                <div
+                    class="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-6 shadow-inner ring-4 ring-white">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                        </path>
+                    </svg>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Payment Required</h3>
+
+                @if(isset($stage2Payment) && $stage2Payment)
+                    <div class="bg-gray-100 rounded-2xl p-6 mb-8 border border-gray-100">
+                        <span class="block text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">Stage 2
+                            Installment</span>
+                        <div class="flex items-start justify-center text-gray-900 mb-1">
+                            <span class="text-xl font-bold mr-1 mt-1">RM</span>
+                            <span
+                                class="text-5xl font-extrabold tracking-tight">{{ number_format($stage2Payment->amount, 2) }}</span>
+                        </div>
+                        <p class="text-gray-400 text-sm">Please clear this amount to proceed.</p>
+                    </div>
+                @else
+                    <p class="text-gray-500 mb-8 leading-relaxed text-sm">
+                        Complete your payment to unlock the next stage of your driving course. Secure and instant.
+                    </p>
+                @endif
+
+                <a href="{{ route('payment', ['payment_id' => $application->payment->payment_id]) }}"
+                    class="block w-full text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:ring-4 focus:ring-blue-300 font-bold rounded-2xl text-base px-5 py-4 text-center shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300">
+                    Proceed to Payment
+                </a>
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const paymentModal = document.getElementById('paymentModal');
+            const paymentModalContent = document.getElementById('paymentModalContent');
+            const openBtns = document.querySelectorAll('.open-payment-modal');
+            const closeBtns = document.querySelectorAll('.close-payment-modal');
+
+            function openPaymentModal() {
+                paymentModal.classList.remove('hidden');
+                // Trigger reflow
+                void paymentModal.offsetWidth;
+
+                paymentModal.classList.remove('opacity-0');
+                paymentModalContent.classList.remove('scale-90');
+                paymentModalContent.classList.add('scale-100');
+            }
+
+            function closePaymentModal() {
+                paymentModal.classList.add('opacity-0');
+                paymentModalContent.classList.remove('scale-100');
+                paymentModalContent.classList.add('scale-90');
+
+                setTimeout(() => {
+                    paymentModal.classList.add('hidden');
+                }, 300);
+            }
+
+            openBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (!btn.disabled) {
+                        openPaymentModal();
+                    }
+                });
+            });
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closePaymentModal();
+                });
+            });
+
+            paymentModal.addEventListener('click', (e) => {
+                if (e.target === paymentModal) {
+                    closePaymentModal();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
             const confirmModal = document.getElementById('confirmModal');
             const modalContent = document.getElementById('modalContent');
             const openBtns = document.querySelectorAll('.open-confirm-modal');
-            const closeBtns = document.querySelectorAll('[data-modal-hide="confirmModal"]'); // Also support data-modal-hide for close buttons inside/outside
+            const closeBtns = document.querySelectorAll('[data-modal-hide="confirmModal"]');
 
-            function openModal() {
+            // Elements to populate
+            const modalType = document.getElementById('modalType');
+            const modalDate = document.getElementById('modalDate');
+            const modalDay = document.getElementById('modalDay');
+            const modalTime = document.getElementById('modalTime');
+
+
+            function openModal(btn) {
+                // Get data from button
+                const type = btn.getAttribute('data-type');
+                const date = btn.getAttribute('data-date');
+                const day = btn.getAttribute('data-day');
+                const start = btn.getAttribute('data-start');
+                const end = btn.getAttribute('data-end');
+
+                // Set data to modal
+                modalType.textContent = type;
+                modalDate.textContent = date;
+                modalDay.textContent = day;
+                modalTime.textContent = `${start} - ${end}`;
+
+                // Set hidden inputs
+                document.getElementById('modalScheduleId').value = btn.getAttribute('data-id');
+                document.getElementById('modalPhaseTypeVal').value = type;
+
+
                 confirmModal.classList.remove('hidden');
                 // Trigger reflow
                 void confirmModal.offsetWidth;
@@ -473,11 +851,10 @@
                 }, 300);
             }
 
-            // Attach open listeners
             openBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    openModal();
+                    openModal(btn);
                 });
             });
 
@@ -499,85 +876,212 @@
         });
     </script>
 
-    <!-- Filter Dates -->
+    <!-- Filter Dates & Pagination Logic -->
     <script>
-        document.getElementById("searchBtn").addEventListener("click", function () {
-            const selectedMonth = document.getElementById("month").value.split(" ")[0]; // e.g., "September"
-            const monthMap = {
-                "January": "1",
-                "February": "2",
-                "March": "3",
-                "April": "4",
-                "May": "5",
-                "June": "6",
-                "July": "7",
-                "August": "8",
-                "September": "9",
-                "October": "10",
-                "November": "11",
-                "December": "12"
-            };
+        document.addEventListener("DOMContentLoaded", function () {
 
-            const targetMonth = monthMap[selectedMonth];
+            // --- State ---
+            let currentPage = 1;
+            const itemsPerPage = 4;
 
-            // --- Desktop Filtering ---
-            let desktopCount = 0;
-            const desktopRows = document.querySelectorAll("#desktopTable > div.bg-white");
-            desktopRows.forEach(row => {
-                const dateText = row.querySelector("div.md\\:col-span-1 p.font-semibold").innerText;
-                const monthInRow = dateText.split("/")[1];
-                if (monthInRow === targetMonth) {
-                    row.style.display = "";
-                    desktopCount++;
-                } else {
-                    row.style.display = "none";
-                }
+            // Get Elements
+            const monthSelect = document.getElementById("month");
+            const searchBtn = document.getElementById("searchBtn");
+
+            // Sections
+            const desktopTableBody = document.getElementById("desktopTable");
+            const mobileCardsContainer = document.getElementById("mobileCards");
+
+            // Row Selectors (GET ALL rows, excluding header)
+            const allDesktopRows = Array.from(document.querySelectorAll("#desktopTable > div.hover\\:border-blue-900"));
+            const allMobileRows = Array.from(document.querySelectorAll("#mobileCards > div.bg-white"));
+
+            // Pagination Elements (Class-based selection)
+            // Use querySelectorAll to get collections of elements
+            const paginationControlsList = document.querySelectorAll('.pagination-controls');
+            const prevBtns = document.querySelectorAll('.prev-btn');
+            const nextBtns = document.querySelectorAll('.next-btn');
+            const currentPageSpans = document.querySelectorAll('.current-page-user');
+            const totalPagesSpans = document.querySelectorAll('.total-pages-user');
+
+            // Mark all items as matching filter by default
+            allDesktopRows.forEach(row => row.dataset.filterMatch = "true");
+            allMobileRows.forEach(row => row.dataset.filterMatch = "true");
+            updatePagination();
+
+            // --- Search Button Listener ---
+            searchBtn.addEventListener("click", function () {
+                const selectedValue = monthSelect.value; // e.g., "9-2025" or "all"
+                applyFilter(selectedValue);
             });
 
-            // Show "No records" message if none
-            let desktopMsg = document.getElementById("desktopNoRecord");
-            if (!desktopMsg) {
-                desktopMsg = document.createElement("div");
-                desktopMsg.id = "desktopNoRecord";
-                desktopMsg.className = "text-center text-gray-500 py-4";
-                desktopMsg.innerText = "There are no records.";
-                document.getElementById("desktopTable").appendChild(desktopMsg);
+
+            // --- Core Functions ---
+
+            function applyFilter(selectedValue) {
+                // Desktop
+                allDesktopRows.forEach(row => {
+                    const dateElem = row.querySelector("div.md\\:col-span-1 p.font-semibold");
+                    if (!dateElem) return;
+                    const rowDate = dateElem.getAttribute('data-date');
+
+                    if (selectedValue === "all" || rowDate === selectedValue) {
+                        row.dataset.filterMatch = "true";
+                    } else {
+                        row.dataset.filterMatch = "false";
+                    }
+                });
+
+                // Mobile
+                allMobileRows.forEach(row => {
+                    const dateElem = row.querySelector("div:nth-child(2) div p.font-semibold");
+                    if (!dateElem) return;
+                    const rowDate = dateElem.getAttribute('data-date');
+
+                    if (selectedValue === "all" || rowDate === selectedValue) {
+                        row.dataset.filterMatch = "true";
+                    } else {
+                        row.dataset.filterMatch = "false";
+                    }
+                });
+
+                // Reset to page 1
+                currentPage = 1;
+                updatePagination();
             }
-            desktopMsg.style.display = (desktopCount === 0) ? "" : "none";
 
+            function updatePagination() {
+                // Determine active set depending on visibility (Desktop vs Mobile)
+                // For simplicity, we calculate both, but display logic handles the 'hidden' View.
+                // Or better: We can assume the counts match if the DOM is synced.
 
-            // --- Mobile Filtering ---
-            let mobileCount = 0;
-            const mobileCards = document.querySelectorAll("#mobileCards > div");
-            mobileCards.forEach(card => {
-                const dateText = card.querySelector("div:nth-child(2) div p.font-semibold").innerText;
-                const monthInCard = dateText.split("/")[1];
-                if (monthInCard === targetMonth) {
-                    card.style.display = "";
-                    mobileCount++;
+                // Let's filter matches
+                const matchedDesktop = allDesktopRows.filter(r => r.dataset.filterMatch === "true");
+                const matchedMobile = allMobileRows.filter(r => r.dataset.filterMatch === "true"); // Should be same count
+
+                const totalItems = matchedDesktop.length;
+                const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+
+                // Clamp page
+                if (currentPage > totalPages) currentPage = totalPages;
+                if (currentPage < 1) currentPage = 1;
+
+                // Update UI indicators (All instances)
+                currentPageSpans.forEach(span => span.innerText = currentPage);
+                totalPagesSpans.forEach(span => span.innerText = totalPages);
+
+                // Show/Hide Controls (All instances)
+                paginationControlsList.forEach(controls => {
+                    if (totalItems > itemsPerPage) {
+                        controls.classList.remove('hidden');
+                    } else {
+                        controls.classList.add('hidden');
+                    }
+                });
+
+                // Update Button States (All instances)
+                prevBtns.forEach(btn => btn.disabled = currentPage === 1);
+                nextBtns.forEach(btn => btn.disabled = currentPage === totalPages);
+
+                // Render Active Pages
+                renderRows(allDesktopRows, matchedDesktop, currentPage);
+                renderRows(allMobileRows, matchedMobile, currentPage);
+
+                // Handle "No Records"
+                handleNoRecords(totalItems);
+            }
+
+            function renderRows(allRows, matchedRows, page) {
+                // index range (0-based)
+                const startIndex = (page - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+
+                // 1. Hide non-matched
+                allRows.forEach(row => {
+                    if (row.dataset.filterMatch !== "true") {
+                        row.style.display = "none";
+                    }
+                });
+
+                // 2. Show matched only if in range
+                matchedRows.forEach((row, index) => {
+                    if (index >= startIndex && index < endIndex) {
+                        row.style.removeProperty('display');
+
+                        // Optional: Add simple fade-in animation
+                        row.style.opacity = '0';
+                        row.style.transition = 'opacity 0.3s ease';
+                        requestAnimationFrame(() => row.style.opacity = '1');
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            }
+
+            function handleNoRecords(count) {
+                // Check if msg exists
+                let desktopMsg = document.getElementById("desktopNoRecord");
+                let mobileMsg = document.getElementById("mobileNoRecord");
+
+                if (count === 0) {
+                    if (!desktopMsg) {
+                        desktopMsg = document.createElement("div");
+                        desktopMsg.id = "desktopNoRecord";
+                        desktopMsg.className = "text-center text-gray-500 py-4";
+                        desktopMsg.innerText = "There are no records for this selection.";
+                        desktopTableBody.appendChild(desktopMsg);
+                    }
+                    if (!mobileMsg) {
+                        mobileMsg = document.createElement("div");
+                        mobileMsg.id = "mobileNoRecord";
+                        mobileMsg.className = "text-center text-gray-500 py-4";
+                        mobileMsg.innerText = "There are no records for this selection.";
+                        mobileCardsContainer.appendChild(mobileMsg);
+                    }
+                    desktopMsg.style.display = "";
+                    mobileMsg.style.display = "";
                 } else {
-                    card.style.display = "none";
+                    if (desktopMsg) desktopMsg.style.display = "none";
+                    if (mobileMsg) mobileMsg.style.display = "none";
                 }
+            }
+
+            // --- Button Listeners ---
+            prevBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updatePagination();
+                    }
+                });
             });
 
-            // Show "No records" message if none
-            let mobileMsg = document.getElementById("mobileNoRecord");
-            if (!mobileMsg) {
-                mobileMsg = document.createElement("div");
-                mobileMsg.id = "mobileNoRecord";
-                mobileMsg.className = "text-center text-gray-500 py-4";
-                mobileMsg.innerText = "There are no records.";
-                document.getElementById("mobileCards").appendChild(mobileMsg);
-            }
-            mobileMsg.style.display = (mobileCount === 0) ? "" : "none";
+            nextBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Calculate max pages based on current match
+                    const matchedDesktop = allDesktopRows.filter(r => r.dataset.filterMatch === "true");
+                    const totalPages = Math.ceil(matchedDesktop.length / itemsPerPage) || 1;
+
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        updatePagination();
+                    }
+                });
+            });
+
         });
     </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            @php
+                $totalSlots = 1;
+                $doneCount = $bookings->where('booking_status', 'Done')->count();
+                $remainingCount = max(0, $totalSlots - $doneCount);
+            @endphp
 
             const options = {
-                series: [1, 4],
+                series: [{{ $doneCount }}, {{ $remainingCount }}],
                 chart: {
                     type: 'donut',
                     height: 240,
@@ -649,6 +1153,29 @@
 
             const chart = new ApexCharts(document.querySelector("#donut-chart"), options);
             chart.render();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterOptions = document.querySelectorAll('.filter-option');
+            const historyItems = document.querySelectorAll('.history-item');
+
+            filterOptions.forEach(option => {
+                option.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const filterValue = this.getAttribute('data-filter');
+
+                    historyItems.forEach(item => {
+                        const status = item.getAttribute('data-status');
+                        if (filterValue === 'all' || status === filterValue) {
+                            item.style.removeProperty('display');
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
         });
     </script>
 

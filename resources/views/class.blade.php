@@ -128,7 +128,7 @@
             </div>
 
             @foreach ($classes as $class)
-                <a href="{{ route('package', $class->class_id) }}"
+                <a href="{{ route('package', $class->class_code) }}"
                     class="class-item group bg-white rounded-2xl shadow-sm hover:shadow-xl p-4 border-[3px] border-transparent hover:border-red-600 transition-all duration-300 transform hover:-translate-y-1 block"
                     data-name="{{ $class->class_code }}" data-status="available">
                     <div class="relative overflow-hidden rounded-xl mb-4 bg-gray-50">
