@@ -11,7 +11,7 @@ class AdminBookingController extends Controller
     public function index()
     {
         // Fetch all bookings with related data
-        $bookings = Booking::with(['application.student', 'schedule.phase', 'attempt'])
+        $bookings = Booking::with(['student', 'schedule.phase', 'attempt'])
             ->orderBy('created_at', 'desc')
             ->get();
 

@@ -58,9 +58,8 @@
                                 <tr class="hover:bg-blue-50 transition-colors group">
                                     <td class="px-6 py-4 font-medium text-gray-900">
                                         <div class="flex flex-col">
-                                            <span>{{ $booking->application->full_name ?? 'N/A' }}</span>
-                                            <span
-                                                class="text-xs text-gray-400">{{ $booking->application->ic ?? 'N/A' }}</span>
+                                            <span>{{ $booking->student->full_name ?? 'N/A' }}</span>
+                                            <span class="text-xs text-gray-400">{{ $booking->student->ic ?? 'N/A' }}</span>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
@@ -92,18 +91,18 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         @if($booking->attempt)
-                                                                @php
-                                                                    $resColor = match ($booking->attempt->result) {
-                                                                        'Pass' => 'green',
-                                                                        'Failed' => 'red',
-                                                                        'Pending' => 'gray',
-                                                                        default => 'gray'
-                                                                    };
-                                                                @endphp
+                                            @php
+                                                $resColor = match ($booking->attempt->result) {
+                                                    'Pass' => 'green',
+                                                    'Failed' => 'red',
+                                                    'Pending' => 'gray',
+                                                    default => 'gray'
+                                                };
+                                            @endphp
                                             <span
-                                                                    class="bg-{{ $resColor }}-100 text-{{ $resColor }}-800 text-xs font-bold px-2.5 py-0.5 rounded-full border border-{{ $resColor }}-200">
-                                                                    {{ $booking->attempt->result }}
-                                                                </span>
+                                                class="bg-{{ $resColor }}-100 text-{{ $resColor }}-800 text-xs font-bold px-2.5 py-0.5 rounded-full border border-{{ $resColor }}-200">
+                                                {{ $booking->attempt->result }}
+                                            </span>
                                         @else
                                             <span class="text-gray-400">-</span>
                                         @endif

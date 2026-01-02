@@ -101,11 +101,11 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="text-xs font-semibold text-gray-500 uppercase">Student Name</label>
-                                    <p class="font-medium text-gray-900">{{ $application->full_name }}</p>
+                                    <p class="font-medium text-gray-900">{{ $application->student->full_name }}</p>
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-gray-500 uppercase">MyKad / IC</label>
-                                    <p class="font-medium text-gray-900">{{ $application->ic }}</p>
+                                    <p class="font-medium text-gray-900">{{ $application->student->ic }}</p>
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-gray-500 uppercase">License Class</label>
@@ -413,11 +413,11 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="text-xs font-semibold text-gray-500 uppercase">Applicant Name</label>
-                                <p class="font-medium text-gray-900">{{ $application->full_name }}</p>
+                                <p class="font-medium text-gray-900">{{ $application->student->full_name }}</p>
                             </div>
                             <div>
                                 <label class="text-xs font-semibold text-gray-500 uppercase">MyKad / IC</label>
-                                <p class="font-medium text-gray-900">{{ $application->ic }}</p>
+                                <p class="font-medium text-gray-900">{{ $application->student->ic }}</p>
                             </div>
                             <div>
                                 <label class="text-xs font-semibold text-gray-500 uppercase">Applied Date</label>

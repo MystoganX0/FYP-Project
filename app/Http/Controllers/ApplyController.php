@@ -51,15 +51,22 @@ class ApplyController extends Controller
             // Create Application
             $app = new \App\Models\Application();
             $app->student_id = \Illuminate\Support\Facades\Auth::id() ?? 1; // Fallback or handle auth check
-            $app->ic = $request->ic;
-            $app->full_name = $request->full_name;
-            $app->phone = $request->phone;
-            $app->address = $request->address;
-            $app->ic_file = $path;
             $app->current_stage = 'Computer Test';
+            $app->app_status = 'In-Progress';
             $app->class_id = $request->class_id;
             $app->package_id = $request->package_id;
             $app->save();
+
+            // Update Student Details
+            $student = \App\Models\Student::find($app->student_id);
+            if ($student) {
+                $student->ic = $request->ic;
+                $student->full_name = $request->full_name;
+                $student->phone = $request->phone;
+                $student->address = $request->address;
+                $student->ic_file = $path;
+                $student->save();
+            }
 
             // Calculate Amount
             $class = Classes::where('class_id', $request->class_id)->firstOrFail();

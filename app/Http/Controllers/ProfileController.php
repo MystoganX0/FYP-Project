@@ -20,9 +20,7 @@ class ProfileController extends Controller
             ->latest()
             ->first();
 
-        $computerTest = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
-            $query->where('student_id', $studentId);
-        })
+        $computerTest = \App\Models\Booking::where('student_id', $studentId)
             ->whereHas('schedule', function ($q) {
                 $q->where('phase_id', 1);
             })
@@ -34,9 +32,7 @@ class ProfileController extends Controller
             ->first();
 
         // 3. Fetch Completed Practical Training Bookings
-        $practicalBookings = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
-            $query->where('student_id', $studentId);
-        })
+        $practicalBookings = \App\Models\Booking::where('student_id', $studentId)
             ->whereHas('schedule', function ($q) {
                 $q->where('phase_id', 2);
             })
@@ -46,9 +42,7 @@ class ProfileController extends Controller
             ->get();
 
         // 4. Fetch Passed JPJ Test
-        $jpjTest = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
-            $query->where('student_id', $studentId);
-        })
+        $jpjTest = \App\Models\Booking::where('student_id', $studentId)
             ->whereHas('schedule', function ($q) {
                 $q->where('phase_id', 3);
             })

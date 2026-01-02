@@ -29,7 +29,7 @@
 
 </head>
 
-<body class="font-poppins bg-[#002D81]">
+<body class="font-poppins bg-[#0E1F8E]">
     @include('ui.user.header')
     <!-- SUB NAV (tabs) -->
     <div class="bg-white border-b border-gray-200">
@@ -74,9 +74,7 @@
                 $paymentType = $application && $application->payment ? $application->payment->payment_type : null;
 
                 // Check if user has passed Computer Test
-                $isComputerTestDone = \App\Models\Booking::whereHas('application', function ($q) use ($studentId) {
-                    $q->where('student_id', $studentId);
-                })
+                $isComputerTestDone = \App\Models\Booking::where('student_id', $studentId)
                     ->whereHas('schedule', function ($q) {
                         $q->where('phase_id', 1);
                     })
@@ -780,7 +778,7 @@
         </div>
     </div>
 
-        <!-- Fee Payment Modal -->
+    <!-- Fee Payment Modal -->
     <div id="feeModal" tabindex="-1" aria-hidden="true"
         class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
         <div id="feeModalContent"

@@ -12,11 +12,7 @@ class Application extends Model
         'student_id',
         'class_id',
         'package_id',
-        'ic',
-        'full_name',
-        'phone',
-        'address',
-        'ic_file',
+        'app_status',
         'current_stage'
     ];
 
@@ -65,8 +61,10 @@ class Application extends Model
         $this->update(['current_stage' => 'Computer Test']);
     }
 
-    public function bookings()
-    {
-        return $this->hasMany(Booking::class, 'app_id');
-    }
+    // Bookings are now accessed via Student, but we can keep a helper accessor if needed, 
+    // or better, remove this direct relation as it's no longer direct.
+    // However, for code compatibility, we can perform a hasManyThrough or similar?
+    // Actually, Student <-> Application (1:N or 1:1) and Student <-> Booking (1:N).
+    // Application -> Booking is no longer a direct parent.
+    // We'll remove this method to force code updates to use correct path.
 }

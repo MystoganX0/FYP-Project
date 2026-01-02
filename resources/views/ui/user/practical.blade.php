@@ -29,7 +29,7 @@
 
 </head>
 
-<body class="font-poppins bg-[#002D81]">
+<body class="font-poppins bg-[#0E1F8E]">
     @include('ui.user.header')
     <!-- SUB NAV (tabs) -->
     <div class="bg-white border-b border-gray-200">
@@ -200,12 +200,12 @@
                                 <ul class="py-2 text-sm text-gray-700">
                                     <li><a href="#" data-filter="all"
                                             class="filter-option block px-4 py-2 hover:bg-gray-100">All</a></li>
-                                    <li><a href="#" data-filter="Done"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Done</a></li>
+                                    <li><a href="#" data-filter="Completed"
+                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Completed</a></li>
                                     <li><a href="#" data-filter="Pending"
                                             class="filter-option block px-4 py-2 hover:bg-gray-100">Pending</a></li>
-                                    <li><a href="#" data-filter="Failed"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Failed</a></li>
+                                    <li><a href="#" data-filter="Absent"
+                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Absent</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -220,6 +220,7 @@
                                         'Done' => 'green',
                                         'Pending' => 'yellow',
                                         'Failed' => 'red',
+                                        'Absent' => 'red',
                                         'Confirmed' => 'blue',
                                         default => 'gray'
                                     };
@@ -320,46 +321,365 @@
                     <div
                         class="bg-gray-900 px-6 sm:px-8 lg:px-12 py-5 flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-gray-100">
 
-                        <!-- Automate Button -->
-                        <button
-                            class="w-full sm:w-auto relative group overflow-hidden bg-gradient-to-br from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-gray-900 font-bold rounded-2xl text-sm px-6 py-3 mr-auto sm:mr-0 transition-all duration-300 shadow-lg shadow-yellow-400/30 hover:shadow-yellow-400/50 hover:-translate-y-0.5 flex items-center gap-2 focus:ring-4 focus:ring-yellow-300/50">
-                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                <rect width="18" height="10" x="3" y="11" rx="2" />
-                                <circle cx="12" cy="5" r="2" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v4M8 16h.01M16 16h.01" />
-                            </svg>
-                            Automate Slot
-                        </button>
+                        <!-- Automate Button with Dropdown -->
+                        <div class="relative w-full sm:w-auto"
+                            x-data="{ open: false, viewSettings: false, slotCount: 1 }">
+                            <button @click="open = !open; viewSettings = false"
+                                class="w-full sm:w-auto relative group overflow-hidden bg-gradient-to-br from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-gray-900 font-bold rounded-2xl text-sm px-6 py-3 mr-auto sm:mr-0 transition-all duration-300 shadow-lg shadow-yellow-400/30 hover:shadow-yellow-400/50 hover:-translate-y-0.5 flex items-center justify-center gap-2 focus:ring-4 focus:ring-yellow-300/50">
+                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <rect width="18" height="10" x="3" y="11" rx="2" />
+                                    <circle cx="12" cy="5" r="2" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 7v4M8 16h.01M16 16h.01" />
+                                </svg>
+                                Automate Slot
+                            </button>
+
+                            <!-- Dropdown Menu -->
+                            <div x-show="open" @click.away="open = false"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95" style="display: none;"
+                                class="absolute top-full left-0 mt-2 w-full sm:w-72 origin-top-left z-50">
+                                <div
+                                    class="bg-white/70 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl overflow-hidden ring-1 ring-black/5 text-black/90">
+
+                                    <!-- Main Menu -->
+                                    <div x-show="!viewSettings" x-transition:enter="transition ease-out duration-200"
+                                        x-transition:enter-start="opacity-0 -translate-x-10"
+                                        x-transition:enter-end="opacity-100 translate-x-0">
+
+                                        <div
+                                            class="px-4 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider border-b border-gray-200">
+                                            Automation Options
+                                        </div>
+
+                                        <div class="divide-y divide-gray-200">
+                                            <a href="#"
+                                                @click.prevent="handleAutomation('next', slotCount); open = false"
+                                                class="group flex items-center justify-between px-4 py-3 hover:bg-gray-100 transition-colors">
+                                                <div class="flex flex-col">
+                                                    <span class="text-sm font-medium">Auto-fill Next Available</span>
+                                                    <span class="text-[10px] text-gray-600">Book next <span
+                                                            x-text="slotCount"></span> slots</span>
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-4 w-4 text-gray-600 group-hover:text-gray-900" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M12 4v16m8-8H4" />
+                                                </svg>
+                                            </a>
+                                            <a href="#"
+                                                @click.prevent="handleAutomation('random', slotCount); open = false"
+                                                class="group flex items-center justify-between px-4 py-3 hover:bg-gray-100 transition-colors">
+                                                <div class="flex flex-col">
+                                                    <span class="text-sm font-medium">Auto-fill Random Slot</span>
+                                                    <span class="text-[10px] text-gray-600">Book random <span
+                                                            x-text="slotCount"></span> slots</span>
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-4 w-4 text-gray-600 group-hover:text-gray-900" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                                </svg>
+                                            </a>
+                                        </div>
+
+                                        <div class="py-1 border-t border-gray-200">
+                                            <button @click="viewSettings = true"
+                                                class="w-full group flex items-center justify-between px-4 py-3 hover:bg-gray-100 transition-colors text-left">
+                                                <span class="text-sm font-medium">View Settings</span>
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-xs text-gray-600"><span x-text="slotCount"></span>
+                                                        Slots</span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="h-4 w-4 text-gray-600 group-hover:text-gray-900"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Settings Menu -->
+                                    <div x-show="viewSettings" x-transition:enter="transition ease-out duration-200"
+                                        x-transition:enter-start="opacity-0 translate-x-10"
+                                        x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
+
+                                        <div class="px-2 py-2 border-b border-gray-200 flex items-center">
+                                            <button @click="viewSettings = false"
+                                                class="p-1 rounded-full hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-colors">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M15 19l-7-7 7-7" />
+                                                </svg>
+                                            </button>
+                                            <span
+                                                class="ml-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                Settings
+                                            </span>
+                                        </div>
+
+                                        <div class="p-4 space-y-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-600 mb-2">Number of
+                                                    Slots</label>
+                                                <div
+                                                    class="flex items-center justify-between bg-gray-50 rounded-lg p-2 border border-gray-200">
+                                                    <button @click="if(slotCount > 1) slotCount--"
+                                                        class="p-2 rounded-md hover:bg-gray-200 text-gray-700 hover:text-gray-900 transition-colors">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M20 12H4" />
+                                                        </svg>
+                                                    </button>
+                                                    <span class="font-bold text-lg w-8 text-center text-gray-900"
+                                                        x-text="slotCount"></span>
+                                                    <button @click="if(slotCount < 5) slotCount++"
+                                                        class="p-2 rounded-md hover:bg-gray-200 text-gray-700 hover:text-gray-900 transition-colors">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M12 4v16m8-8H4" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <p class="text-[10px] text-gray-600 mt-2">Maximum 5 slots per session.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Search Group -->
                         <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                            <div class="relative w-full sm:w-72">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor"
-                                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
-                                <select id="month"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-[#0BCE83] focus:border-[#0BCE83] block w-full pl-10 pr-10 p-2.5 outline-none transition-all appearance-none cursor-pointer hover:bg-white hover:border-gray-400">
-                                    <option value="all">All Months</option>
-                                    @foreach($availableMonths as $month)
-                                        <option value="{{ \Carbon\Carbon::parse($month)->format('n-Y') }}">{{ $month }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7"></path>
-                                    </svg>
+                            <div class="relative w-full sm:w-72" x-data="calendarFilter()" x-init="initCalendar()"
+                                @click.away="open = false">
+
+                                <!-- Hidden Native Input -->
+                                <input type="hidden" id="month" value="all">
+
+                                <!-- Trigger Button -->
+                                <button @click="open = !open" type="button"
+                                    class="relative w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-[#0BCE83] focus:border-[#0BCE83] block pl-10 pr-10 p-2.5 outline-none transition-all cursor-pointer hover:bg-white hover:border-gray-400 text-left flex items-center justify-between">
+
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </span>
+
+                                    <span x-text="displayText" class="truncate font-medium"></span>
+
+                                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 transition-transform duration-200"
+                                            :class="{'rotate-180': open}" aria-hidden="true" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </span>
+                                </button>
+
+                                <!-- Calendar Dropdown -->
+                                <div x-show="open" x-transition:enter="transition ease-out duration-100"
+                                    x-transition:enter-start="transform opacity-0 scale-95"
+                                    x-transition:enter-end="transform opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-75"
+                                    x-transition:leave-start="transform opacity-100 scale-100"
+                                    x-transition:leave-end="transform opacity-0 scale-95"
+                                    class="absolute z-50 w-full sm:w-80 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 p-4"
+                                    style="display: none;">
+
+                                    <!-- Header -->
+                                    <div class="flex items-center justify-between mb-4">
+                                        <button @click="prevMonth()"
+                                            class="p-1 hover:bg-gray-100 rounded-full transition-colors text-gray-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 19l-7-7 7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <div class="font-bold text-gray-800 text-lg"
+                                            x-text="monthNames[month] + ' ' + year"></div>
+                                        <button @click="nextMonth()"
+                                            class="p-1 hover:bg-gray-100 rounded-full transition-colors text-gray-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 5l7 7-7 7"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <!-- Weekdays -->
+                                    <div class="grid grid-cols-7 mb-2 text-center">
+                                        <template x-for="day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']">
+                                            <div class="text-xs font-semibold text-gray-400 py-1" x-text="day"></div>
+                                        </template>
+                                    </div>
+
+                                    <!-- Days Grid -->
+                                    <div class="grid grid-cols-7 gap-1 text-center text-sm">
+                                        <template x-for="blank in blanks">
+                                            <div class="h-8"></div>
+                                        </template>
+                                        <template x-for="date in no_of_days">
+                                            <div @click="selectDate(date)"
+                                                class="h-8 w-8 mx-auto flex items-center justify-center rounded-full text-gray-700 font-medium transition-colors hover:bg-gray-100 cursor-pointer"
+                                                :class="{
+                                                     'bg-black text-white hover:bg-gray-800': isToday(date) && !isSelected(date),
+                                                     'bg-blue-600 text-white hover:bg-blue-700 shadow-md': isSelected(date)
+                                                 }">
+                                                <span x-text="date"></span>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div
+                                        class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center px-1">
+                                        <button @click="clearFilter()"
+                                            class="text-xs text-gray-400 hover:text-gray-600 font-medium">
+                                            Clear
+                                        </button>
+                                        <button @click="selectMonth()"
+                                            class="text-sm text-blue-600 hover:text-blue-800 font-bold">
+                                            Select This Month
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                           <button id="searchBtn"
+
+                            <script>
+                                function calendarFilter() {
+                                    return {
+                                        open: false,
+                                        displayText: 'All Months',
+                                        month: new Date().getMonth(),
+                                        year: new Date().getFullYear(),
+                                        selectedDate: null,
+                                        no_of_days: [],
+                                        blanks: [],
+                                        monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+
+                                        initCalendar() {
+                                            const today = new Date();
+                                            const day = String(today.getDate()).padStart(2, '0');
+                                            const month = this.monthNames[today.getMonth()];
+                                            const year = today.getFullYear();
+                                            this.displayText = `${day} ${month} ${year}`;
+
+                                            this.getNoOfDays();
+                                        },
+
+                                        isToday(date) {
+                                            const today = new Date();
+                                            return today.getDate() === date && today.getMonth() === this.month && today.getFullYear() === this.year;
+                                        },
+
+                                        isSelected(date) {
+                                            if (!this.selectedDate) return false;
+                                            const d = new Date(this.year, this.month, date);
+                                            // Format Y-m-d
+                                            const format = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                                            return this.selectedDate === format;
+                                        },
+
+                                        getNoOfDays() {
+                                            const daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+                                            const dayOfWeek = new Date(this.year, this.month).getDay(); // 0 (Sun) - 6 (Sat)
+
+                                            this.blanks = Array.from({ length: dayOfWeek }, (_, i) => i + 1);
+                                            this.no_of_days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+                                        },
+
+                                        selectDate(date) {
+                                            // Set Selected Date (Y-m-d)
+                                            const d = new Date(this.year, this.month, date);
+                                            const year = d.getFullYear();
+                                            const month = String(d.getMonth() + 1).padStart(2, '0');
+                                            const day = String(d.getDate()).padStart(2, '0');
+                                            const formatted = `${year}-${month}-${day}`;
+
+                                            this.selectedDate = formatted;
+
+                                            // Update Display Text
+                                            this.displayText = `${day} ${this.monthNames[this.month]} ${year}`;
+
+                                            // Update Hidden Input
+                                            document.getElementById('month').value = formatted;
+                                            this.open = false;
+                                        },
+
+                                        selectMonth() {
+                                            // Set Selected Month (Y-m)
+                                            const month = String(this.month + 1).padStart(2, '0');
+                                            const formatted = `${this.year}-${month}`;
+
+                                            this.selectedDate = formatted;
+                                            this.displayText = this.monthNames[this.month] + ' ' + this.year;
+                                            document.getElementById('month').value = formatted;
+                                            this.open = false;
+                                        },
+
+                                        selectMonth() {
+                                            // Set Selected Month (Y-m)
+                                            const month = String(this.month + 1).padStart(2, '0');
+                                            const formatted = `${this.year}-${month}`;
+
+                                            this.selectedDate = formatted;
+                                            this.displayText = this.monthNames[this.month] + ' ' + this.year;
+                                            document.getElementById('month').value = formatted;
+                                            this.open = false;
+                                        },
+
+                                        nextMonth() {
+                                            if (this.month === 11) {
+                                                this.month = 0;
+                                                this.year++;
+                                            } else {
+                                                this.month++;
+                                            }
+                                            this.getNoOfDays();
+                                        },
+
+                                        prevMonth() {
+                                            if (this.month === 0) {
+                                                this.month = 11;
+                                                this.year--;
+                                            } else {
+                                                this.month--;
+                                            }
+                                            this.getNoOfDays();
+                                        },
+
+                                        clearFilter() {
+                                            this.displayText = 'All Months';
+                                            this.selectedDate = null;
+                                            document.getElementById('month').value = 'all';
+                                            this.open = false;
+                                        }
+                                    }
+                                }
+                            </script>
+                            <button id="searchBtn"
                                 class="w-full sm:w-auto text-white bg-gradient-to-r from-[#0E1F8E] to-blue-800 hover:from-indigo-900 hover:to-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-7 py-3 text-center inline-flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-900/30 hover:shadow-blue-900/50 hover:-translate-y-0.5 active:scale-95">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 20 20">
@@ -373,8 +693,8 @@
 
                     <!-- Table -->
                     <div id="desktopTable"
-                        class="hidden sm:block w-full text-sm text-gray-700 p-5 space-y-4 px-6 sm:px-8 lg:px-12">
-                        <div
+                        class="hidden sm:block w-full text-sm text-gray-700 p-5 space-y-4 px-6 sm:px-8 lg:px-12 min-h-[500px]">
+                        <div id="desktopTableHeader"
                             class="hidden md:grid md:grid-cols-7 bg-white rounded-lg px-4 py-2 text-sm font-semibold text-gray-500 uppercase tracking-wider text-center">
                             <div class="md:col-span-2 text-left md:px-4"></div>
                             <div class="md:col-span-1 md:px-4">Date</div>
@@ -398,8 +718,7 @@
 
                                 <!-- Date -->
                                 <div class="md:px-4 md:py-2 md:col-span-1">
-                                    <p class="font-semibold text-base"
-                                        data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('n-Y') }}">
+                                    <p class="font-semibold text-base" data-date="{{ $schedule->date }}">
                                         {{ \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') }}
                                     </p>
                                     <p class="text-sm text-gray-500">{{ $schedule->day }}</p>
@@ -519,7 +838,7 @@
                     </div>
 
                     <!--  Mobile Cards -->
-                    <div id="mobileCards" class="sm:hidden space-y-4 p-4">
+                    <div id="mobileCards" class="sm:hidden space-y-4 p-4 min-h-[500px]">
                         @forelse($schedules as $schedule)
                             <div
                                 class="bg-white p-4 rounded-lg shadow border flex flex-col gap-4 hover:border-blue-900 hover:border-[3px] transition">
@@ -686,7 +1005,7 @@
                 </p>
 
                 <!-- Slot Detail Card -->
-                <div class="bg-gray-50 rounded-xl p-4 mb-8 text-sm border border-gray-100">
+                <div class="bg-gray-50 rounded-xl p-4 mb-8 text-sm border border-gray-100" id="singleSlotDetails">
                     <div class="grid grid-cols-2 gap-y-3 text-left">
                         <div class="text-gray-500">Phase</div>
                         <div class="font-semibold text-gray-900 text-right" id="modalType">-</div>
@@ -702,6 +1021,19 @@
                     </div>
                 </div>
 
+                <!-- Bulk Slot Details (Hidden by default) -->
+                <div class="bg-gray-50 rounded-xl p-4 mb-8 text-sm border border-gray-100 hidden text-left"
+                    id="bulkSlotDetails">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold text-gray-500 uppercase">Selected Slots</span>
+                        <span class="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Automated
+                            Selection</span>
+                    </div>
+                    <div class="space-y-2 max-h-48 overflow-y-auto pr-1 customize-scrollbar" id="bulkSlotList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -713,6 +1045,10 @@
                     @csrf
                     <input type="hidden" name="schedule_id" id="modalScheduleId">
                     <input type="hidden" name="phase_type" id="modalPhaseTypeVal">
+
+                    <!-- Bulk Inputs -->
+                    <div id="bulkInputs"></div>
+
                     <button type="submit"
                         class="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 text-white font-bold hover:from-blue-800 hover:to-blue-700 shadow-lg shadow-blue-600/30 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all">
                         Confirm
@@ -848,6 +1184,11 @@
 
 
             function openModal(btn) {
+                // Ensure Single View is active
+                document.getElementById('singleSlotDetails').classList.remove('hidden');
+                document.getElementById('bulkSlotDetails').classList.add('hidden');
+                document.getElementById('bulkInputs').innerHTML = ''; // Clear bulk inputs
+
                 // Get data from button
                 const type = btn.getAttribute('data-type');
                 const date = btn.getAttribute('data-date');
@@ -902,12 +1243,174 @@
             });
 
             // Close on backdrop click
+            // Close on backdrop click
             confirmModal.addEventListener('click', (e) => {
                 if (e.target === confirmModal) {
                     closeModal();
                 }
             });
         });
+    </script>
+
+    <!-- Automation Logic -->
+    <script>
+        // Data Injection from Blade
+        window.schedulesData = @json($schedules);
+        window.bookedScheduleIds = @json($bookedScheduleIds);
+        window.activeBookingsCount = {{ $bookings->where('booking_status', '!=', 'Absent')->count() }};
+
+        // Helper function to show notification
+        function showNotification(message) {
+            // Remove existing notification if any
+            const existing = document.getElementById('automationNotification');
+            if (existing) existing.remove();
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.id = 'automationNotification';
+            notification.className = 'flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400';
+            notification.setAttribute('role', 'alert');
+            notification.innerHTML = `
+                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="flex-1">
+                    <span class="font-medium">Note:</span> ${message}
+                </div>
+                <button type="button" onclick="this.parentElement.remove()" class="ml-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                </button>
+            `;
+
+            // Insert after the h1 title
+            const mainContent = document.querySelector('main.lg\\:col-span-8');
+            const title = mainContent.querySelector('h1');
+            title.insertAdjacentElement('afterend', notification);
+
+            // Scroll to notification
+            notification.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                if (notification && notification.parentElement) {
+                    notification.style.transition = 'opacity 0.3s';
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 5000);
+        }
+
+        function handleAutomation(type, count) {
+            // Check max active slots limit (5)
+            if (window.activeBookingsCount >= 5) {
+                showNotification('You have reached the limit of 5 practical training slots. You cannot book any more slots.');
+                return;
+            }
+
+            // Check if adding explicitly requested count exceeds limit
+            if ((window.activeBookingsCount + count) > 5) {
+                const remaining = 5 - window.activeBookingsCount;
+                showNotification(`You can only book ${remaining} more slot(s) to reach the limit of 5. Please adjust your request.`);
+                return;
+            }
+
+            // Filter available schedules
+            // Must have > 0 slots AND not be in bookedScheduleIds
+            let available = window.schedulesData.filter(s => {
+                return s.slot > 0 && !window.bookedScheduleIds.includes(s.schedule_id);
+            });
+
+            if (available.length === 0) {
+                showNotification('No available schedules found to automate.');
+                return;
+            }
+
+            let selected = [];
+
+            if (type === 'next') {
+                // Sort by date and time
+                available.sort((a, b) => {
+                    const dateA = new Date(a.date + ' ' + a.start_time);
+                    const dateB = new Date(b.date + ' ' + b.start_time);
+                    return dateA - dateB;
+                });
+                selected = available.slice(0, count);
+            } else if (type === 'random') {
+                // Shuffle array
+                for (let i = available.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [available[i], available[j]] = [available[j], available[i]];
+                }
+                selected = available.slice(0, count);
+            }
+
+            if (selected.length === 0) {
+                showNotification('Could not select any slots.');
+                return;
+            }
+
+            openBulkConfirmModal(selected, type);
+        }
+
+        function openBulkConfirmModal(selectedSchedules, type) {
+            const confirmModal = document.getElementById('confirmModal');
+            const modalContent = document.getElementById('modalContent');
+
+            // Toggle UI sections
+            document.getElementById('singleSlotDetails').classList.add('hidden');
+            document.getElementById('bulkSlotDetails').classList.remove('hidden');
+
+            // Populate List
+            const listContainer = document.getElementById('bulkSlotList');
+            listContainer.innerHTML = '';
+
+            selectedSchedules.forEach(sched => {
+                // Create list item
+                const date = new Date(sched.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                const startTime = sched.start_time.substring(0, 5);
+                const endTime = sched.time_out.substring(0, 5);
+
+                const item = `
+                    <div class="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm">
+                        <div class="flex flex-col text-left">
+                            <span class="text-xs font-bold text-gray-500 uppercase">${sched.day}</span>
+                            <span class="font-bold text-gray-900">${date}</span>
+                        </div>
+                        <div class="text-right">
+                             <span class="block font-mono text-sm font-semibold text-blue-600">${startTime} - ${endTime}</span>
+                        </div>
+                    </div>
+                `;
+                listContainer.insertAdjacentHTML('beforeend', item);
+            });
+
+            // Populate Hidden Inputs
+            const formContainer = document.getElementById('bulkInputs');
+            formContainer.innerHTML = '';
+            selectedSchedules.forEach(sched => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'schedule_ids[]';
+                input.value = sched.schedule_id;
+                formContainer.appendChild(input);
+            });
+
+            // Clear single input just in case
+            document.getElementById('modalScheduleId').value = '';
+
+            // Show Modal
+            confirmModal.classList.remove('hidden');
+            void confirmModal.offsetWidth;
+            confirmModal.classList.remove('opacity-0');
+            modalContent.classList.remove('scale-90');
+            modalContent.classList.add('scale-100');
+        }
     </script>
 
     <!-- Filter Dates & Pagination Logic -->
@@ -959,7 +1462,7 @@
                     if (!dateElem) return;
                     const rowDate = dateElem.getAttribute('data-date');
 
-                    if (selectedValue === "all" || rowDate === selectedValue) {
+                    if (selectedValue === "all" || rowDate === selectedValue || rowDate.startsWith(selectedValue)) {
                         row.dataset.filterMatch = "true";
                     } else {
                         row.dataset.filterMatch = "false";
@@ -972,7 +1475,7 @@
                     if (!dateElem) return;
                     const rowDate = dateElem.getAttribute('data-date');
 
-                    if (selectedValue === "all" || rowDate === selectedValue) {
+                    if (selectedValue === "all" || rowDate === selectedValue || rowDate.startsWith(selectedValue)) {
                         row.dataset.filterMatch = "true";
                     } else {
                         row.dataset.filterMatch = "false";
@@ -985,9 +1488,6 @@
             }
 
             function updatePagination() {
-                // Determine active set depending on visibility (Desktop vs Mobile)
-                // For simplicity, we calculate both, but display logic handles the 'hidden' View.
-                // Or better: We can assume the counts match if the DOM is synced.
 
                 // Let's filter matches
                 const matchedDesktop = allDesktopRows.filter(r => r.dataset.filterMatch === "true");
@@ -1057,26 +1557,46 @@
                 let desktopMsg = document.getElementById("desktopNoRecord");
                 let mobileMsg = document.getElementById("mobileNoRecord");
 
+                const desktopHeader = document.getElementById("desktopTableHeader");
+
                 if (count === 0) {
                     if (!desktopMsg) {
                         desktopMsg = document.createElement("div");
                         desktopMsg.id = "desktopNoRecord";
-                        desktopMsg.className = "text-center text-gray-500 py-4";
-                        desktopMsg.innerText = "There are no records for this selection.";
+                        desktopMsg.className = "text-center text-gray-500 py-4 flex flex-col items-center justify-center";
+                        desktopMsg.innerHTML = `
+                            <img src="/image/icon/norecord.png" alt="No Records" class="w-80 h-auto object-contain">
+                            <p class="text-base font-semibold">There are no records for this selection.</p>
+                        `;
                         desktopTableBody.appendChild(desktopMsg);
                     }
                     if (!mobileMsg) {
                         mobileMsg = document.createElement("div");
                         mobileMsg.id = "mobileNoRecord";
-                        mobileMsg.className = "text-center text-gray-500 py-4";
-                        mobileMsg.innerText = "There are no records for this selection.";
+                        mobileMsg.className = "text-center text-gray-500 py-4 flex flex-col items-center justify-center";
+                        mobileMsg.innerHTML = `
+                            <img src="/image/icon/norecord.png" alt="No Records" class="w-48 h-auto object-contain">
+                            <p class="text-base font-semibold">There are no records for this selection.</p>
+                        `;
                         mobileCardsContainer.appendChild(mobileMsg);
                     }
                     desktopMsg.style.display = "";
                     mobileMsg.style.display = "";
+
+                    // Hide Header
+                    if (desktopHeader) {
+                        desktopHeader.classList.remove('md:grid');
+                        desktopHeader.style.display = 'none';
+                    }
+
                 } else {
                     if (desktopMsg) desktopMsg.style.display = "none";
                     if (mobileMsg) mobileMsg.style.display = "none";
+                    // Show Header
+                    if (desktopHeader) {
+                        desktopHeader.classList.add('md:grid');
+                        desktopHeader.style.display = '';
+                    }
                 }
             }
 
@@ -1194,6 +1714,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const filterOptions = document.querySelectorAll('.filter-option');
             const historyItems = document.querySelectorAll('.history-item');
+            const dropdown = document.getElementById('historyDropdown');
 
             filterOptions.forEach(option => {
                 option.addEventListener('click', function (e) {
@@ -1208,6 +1729,11 @@
                             item.style.display = 'none';
                         }
                     });
+
+                    // Close dropdown after selection
+                    if (dropdown) {
+                        dropdown.classList.add('hidden');
+                    }
                 });
             });
         });

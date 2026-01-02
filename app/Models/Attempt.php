@@ -12,9 +12,9 @@ class Attempt extends Model
     protected $primaryKey = 'attempt_id';
     protected $guarded = [];
 
-    public function application()
+    public function student()
     {
-        return $this->belongsTo(Application::class, 'app_id');
+        return $this->belongsTo(Student::class, 'student_id');
     }
 
     public function phase()

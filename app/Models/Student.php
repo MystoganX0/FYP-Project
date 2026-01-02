@@ -23,6 +23,11 @@ class Student extends Authenticatable
         'name',
         'email',
         'password',
+        'ic',
+        'full_name',
+        'phone',
+        'address',
+        'ic_file',
     ];
 
     /**
@@ -46,5 +51,9 @@ class Student extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'student_id');
     }
 }

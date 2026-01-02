@@ -29,7 +29,7 @@
 
 </head>
 
-<body class="font-poppins bg-[#002D81]">
+<body class="font-poppins bg-[#0E1F8E]">
     @include('ui.user.header')
     <!-- SUB NAV (tabs) -->
     <div class="bg-white border-b border-gray-200">

@@ -32,9 +32,7 @@ class AppServiceProvider extends ServiceProvider
                     $historyNotificationCount++; // Application submitted
 
                     // 2. Check for Passed Computer Test
-                    $computerTest = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
-                        $query->where('student_id', $studentId);
-                    })
+                    $computerTest = \App\Models\Booking::where('student_id', $studentId)
                         ->whereHas('schedule', function ($q) {
                             $q->where('phase_id', 1); // 1 = Computer Test
                         })
@@ -48,9 +46,7 @@ class AppServiceProvider extends ServiceProvider
                     }
 
                     // 3. Check for Completed Practical Training (>= 5 sessions)
-                    $practicalCount = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
-                        $query->where('student_id', $studentId);
-                    })
+                    $practicalCount = \App\Models\Booking::where('student_id', $studentId)
                         ->whereHas('schedule', function ($q) {
                             $q->where('phase_id', 2); // 2 = Practical Slot
                         })
@@ -62,9 +58,7 @@ class AppServiceProvider extends ServiceProvider
                     }
 
                     // 4. Check for Passed JPJ Test
-                    $jpjTest = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
-                        $query->where('student_id', $studentId);
-                    })
+                    $jpjTest = \App\Models\Booking::where('student_id', $studentId)
                         ->whereHas('schedule', function ($q) {
                             $q->where('phase_id', 3); // 3 = JPJ Test
                         })
@@ -82,9 +76,7 @@ class AppServiceProvider extends ServiceProvider
                 $bookingRoute = 'computer';
 
                 // Check if Computer Test Passed
-                $computerTestPassed = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
-                    $query->where('student_id', $studentId);
-                })
+                $computerTestPassed = \App\Models\Booking::where('student_id', $studentId)
                     ->whereHas('schedule', function ($q) {
                         $q->where('phase_id', 1);
                     })
@@ -97,9 +89,7 @@ class AppServiceProvider extends ServiceProvider
                     $bookingRoute = 'practical';
 
                     // Check if Practical Completed (>= 5 slots)
-                    $practicalCount = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
-                        $query->where('student_id', $studentId);
-                    })
+                    $practicalCount = \App\Models\Booking::where('student_id', $studentId)
                         ->whereHas('schedule', function ($q) {
                             $q->where('phase_id', 2);
                         })

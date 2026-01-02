@@ -32,7 +32,7 @@ class BookingController extends Controller
         }
 
         $bookings = \App\Models\Booking::with('schedule')
-            ->where('app_id', $application->app_id)
+            ->where('student_id', $studentId)
             ->whereHas('schedule', function ($q) {
                 $q->where('phase_id', 1);
             })
@@ -154,7 +154,7 @@ class BookingController extends Controller
         }
 
         $bookings = \App\Models\Booking::with('schedule')
-            ->where('app_id', $application->app_id)
+            ->where('student_id', $studentId)
             ->whereHas('schedule', function ($q) {
                 $q->where('phase_id', 2);
             })
@@ -190,7 +190,7 @@ class BookingController extends Controller
         }
 
         $bookings = \App\Models\Booking::with('schedule')
-            ->where('app_id', $application->app_id)
+            ->where('student_id', $studentId)
             ->whereHas('schedule', function ($q) {
                 $q->where('phase_id', 3);
             })
@@ -267,7 +267,9 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'schedule_id' => 'required|exists:schedules,schedule_id',
+            'schedule_id' => 'required_without:schedule_ids|nullable|exists:schedules,schedule_id',
+            'schedule_ids' => 'array',
+            'schedule_ids.*' => 'exists:schedules,schedule_id',
         ]);
 
         $studentId = \Illuminate\Support\Facades\Auth::id();
@@ -277,29 +279,48 @@ class BookingController extends Controller
             return redirect()->back()->with('error', 'No active application found.');
         }
 
-        $schedule = \App\Models\Schedule::find($request->schedule_id);
-
-        if ($schedule->slot <= 0) {
-            return redirect()->back()->with('error', 'No slots available for this schedule.');
+        // Determine schedules to book
+        $scheduleIds = $request->input('schedule_ids', []);
+        if (empty($scheduleIds) && $request->has('schedule_id')) {
+            $scheduleIds = [$request->schedule_id];
         }
 
-        $phaseId = $schedule->phase_id;
+        if (empty($scheduleIds)) {
+            return redirect()->back()->with('error', 'No schedule selected.');
+        }
 
-        // Check for existing active booking based on phase type using schedule relationship
-        if ($phaseId === 2) { // Practical Slot
-            $activeAndDoneCount = \App\Models\Booking::where('app_id', $application->app_id)
+        // Validate all schedules first
+        foreach ($scheduleIds as $id) {
+            $schedule = \App\Models\Schedule::find($id);
+            if (!$schedule || $schedule->slot <= 0) {
+                return redirect()->back()->with('error', 'One or more selected slots are unavailable.');
+            }
+        }
+
+        // Get phase from first schedule (assuming homogeneous bulk action)
+        $firstSchedule = \App\Models\Schedule::find($scheduleIds[0]);
+        $phaseId = $firstSchedule->phase_id;
+        $countToBook = count($scheduleIds);
+
+        // Validation based on Phase
+        if ($phaseId == 2) { // Practical Slot
+            // Check existing bookings (Pending + Confirmed + Completed/Done if restricting total lifetime slots? Usually just active limit)
+            // Requirement says "You can only have a maximum of 5 active practical slots." 
+            // Logic in blade: $isPracticalDone = $bookings->whereIn('booking_status', ['Done', 'Completed'])->count() >= 5;
+            // Here we check active count to prevent hoarding.
+            $activeBookingsCount = \App\Models\Booking::where('student_id', $studentId)
                 ->whereHas('schedule', function ($q) use ($phaseId) {
                     $q->where('phase_id', $phaseId);
                 })
-                ->whereIn('booking_status', ['Pending', 'Done'])
+                ->whereIn('booking_status', ['Pending', 'Confirmed'])
                 ->count();
 
-            if ($activeAndDoneCount >= 5) {
-                return redirect()->back()->with('error', 'You have reached the limit of 5 practical slots.');
+            if (($activeBookingsCount + $countToBook) > 5) {
+                return redirect()->back()->with('error', "Maximum 5 active slots allowed. You have {$activeBookingsCount} active, trying to book {$countToBook}.");
             }
         } else {
-            // Computer Test (1) or JPJ Test (3)
-            $hasActiveBooking = \App\Models\Booking::where('app_id', $application->app_id)
+            // Computer/JPJ - Single active booking allowed
+            $hasActiveBooking = \App\Models\Booking::where('student_id', $studentId)
                 ->whereHas('schedule', function ($q) use ($phaseId) {
                     $q->where('phase_id', $phaseId);
                 })
@@ -307,12 +328,12 @@ class BookingController extends Controller
                 ->exists();
 
             if ($hasActiveBooking) {
-                return redirect()->back()->with('error', 'You already have an active booking. You cannot book another slot unless your previous attempt failed.');
+                return redirect()->back()->with('error', 'You already have an active booking.');
             }
 
-            // Enforce Re-test Fee for Basic Package
+            // Re-test Fee Logic (JPJ)
             if ($phaseId === 3 && $application->package && $application->package->package_type === 'Basic') {
-                $failedAttempts = \App\Models\Attempt::where('app_id', $application->app_id) // Query Attempt directly
+                $failedAttempts = \App\Models\Attempt::where('student_id', $studentId)
                     ->where('phase_id', 3)
                     ->where('result', 'Failed')
                     ->count();
@@ -331,28 +352,31 @@ class BookingController extends Controller
             }
         }
 
-        $previousAttempts = \App\Models\Attempt::where('app_id', $application->app_id)
-            ->where('phase_id', $phaseId)
-            ->count();
+        // Create Bookings
+        foreach ($scheduleIds as $schedId) {
+            $previousAttempts = \App\Models\Attempt::where('student_id', $studentId)
+                ->where('phase_id', $phaseId)
+                ->count();
 
-        $previousAttempts = \App\Models\Attempt::where('app_id', $application->app_id)
-            ->where('phase_id', $phaseId)
-            ->count();
+            $attempt = \App\Models\Attempt::create([
+                'student_id' => $studentId,
+                'phase_id' => $phaseId,
+                'attempt_no' => $previousAttempts + 1,
+                'result' => 'Pending',
+            ]);
 
-        $attempt = \App\Models\Attempt::create([
-            'app_id' => $application->app_id,
-            'phase_id' => $phaseId,
-            'attempt_no' => $previousAttempts + 1,
-            'result' => 'Pending',
-        ]);
+            \App\Models\Booking::create([
+                'student_id' => $studentId,
+                'schedule_id' => $schedId,
+                'booking_status' => 'Pending',
+                'attempt_id' => $attempt->attempt_id,
+            ]);
 
-        \App\Models\Booking::create([
-            'app_id' => $application->app_id,
-            'schedule_id' => $request->schedule_id,
-            'booking_status' => 'Pending',
-            'attempt_id' => $attempt->attempt_id,
-        ]);
+            // Deduct slot from schedule
+            $s = \App\Models\Schedule::find($schedId);
+            $s->decrement('slot');
+        }
 
-        return redirect()->back()->with('success', 'Booking successful!');
+        return redirect()->back()->with('success', 'Booking(s) successful!');
     }
 }
