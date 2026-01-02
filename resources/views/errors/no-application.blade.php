@@ -25,7 +25,7 @@
 </head>
 
 <body class="font-poppins bg-gray-50 flex flex-col min-h-screen">
-    @include('header')
+    @include('ui.user.header')
 
     <main class="flex-grow flex items-center justify-center p-4">
         <div

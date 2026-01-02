@@ -66,7 +66,7 @@
 </head>
 
 <body class="font-poppins bg-gray-100 text-white">
-    @include('header')
+    @include('ui.user.header')
 
     @if(isset($hasActiveApplication) && $hasActiveApplication)
         <!-- Application Exists Modal -->
@@ -74,17 +74,19 @@
             <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 text-center m-4 animate-fadeIn">
                 <div class="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-6">
                     <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                
+
                 <h3 class="text-2xl font-bold text-gray-900 mb-2">Application Exists</h3>
-                
+
                 <p class="text-gray-500 mb-8 leading-relaxed">
                     You can apply again until you have completed the license that you applied for previously.
                 </p>
 
-                <a href="{{ route('home') }}" class="block w-full text-white bg-blue-800 hover:bg-blue-800 font-bold rounded-2xl text-lg px-5 py-4 text-center shadow-lg transition-all transform hover:-translate-y-0.5">
+                <a href="{{ route('home') }}"
+                    class="block w-full text-white bg-blue-800 hover:bg-blue-800 font-bold rounded-2xl text-lg px-5 py-4 text-center shadow-lg transition-all transform hover:-translate-y-0.5">
                     Back to Home
                 </a>
             </div>
@@ -327,8 +329,8 @@
 
                                     <div
                                         class="p-5 rounded-2xl border {{ $borderColor }} bg-white transition-all duration-300 shadow-sm 
-                                                                                        {{ $hoverBorder }} hover:shadow-md 
-                                                                                        {{ $checkedBorder }} {{ $checkedBg }} peer-checked:shadow-lg h-full flex flex-col justify-between">
+                                                                                                {{ $hoverBorder }} hover:shadow-md 
+                                                                                                {{ $checkedBorder }} {{ $checkedBg }} peer-checked:shadow-lg h-full flex flex-col justify-between">
 
                                         <div class="flex justify-between items-start mb-3">
                                             <div class="p-2 rounded-lg bg-gray-50 group-hover:bg-white transition-colors">
@@ -671,7 +673,7 @@
         </div>
     </section>
 
-    @include('footer')
+    @include('ui.user.footer')
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {

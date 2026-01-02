@@ -30,7 +30,7 @@
 </head>
 
 <body class="font-poppins bg-[#002D81]">
-    @include('header')
+    @include('ui.user.header')
     <!-- SUB NAV (tabs) -->
     <div class="bg-white border-b border-gray-200">
         <div
@@ -59,60 +59,53 @@
                         </div>
                         Computer Test
                     </a>
+
+                    <!-- Divider Arrow -->
+                    <svg class="w-5 h-5 text-black hidden sm:block" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+
+                    <!-- Practical Slot -->
+                    <a href="{{ route('practical') }}"
+                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('practical') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
+                        <div
+                            class="mr-2.5 {{ request()->routeIs('practical') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8h3c0 2.76 2.24 5 5 5s5-2.24 5-5h3c0 4.41-3.59 8-8 8z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12v-5">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l4 4">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l-4 4">
+                                </path>
+                            </svg>
+                        </div>
+                        Practical Slot
+                    </a>
+
+                    <!-- Divider Arrow -->
+                    <svg class="w-5 h-5 text-black hidden sm:block" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+
+                    <!-- JPJ Test -->
+                    <a href="{{ route('jpj') }}"
+                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('jpj') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
+                        <div
+                            class="mr-2.5 {{ request()->routeIs('jpj') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        JPJ Test
+                    </a>
                 </div>
             </nav>
-
-            @php
-                $studentId = \Illuminate\Support\Facades\Auth::id();
-
-                // Get Application to check payment type
-                $application = \App\Models\Application::where('student_id', $studentId)
-                    ->with('payment')
-                    ->latest()
-                    ->first();
-
-                $paymentType = $application && $application->payment ? $application->payment->payment_type : null;
-
-                // Check if user has passed Computer Test
-                $isComputerTestDone = \App\Models\Booking::whereHas('application', function ($q) use ($studentId) {
-                    $q->where('student_id', $studentId);
-                })
-                    ->where('phase_type', 'Computer Test')
-                    ->where('booking_status', 'Done')
-                    ->exists();
-            @endphp
-
-            @if($isComputerTestDone)
-                @if($paymentType === 'full')
-                    <a href="{{ route('practical') }}"
-                        class="flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95 font-semibold">
-                        <span>Next Phase</span>
-                        <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                @else
-                    <button
-                        class="open-payment-modal font-semibold flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95">
-                        <span>Next Phase</span>
-                        <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </button>
-                @endif
-            @else
-                <button disabled title="Complete Computer Test to unlock"
-                    class="flex items-center justify-center gap-2 px-5 py-3 bg-gray-300 text-gray-500 cursor-not-allowed text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm transition-all opacity-70">
-                    <span>Next Phase</span>
-                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                </button>
-            @endif
-
         </div>
     </div>
 
@@ -124,28 +117,8 @@
                     <div class="flex justify-between mb-3">
                         <div class="flex justify-center items-center mb-3 w-full">
                             <h5 class="text-2xl font-bold leading-none text-white text-center pe-2">
-                                Your Computer Test Slot
+                                JPJ Test Progress
                             </h5>
-                        </div>
-
-                        <div>
-                            <svg data-popover-target="chart-info" data-popover-placement="bottom"
-                                class="w-3.5 h-3.5 text-gray-400 hover:text-gray-200 cursor-pointer ms-1"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm0 16a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm1-5.034V12a1 1 0 0 1-2 0v-1.418a1 1 0 0 1 1.038-.999 1.436 1.436 0 0 0 1.488-1.441 1.501 1.501 0 1 0-3-.116.986.986 0 0 1-1.037.961 1 1 0 0 1-.96-1.037A3.5 3.5 0 1 1 11 11.466Z" />
-                            </svg>
-
-                            <div data-popover id="chart-info" role="tooltip"
-                                class="absolute z-10 invisible inline-block text-sm text-gray-300 transition-opacity duration-300 bg-gray-900 border border-gray-700 rounded-lg shadow-xs opacity-0 w-72">
-                                <div class="p-3 space-y-2">
-                                    <h3 class="font-semibold text-white">Activity growth - Incremental</h3>
-                                    <p>Report helps navigate cumulative growth of community activities. Ideally, the
-                                        chart should have a growing trend, as stagnating chart signifies a significant
-                                        decrease of community activity.</p>
-                                </div>
-                                <div data-popper-arrow></div>
-                            </div>
                         </div>
                     </div>
 
@@ -213,46 +186,90 @@
                         <div id="historyList" class="space-y-4">
                             @forelse($bookings as $booking)
                                 @php
+                                    // Attendance / Logistics Status
                                     $statusColor = match ($booking->booking_status) {
+                                        'Completed' => 'green',
                                         'Done' => 'green',
-                                        'Pending' => 'gray',
+                                        'Pending' => 'yellow',
                                         'Failed' => 'red',
-                                        default => 'blue'
+                                        'Confirmed' => 'blue',
+                                        default => 'gray'
                                     };
-                                    $iconColor = match ($booking->booking_status) {
-                                        'Done' => 'text-green-600 bg-green-50 group-hover:bg-green-600',
-                                        'Pending' => 'text-gray-600 bg-gray-50 group-hover:bg-gray-600',
-                                        'Failed' => 'text-red-600 bg-red-50 group-hover:bg-red-600',
-                                        default => 'text-blue-600 bg-blue-50 group-hover:bg-blue-600'
+
+                                    // Academic Result
+                                    $result = $booking->attempt ? $booking->attempt->result : 'N/A';
+                                    $resultColor = match ($result) {
+                                        'Pass' => 'green',
+                                        'Failed' => 'red',
+                                        'Pending' => 'gray',
+                                        'Completed' => 'blue', // For practical if used
+                                        default => 'gray'
                                     };
                                 @endphp
 
-                                <div class="history-item group flex justify-between items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
+                                <div class="history-item group flex flex-col sm:flex-row justify-between sm:items-center p-5 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
                                     data-status="{{ $booking->booking_status }}">
-                                    <div class="flex items-center gap-4">
-                                        <div
-                                            class="h-10 w-10 rounded-full flex items-center justify-center {{ $iconColor }} group-hover:text-white transition-colors">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                        </div>
+
+                                    <!-- Left: Date & Info -->
+                                    <div class="flex items-center gap-4 mb-4 sm:mb-0">
                                         <div class="flex flex-col">
-                                            <span class="text-sm text-gray-400 font-medium leading-none">Date</span>
-                                            <span class="text-base font-bold text-gray-800 leading-tight mt-1">
-                                                {{ \Carbon\Carbon::parse($booking->schedule->date)->format('d/m/Y') }}
+                                            <span
+                                                class="text-[10px] text-gray-400 font-extrabold uppercase tracking-widest leading-none mb-1">Test
+                                                Date</span>
+                                            <span class="text-base font-bold text-gray-800 leading-none">
+                                                {{ \Carbon\Carbon::parse($booking->schedule->date)->format('d M Y') }}
                                             </span>
                                         </div>
                                     </div>
 
-                                    <span
-                                        class="inline-flex items-center gap-2 px-4 py-3 border-2 border-{{ $statusColor }}-{{ $booking->booking_status == 'Done' ? '800' : ($booking->booking_status == 'Failed' ? '700' : '700') }} rounded-full text-xs font-bold uppercase tracking-wider bg-{{ $statusColor }}-{{ $booking->booking_status == 'Done' ? '400' : ($booking->booking_status == 'Failed' ? '500' : '300') }} text-{{ $statusColor }}-{{ $booking->booking_status == 'Done' ? '800' : ($booking->booking_status == 'Failed' ? 'white' : '700') }}">
-                                        {{ $booking->booking_status }}
-                                    </span>
+                                    <!-- Right: Statuses -->
+                                    <div
+                                        class="grid grid-cols-2 sm:flex sm:items-center gap-4 w-full sm:w-auto border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0 mt-2 sm:mt-0">
+
+                                        <!-- Attendance Status -->
+                                        <div class="flex flex-col items-start sm:items-end">
+                                            <span
+                                                class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Attendance</span>
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-{{ $statusColor }}-50 text-{{ $statusColor }}-700 border border-{{ $statusColor }}-100 whitespace-nowrap">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-{{ $statusColor }}-500"></span>
+                                                {{ $booking->booking_status }}
+                                            </span>
+                                        </div>
+
+                                        <!-- Divider (Desktop Only) -->
+                                        <div class="h-8 w-px bg-gray-200 hidden sm:block"></div>
+
+                                        <!-- Result Status -->
+                                        @if($booking->attempt)
+                                            <div class="flex flex-col items-start sm:items-end">
+                                                <span
+                                                    class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Result</span>
+                                                <span
+                                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-{{ $resultColor }}-50 text-{{ $resultColor }}-700 border border-{{ $resultColor }}-100 whitespace-nowrap">
+                                                    @if($result == 'Pass')
+                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M5 13l4 4L19 7"></path>
+                                                        </svg>
+                                                    @elseif($result == 'Failed')
+                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M6 18L18 6M6 6l12 12"></path>
+                                                        </svg>
+                                                    @else
+                                                        <span class="w-1.5 h-1.5 rounded-full bg-{{ $resultColor }}-500"></span>
+                                                    @endif
+                                                    {{ $result }}
+                                                </span>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             @empty
-                                <div class="text-center text-gray-400 py-4">No history found.</div>
+                                <div class="text-center py-8">
+                                    <p class="text-gray-500 font-medium">No booking history found.</p>
+                                </div>
                             @endforelse
                         </div>
                     </div>
@@ -263,7 +280,7 @@
             <main class="lg:col-span-8 flex flex-col">
                 <h1
                     class="text-xl sm:text-2xl font-bold mb-6 text-white text-center flex justify-center items-center gap-3">
-                    <span>Computer Slot</span>
+                    <span>JPJ Slot</span>
                     <span class="w-0.5 h-6 bg-white/30 hidden sm:block"></span>
                     <span class="hidden sm:block">
                         {{ optional($application->class)->class_code ?? 'N/A' }} -
@@ -442,12 +459,23 @@
                                                     d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                             </svg>
                                         </button>
+                                    @elseif(isset($paymentRequired) && $paymentRequired)
+                                        <button type="button" onclick="openFeeModal()"
+                                            class="inline-flex items-center justify-center px-5 py-2.5 overflow-hidden font-bold text-white transition-all duration-300 bg-gradient-to-br from-red-600 to-red-500 rounded-full hover:from-red-500 hover:to-red-400 focus:outline-none ring-offset-2 focus:ring-4 ring-red-300 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 hover:-translate-y-0.5 transform">
+                                            <span class="mr-2">Pay Now</span>
+                                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                            </svg>
+                                        </button>
                                     @else
                                         <button data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') }}"
                                             data-day="{{ $schedule->day }}"
                                             data-start="{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}"
                                             data-end="{{ \Carbon\Carbon::parse($schedule->time_out)->format('H:i') }}"
-                                            data-type="{{ $schedule->schedule_type }}" data-id="{{ $schedule->schedule_id }}"
+                                            data-type="{{ $schedule->phase->phase_name }}"
+                                            data-id="{{ $schedule->schedule_id }}"
                                             class="open-confirm-modal group relative inline-flex items-center justify-center px-6 py-2.5 overflow-hidden font-bold text-white transition-all duration-300 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full hover:from-blue-500 hover:to-indigo-500 focus:outline-none ring-offset-2 focus:ring-4 ring-blue-300 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transform">
                                             <span class="mr-2">Book</span>
                                             <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none"
@@ -507,7 +535,7 @@
                                     <img src="/image/icon/logo.png" class="h-14 w-14" alt="MDA Logo" />
                                     <div>
                                         <p class="font-bold text-gray-800">Molek Driving Academy</p>
-                                        <p class="text-sm text-gray-500">Computer Test</p>
+                                        <p class="text-sm text-gray-500">JPJ Test</p>
                                     </div>
                                 </div>
 
@@ -553,12 +581,18 @@
                                                     d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                             </svg>
                                         </button>
+                                    @elseif(isset($paymentRequired) && $paymentRequired)
+                                        <button type="button" onclick="openFeeModal()"
+                                            class="inline-flex items-center justify-center px-5 py-2 bg-gradient-to-r from-red-600 to-red-500 text-white text-sm font-bold rounded-full shadow-md shadow-red-500/30 hover:shadow-red-500/50 transition-all hover:-translate-y-0.5">
+                                            Pay Fee
+                                        </button>
                                     @else
                                         <button data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') }}"
                                             data-day="{{ $schedule->day }}"
                                             data-start="{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}"
                                             data-end="{{ \Carbon\Carbon::parse($schedule->time_out)->format('H:i') }}"
-                                            data-type="{{ $schedule->schedule_type }}" data-id="{{ $schedule->schedule_id }}"
+                                            data-type="{{ $schedule->phase->phase_name }}"
+                                            data-id="{{ $schedule->schedule_id }}"
                                             class="open-confirm-modal inline-flex items-center justify-center px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold rounded-full shadow-md shadow-blue-500/30 hover:shadow-blue-500/50 transition-all hover:-translate-y-0.5">
                                             Book
                                         </button>
@@ -614,7 +648,7 @@
         </div>
     </div>
 
-    @include('footer')
+    @include('ui.user.footer')
 
     <!-- Popup Modal -->
     <div id="confirmModal" tabindex="-1" aria-hidden="true"
@@ -686,63 +720,55 @@
         </div>
     </div>
 
-    <!-- Payment Modal -->
-    <div id="paymentModal" tabindex="-1" aria-hidden="true"
-        class="fixed inset-0 z-[60] flex items-center justify-center bg-gray-900/60 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
-        <div id="paymentModalContent"
-            class="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-8 text-center transform scale-90 transition-transform duration-300 overflow-hidden">
+    <!-- Fee Payment Modal -->
+    <div id="feeModal" tabindex="-1" aria-hidden="true"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div id="feeModalContent"
+            class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full mx-4 transform scale-90 transition-transform duration-300 text-center relative">
 
-            <!-- Decorative circle -->
+            <!-- Icon -->
             <div
-                class="absolute -top-10 -right-10 w-32 h-32 bg-blue-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
-            </div>
-            <div
-                class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
-            </div>
-
-            <!-- Close Button -->
-            <button type="button"
-                class="close-payment-modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 bg-transparent hover:bg-gray-50 rounded-full p-2 transition-colors z-10">
-                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
+                class="mx-auto w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-6 ring-8 ring-red-50/50">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-8 h-8 text-red-600">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                 </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
+            </div>
 
-            <!-- Modal Content -->
-            <div class="relative z-10 mt-2">
-                <div
-                    class="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-6 shadow-inner ring-4 ring-white">
-                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
-                        </path>
-                    </svg>
-                </div>
+            <div class="mt-2">
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">
+                    Payment Required
+                </h3>
+                <p class="text-base text-gray-500 mb-6 leading-relaxed px-4">
+                    You failed previous test so the next test will be charged for <span
+                        class="font-bold text-gray-800">RM 238.95</span>.
+                </p>
+                <p class="text-sm text-gray-400 mb-8 px-4">
+                    Please complete the payment to proceed with booking a new test.
+                </p>
+            </div>
 
-                <h3 class="text-2xl font-bold text-gray-900 mb-3">Payment Required</h3>
-
-                @if(isset($stage2Payment) && $stage2Payment)
-                    <div class="bg-gray-100 rounded-2xl p-6 mb-8 border border-gray-100">
-                        <span class="block text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">Stage 2
-                            Installment</span>
-                        <div class="flex items-start justify-center text-gray-900 mb-1">
-                            <span class="text-xl font-bold mr-1 mt-1">RM</span>
-                            <span
-                                class="text-5xl font-extrabold tracking-tight">{{ number_format($stage2Payment->amount, 2) }}</span>
-                        </div>
-                        <p class="text-gray-400 text-sm">Please clear this amount to proceed.</p>
-                    </div>
+            <div class="grid grid-cols-1 gap-4">
+                @if(isset($pendingPaymentId))
+                    <a href="{{ route('payment', ['payment_id' => $pendingPaymentId]) }}"
+                        class="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold hover:from-red-700 hover:to-red-600 shadow-lg shadow-red-600/30 hover:shadow-red-600/40 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                        <span>Pay Now</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
                 @else
-                    <p class="text-gray-500 mb-8 leading-relaxed text-sm">
-                        Complete your payment to unlock the next stage of your driving course. Secure and instant.
-                    </p>
+                    <button disabled
+                        class="w-full px-6 py-4 rounded-xl bg-gray-200 text-gray-500 font-bold cursor-not-allowed">
+                        Payment ID Missing
+                    </button>
                 @endif
 
-                <a href="{{ route('payment', ['payment_id' => $application->payment->payment_id]) }}"
-                    class="block w-full text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:ring-4 focus:ring-blue-300 font-bold rounded-2xl text-base px-5 py-4 text-center shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300">
-                    Proceed to Payment
+                <a href="{{ route('home') }}"
+                    class="text-gray-400 font-medium text-sm hover:text-gray-600 transition-colors">
+                    Back to Home
                 </a>
             </div>
         </div>
@@ -799,6 +825,55 @@
         });
     </script>
 
+    <!-- Payment Modal -->
+    <div id="paymentModal" tabindex="-1" aria-hidden="true"
+        class="fixed inset-0 z-[60] flex items-center justify-center bg-gray-900/60 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div id="paymentModalContent"
+            class="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-8 text-center transform scale-90 transition-transform duration-300 overflow-hidden">
+
+            <!-- Decorative circle -->
+            <div
+                class="absolute -top-10 -right-10 w-32 h-32 bg-blue-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
+            </div>
+            <div
+                class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
+            </div>
+
+            <!-- Close Button -->
+            <button type="button"
+                class="close-payment-modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 bg-transparent hover:bg-gray-50 rounded-full p-2 transition-colors z-10">
+                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+
+            <!-- Modal Content -->
+            <div class="relative z-10 mt-2">
+                <div
+                    class="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-6 shadow-inner ring-4 ring-white">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                        </path>
+                    </svg>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Payment Required</h3>
+
+                <p class="text-gray-500 mb-8 leading-relaxed text-sm">
+                    Complete your payment to unlock the next stage of your driving course. Secure and instant.
+                </p>
+
+                <button type="button"
+                    class="close-payment-modal w-full text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:ring-4 focus:ring-blue-300 font-bold rounded-2xl text-base px-5 py-4 text-center shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300">
+                    Proceed to Payment
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const confirmModal = document.getElementById('confirmModal');
@@ -851,6 +926,10 @@
                 }, 300);
             }
 
+            // Attach open listeners
+            // We use event delegation or re-attach if dynamic content,
+            // but for now simple attach is fine as content is loaded on page load.
+            // If filtering hides/shows them, listeners are still attached.
             openBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -1076,7 +1155,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             @php
                 $totalSlots = 1;
-                $doneCount = $bookings->where('booking_status', 'Done')->count();
+                $doneCount = $bookings->whereIn('booking_status', ['Done', 'Completed'])->count();
                 $remainingCount = max(0, $totalSlots - $doneCount);
             @endphp
 
@@ -1179,6 +1258,36 @@
         });
     </script>
 
+    <!-- Fee Modal Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fee Modal Logic
+            const feeModal = document.getElementById('feeModal');
+            const feeModalContent = document.getElementById('feeModalContent');
+
+            function openFeeModal() {
+                if (!feeModal) return;
+                feeModal.classList.remove('hidden');
+
+                // Trigger reflow force
+                void feeModal.offsetWidth;
+
+                feeModal.classList.remove('opacity-0');
+                if (feeModalContent) {
+                    feeModalContent.classList.remove('scale-90');
+                    feeModalContent.classList.add('scale-100');
+                }
+            }
+
+            // Expose globally for button click
+            window.openFeeModal = openFeeModal;
+
+            @if(isset($paymentRequired) && $paymentRequired)
+                // Auto open if payment required
+                setTimeout(openFeeModal, 500);
+            @endif
+        });
+    </script>
 </body>
 
 </html>

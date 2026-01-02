@@ -36,19 +36,15 @@
 </head>
 
 <body class="font-poppins bg-gray-100 text-gray-800">
-    @include('header')
+    @include('ui.user.header')
 
-    <div class="px-4 md:px-8 lg:px-12 xl:px-48 py-4 md:py-8 flex items-center justify-between gap-2">
-        <a href="{{ route('home') }}" class="text-blue-900 hover:text-blue-900 flex items-center">
-            <div
-                class="inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-blue-900 rounded-full flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 md:w-6 md:h-6 text-blue-900"
-                    stroke="currentColor" stroke-width="2" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
-                        clip-rule="evenodd" />
-                </svg>
-            </div>
+    <div class="px-4 md:px-8 lg:px-12 xl:px-48 py-8 md:py-12 flex items-center justify-between">
+        <a href="{{ route('home') }}"
+            class="group flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ring-1 ring-gray-100/50">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                stroke="currentColor" class="w-5 h-5 text-gray-400 group-hover:text-blue-900 transition-colors">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
         </a>
         <div class="flex-1 flex justify-center min-w-0">
             <div
@@ -151,7 +147,7 @@
         © 2025 Molek Driving Academy. All rights reserved.
     </footer>
 
-    @include('footer')
+    @include('ui.user.footer')
 
     <script>
         const buttons = document.querySelectorAll('.filter-btn');

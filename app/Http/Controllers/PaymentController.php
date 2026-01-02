@@ -27,7 +27,7 @@ class PaymentController extends Controller
             return redirect()->route('apply')->with('error', 'Please submit an application first.');
         }
 
-        return view('payment', compact('payment'));
+        return view('ui.user.payment', compact('payment'));
     }
 
     public function process(Request $request)

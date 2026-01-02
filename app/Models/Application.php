@@ -39,4 +39,34 @@ class Application extends Model
     {
         return $this->hasOne(Payment::class, 'app_id');
     }
+
+    public function updateStage()
+    {
+        $computerTest = $this->bookings()->whereHas('schedule', fn($q) => $q->where('phase_id', 1))->where('booking_status', 'Done')->exists();
+        $practicalTraining = $this->bookings()->whereHas('schedule', fn($q) => $q->where('phase_id', 2))->where('booking_status', 'Done')->count();
+        $jpjTest = $this->bookings()->whereHas('schedule', fn($q) => $q->where('phase_id', 3))->where('booking_status', 'Done')->exists();
+
+        if ($jpjTest) {
+            $this->update(['current_stage' => 'Completed']);
+            return;
+        }
+
+        if ($practicalTraining >= 5) {
+            $this->update(['current_stage' => 'Jpj Test']);
+            return;
+        }
+
+        if ($computerTest) {
+            $this->update(['current_stage' => 'Practical Training']);
+            return;
+        }
+
+        // Default or initial stage
+        $this->update(['current_stage' => 'Computer Test']);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'app_id');
+    }
 }

@@ -23,7 +23,7 @@
 </head>
 
 <body class="bg-gray-50 font-poppins min-h-screen">
-    @include('sidebar')
+    @include('ui.admin.sidebar')
 
     <div class="p-4 sm:ml-72 transition-all duration-300">
         <div class="p-2 mt-4">
@@ -146,7 +146,8 @@
                                         </div>
                                     </td>
                                     <td class="px-4 py-4">
-                                        <div class="flex items-center justify-center bg-blue-400 text-white px-2 py-3 rounded-full gap-2">
+                                        <div
+                                            class="flex items-center justify-center bg-blue-400 text-white px-2 py-3 rounded-full gap-2">
                                             JPJ Test
                                         </div>
                                     </td>
@@ -208,8 +209,9 @@
                                             1
                                         </div>
                                     </td>
-                                   <td class="px-4 py-4">
-                                        <div class="flex items-center justify-center bg-blue-200 text-blue-800 px-2 py-3 rounded-full gap-2">
+                                    <td class="px-4 py-4">
+                                        <div
+                                            class="flex items-center justify-center bg-blue-200 text-blue-800 px-2 py-3 rounded-full gap-2">
                                             Computer Test
                                         </div>
                                     </td>

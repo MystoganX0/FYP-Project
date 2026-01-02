@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Share history notification count with header view
-        \Illuminate\Support\Facades\View::composer('header', function ($view) {
+        \Illuminate\Support\Facades\View::composer('ui.user.header', function ($view) {
             $historyNotificationCount = 0;
 
             if (\Illuminate\Support\Facades\Auth::check()) {
@@ -35,8 +35,12 @@ class AppServiceProvider extends ServiceProvider
                     $computerTest = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
                         $query->where('student_id', $studentId);
                     })
-                        ->where('phase_type', 'Computer Test')
-                        ->where('booking_status', 'Done')
+                        ->whereHas('schedule', function ($q) {
+                            $q->where('phase_id', 1); // 1 = Computer Test
+                        })
+                        ->whereHas('attempt', function ($q) {
+                            $q->where('result', 'Pass');
+                        })
                         ->exists();
 
                     if ($computerTest) {
@@ -47,8 +51,10 @@ class AppServiceProvider extends ServiceProvider
                     $practicalCount = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
                         $query->where('student_id', $studentId);
                     })
-                        ->where('phase_type', 'Practical Slot')
-                        ->where('booking_status', 'Done')
+                        ->whereHas('schedule', function ($q) {
+                            $q->where('phase_id', 2); // 2 = Practical Slot
+                        })
+                        ->whereIn('booking_status', ['Done', 'Completed'])
                         ->count();
 
                     if ($practicalCount >= 5) {
@@ -59,8 +65,12 @@ class AppServiceProvider extends ServiceProvider
                     $jpjTest = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
                         $query->where('student_id', $studentId);
                     })
-                        ->where('phase_type', 'Jpj Test')
-                        ->where('booking_status', 'Done')
+                        ->whereHas('schedule', function ($q) {
+                            $q->where('phase_id', 3); // 3 = JPJ Test
+                        })
+                        ->whereHas('attempt', function ($q) {
+                            $q->where('result', 'Pass');
+                        })
                         ->exists();
 
                     if ($jpjTest) {
@@ -75,8 +85,12 @@ class AppServiceProvider extends ServiceProvider
                 $computerTestPassed = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
                     $query->where('student_id', $studentId);
                 })
-                    ->where('phase_type', 'Computer Test')
-                    ->where('booking_status', 'Done')
+                    ->whereHas('schedule', function ($q) {
+                        $q->where('phase_id', 1);
+                    })
+                    ->whereHas('attempt', function ($q) {
+                        $q->where('result', 'Pass');
+                    })
                     ->exists();
 
                 if ($computerTestPassed) {
@@ -86,8 +100,10 @@ class AppServiceProvider extends ServiceProvider
                     $practicalCount = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
                         $query->where('student_id', $studentId);
                     })
-                        ->where('phase_type', 'Practical Slot')
-                        ->where('booking_status', 'Done')
+                        ->whereHas('schedule', function ($q) {
+                            $q->where('phase_id', 2);
+                        })
+                        ->whereIn('booking_status', ['Done', 'Completed'])
                         ->count();
 
                     if ($practicalCount >= 5) {

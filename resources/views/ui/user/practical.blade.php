@@ -30,13 +30,29 @@
 </head>
 
 <body class="font-poppins bg-[#002D81]">
-    @include('header')
+    @include('ui.user.header')
     <!-- SUB NAV (tabs) -->
     <div class="bg-white border-b border-gray-200">
         <div
             class="px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
 
             <!-- Navigation Links -->
+            @php
+                $studentId = \Illuminate\Support\Facades\Auth::id();
+
+                // Get Application to check payment type
+                $application = \App\Models\Application::where('student_id', $studentId)
+                    ->with('payment')
+                    ->latest()
+                    ->first();
+
+                $paymentType = $application && $application->payment ? $application->payment->payment_type : null;
+                $activeBookingsCount = $bookings->where('booking_status', '!=', 'Absent')->count();
+
+                // Check completed practical slots
+                $completedPracticalSlots = $bookings->whereIn('booking_status', ['Done', 'Completed'])->count();
+                $isPracticalDone = $completedPracticalSlots >= 5;
+            @endphp
             <nav class="flex-1 w-full md:w-auto">
                 <div class="flex flex-wrap justify-center md:justify-start items-center gap-2 p-1">
 
@@ -85,39 +101,8 @@
                         </div>
                         Practical Slot
                     </a>
-                </div>
+
             </nav>
-
-            @php
-                $studentId = \Illuminate\Support\Facades\Auth::id();
-
-                // Get Application to check payment type
-                $application = \App\Models\Application::where('student_id', $studentId)
-                    ->with('payment')
-                    ->latest()
-                    ->first();
-
-                $paymentType = $application && $application->payment ? $application->payment->payment_type : null;
-
-                // Check if user has passed Computer Test
-                $isComputerTestDone = \App\Models\Booking::whereHas('application', function ($q) use ($studentId) {
-                    $q->where('student_id', $studentId);
-                })
-                    ->where('phase_type', 'Computer Test')
-                    ->where('booking_status', 'Done')
-                    ->exists();
-
-                // Check completed practical slots
-                $completedPracticalSlots = \App\Models\Booking::whereHas('application', function ($q) use ($studentId) {
-                    $q->where('student_id', $studentId);
-                })
-                    ->where('phase_type', 'Practical Slot')
-                    ->where('booking_status', 'Done')
-                    ->count();
-
-                $isPracticalDone = $completedPracticalSlots >= 5;
-
-            @endphp
 
             @if($isPracticalDone)
                 @if($paymentType === 'full')
@@ -160,28 +145,8 @@
                     <div class="flex justify-between mb-3">
                         <div class="flex justify-center items-center mb-3 w-full">
                             <h5 class="text-2xl font-bold leading-none text-white text-center pe-2">
-                                Your Training Slot
+                                Practical Progress
                             </h5>
-                        </div>
-
-                        <div>
-                            <svg data-popover-target="chart-info" data-popover-placement="bottom"
-                                class="w-3.5 h-3.5 text-gray-400 hover:text-gray-200 cursor-pointer ms-1"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm0 16a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm1-5.034V12a1 1 0 0 1-2 0v-1.418a1 1 0 0 1 1.038-.999 1.436 1.436 0 0 0 1.488-1.441 1.501 1.501 0 1 0-3-.116.986.986 0 0 1-1.037.961 1 1 0 0 1-.96-1.037A3.5 3.5 0 1 1 11 11.466Z" />
-                            </svg>
-
-                            <div data-popover id="chart-info" role="tooltip"
-                                class="absolute z-10 invisible inline-block text-sm text-gray-300 transition-opacity duration-300 bg-gray-900 border border-gray-700 rounded-lg shadow-xs opacity-0 w-72">
-                                <div class="p-3 space-y-2">
-                                    <h3 class="font-semibold text-white">Activity growth - Incremental</h3>
-                                    <p>Report helps navigate cumulative growth of community activities. Ideally, the
-                                        chart should have a growing trend, as stagnating chart signifies a significant
-                                        decrease of community activity.</p>
-                                </div>
-                                <div data-popper-arrow></div>
-                            </div>
                         </div>
                     </div>
 
@@ -249,46 +214,56 @@
                         <div id="historyList" class="space-y-4">
                             @forelse($bookings as $booking)
                                 @php
+                                    // Attendance / Logistics Status
                                     $statusColor = match ($booking->booking_status) {
+                                        'Completed' => 'green',
                                         'Done' => 'green',
-                                        'Pending' => 'gray',
+                                        'Pending' => 'yellow',
                                         'Failed' => 'red',
-                                        default => 'blue'
+                                        'Confirmed' => 'blue',
+                                        default => 'gray'
                                     };
-                                    $iconColor = match ($booking->booking_status) {
-                                        'Done' => 'text-green-600 bg-green-50 group-hover:bg-green-600',
-                                        'Pending' => 'text-gray-600 bg-gray-50 group-hover:bg-gray-600',
-                                        'Failed' => 'text-red-600 bg-red-50 group-hover:bg-red-600',
-                                        default => 'text-blue-600 bg-blue-50 group-hover:bg-blue-600'
-                                    };
+
+
                                 @endphp
 
-                                <div class="history-item group flex justify-between items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
+                                <div class="history-item group flex flex-col sm:flex-row justify-between sm:items-center p-5 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
                                     data-status="{{ $booking->booking_status }}">
-                                    <div class="flex items-center gap-4">
-                                        <div
-                                            class="h-10 w-10 rounded-full flex items-center justify-center {{ $iconColor }} group-hover:text-white transition-colors">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                        </div>
+
+                                    <!-- Left: Date & Info -->
+                                    <div class="flex items-center gap-4 mb-4 sm:mb-0">
                                         <div class="flex flex-col">
-                                            <span class="text-sm text-gray-400 font-medium leading-none">Date</span>
-                                            <span class="text-base font-bold text-gray-800 leading-tight mt-1">
-                                                {{ \Carbon\Carbon::parse($booking->schedule->date)->format('d/m/Y') }}
+                                            <span
+                                                class="text-[10px] text-gray-400 font-extrabold uppercase tracking-widest leading-none mb-1">Test
+                                                Date</span>
+                                            <span class="text-base font-bold text-gray-800 leading-none">
+                                                {{ \Carbon\Carbon::parse($booking->schedule->date)->format('d M Y') }}
                                             </span>
                                         </div>
                                     </div>
 
-                                    <span
-                                        class="inline-flex items-center gap-2 px-4 py-3 border-2 border-{{ $statusColor }}-{{ $booking->booking_status == 'Done' ? '800' : ($booking->booking_status == 'Failed' ? '700' : '700') }} rounded-full text-xs font-bold uppercase tracking-wider bg-{{ $statusColor }}-{{ $booking->booking_status == 'Done' ? '400' : ($booking->booking_status == 'Failed' ? '500' : '300') }} text-{{ $statusColor }}-{{ $booking->booking_status == 'Done' ? '800' : ($booking->booking_status == 'Failed' ? 'white' : '700') }}">
-                                        {{ $booking->booking_status }}
-                                    </span>
+                                    <!-- Right: Statuses -->
+                                    <div
+                                        class="grid grid-cols-2 sm:flex sm:items-center gap-4 w-full sm:w-auto border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0 mt-2 sm:mt-0">
+
+                                        <!-- Attendance Status -->
+                                        <div class="flex flex-col items-start sm:items-end">
+                                            <span
+                                                class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Attendance</span>
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-{{ $statusColor }}-50 text-{{ $statusColor }}-700 border border-{{ $statusColor }}-100 whitespace-nowrap">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-{{ $statusColor }}-500"></span>
+                                                {{ $booking->booking_status }}
+                                            </span>
+                                        </div>
+
+
+                                    </div>
                                 </div>
                             @empty
-                                <div class="text-center text-gray-400 py-4">No history found.</div>
+                                <div class="text-center py-8">
+                                    <p class="text-gray-500 font-medium">No booking history found.</p>
+                                </div>
                             @endforelse
                         </div>
                     </div>
@@ -384,8 +359,8 @@
                                     </svg>
                                 </div>
                             </div>
-                            <button id="searchBtn"
-                                class="w-full sm:w-auto text-white font-semibold bg-[#0E1F8E] hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-xl text-sm px-7 py-3 text-center inline-flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg transform active:scale-95">
+                           <button id="searchBtn"
+                                class="w-full sm:w-auto text-white bg-gradient-to-r from-[#0E1F8E] to-blue-800 hover:from-indigo-900 hover:to-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-7 py-3 text-center inline-flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-900/30 hover:shadow-blue-900/50 hover:-translate-y-0.5 active:scale-95">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -467,6 +442,16 @@
                                                     d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </button>
+                                    @elseif($activeBookingsCount >= 5)
+                                        <button disabled
+                                            class="inline-flex items-center justify-center px-5 py-2.5 rounded-full font-bold text-sm text-gray-500 bg-gray-100 border border-gray-200 cursor-not-allowed opacity-80 shadow-sm transition-all">
+                                            <span class="mr-2">Book</span>
+                                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                            </svg>
+                                        </button>
                                     @elseif(isset($hasActiveBooking) && $hasActiveBooking)
                                         <button disabled
                                             class="inline-flex items-center justify-center px-5 py-2.5 rounded-full font-bold text-sm text-gray-500 bg-gray-100 border border-gray-200 cursor-not-allowed opacity-80 shadow-sm transition-all">
@@ -482,7 +467,8 @@
                                             data-day="{{ $schedule->day }}"
                                             data-start="{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}"
                                             data-end="{{ \Carbon\Carbon::parse($schedule->time_out)->format('H:i') }}"
-                                            data-type="{{ $schedule->schedule_type }}" data-id="{{ $schedule->schedule_id }}"
+                                            data-type="{{ $schedule->phase->phase_name }}"
+                                            data-id="{{ $schedule->schedule_id }}"
                                             class="open-confirm-modal group relative inline-flex items-center justify-center px-6 py-2.5 overflow-hidden font-bold text-white transition-all duration-300 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full hover:from-blue-500 hover:to-indigo-500 focus:outline-none ring-offset-2 focus:ring-4 ring-blue-300 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transform">
                                             <span class="mr-2">Book</span>
                                             <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none"
@@ -579,6 +565,16 @@
                                             class="px-4 py-2 rounded-full font-bold text-xs text-red-500 bg-red-50 border border-red-100 cursor-not-allowed uppercase tracking-wider">
                                             Booked
                                         </button>
+                                    @elseif($activeBookingsCount >= 5)
+                                        <button disabled
+                                            class="px-4 py-2 rounded-full font-bold text-xs text-gray-500 bg-gray-100 border border-gray-200 cursor-not-allowed uppercase tracking-wider">
+                                            <span class="mr-2">Book</span>
+                                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                            </svg>
+                                        </button>
                                     @elseif(isset($hasActiveBooking) && $hasActiveBooking)
                                         <button disabled
                                             class="px-4 py-2 rounded-full font-bold text-xs text-gray-500 bg-gray-100 border border-gray-200 cursor-not-allowed uppercase tracking-wider">
@@ -594,7 +590,8 @@
                                             data-day="{{ $schedule->day }}"
                                             data-start="{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}"
                                             data-end="{{ \Carbon\Carbon::parse($schedule->time_out)->format('H:i') }}"
-                                            data-type="{{ $schedule->schedule_type }}" data-id="{{ $schedule->schedule_id }}"
+                                            data-type="{{ $schedule->phase->phase_name }}"
+                                            data-id="{{ $schedule->schedule_id }}"
                                             class="open-confirm-modal inline-flex items-center justify-center px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold rounded-full shadow-md shadow-blue-500/30 hover:shadow-blue-500/50 transition-all hover:-translate-y-0.5">
                                             Book
                                         </button>
@@ -653,7 +650,7 @@
     </div>
     </div>
 
-    @include('footer')
+    @include('ui.user.footer')
 
     <!-- Popup Modal -->
     <div id="confirmModal" tabindex="-1" aria-hidden="true"
@@ -1113,7 +1110,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             @php
                 $totalSlots = 5;
-                $doneCount = $bookings->where('booking_status', 'Done')->count();
+                $doneCount = $bookings->whereIn('booking_status', ['Done', 'Completed'])->count();
                 $remainingCount = max(0, $totalSlots - $doneCount);
             @endphp
 

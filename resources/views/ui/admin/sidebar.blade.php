@@ -98,6 +98,20 @@
                     </a>
                 </li>
 
+                <!-- Manage Bookings -->
+                <li>
+                    <a href="{{ route('admin.bookings.index') }}"
+                        class="flex items-center p-3 rounded-xl group transition-all duration-200 border border-transparent {{ request()->routeIs('admin.bookings.index') ? 'bg-white text-blue-900 shadow-lg scale-[1.02]' : 'text-white hover:bg-white/10 hover:border-white/5' }}">
+                        <svg class="w-6 h-6 transition-colors {{ request()->routeIs('admin.bookings.index') ? 'text-[#0E1F8E]' : 'text-blue-200 group-hover:text-white' }}"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                            </path>
+                        </svg>
+                        <span class="ms-3 font-semibold">Manage Bookings</span>
+                    </a>
+                </li>
+
                 <!-- Booking Dropdown -->
                 <li>
                     <button type="button"

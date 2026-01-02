@@ -23,9 +23,13 @@ class ProfileController extends Controller
         $computerTest = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
             $query->where('student_id', $studentId);
         })
-            ->where('phase_type', 'Computer Test')
-            ->where('booking_status', 'Done')
-            ->with('schedule')
+            ->whereHas('schedule', function ($q) {
+                $q->where('phase_id', 1);
+            })
+            ->whereHas('attempt', function ($q) {
+                $q->where('result', 'Pass');
+            })
+            ->with(['schedule', 'attempt'])
             ->latest()
             ->first();
 
@@ -33,8 +37,10 @@ class ProfileController extends Controller
         $practicalBookings = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
             $query->where('student_id', $studentId);
         })
-            ->where('phase_type', 'Practical Slot')
-            ->where('booking_status', 'Done')
+            ->whereHas('schedule', function ($q) {
+                $q->where('phase_id', 2);
+            })
+            ->whereIn('booking_status', ['Done', 'Completed'])
             ->with('schedule')
             ->orderBy('created_at', 'asc') // Order by completion sequence
             ->get();
@@ -43,13 +49,15 @@ class ProfileController extends Controller
         $jpjTest = \App\Models\Booking::whereHas('application', function ($query) use ($studentId) {
             $query->where('student_id', $studentId);
         })
-            ->where('phase_type', 'Jpj Test')
+            ->whereHas('schedule', function ($q) {
+                $q->where('phase_id', 3);
+            })
             ->where('booking_status', 'Done')
             ->with('schedule')
             ->latest()
             ->first();
 
-        return view('history', compact('application', 'computerTest', 'practicalBookings', 'jpjTest'));
+        return view('ui.user.history', compact('application', 'computerTest', 'practicalBookings', 'jpjTest'));
     }
 
     /**

@@ -28,19 +28,16 @@
 </head>
 
 <body class="font-poppins bg-gray-50 text-gray-800 flex flex-col min-h-screen">
-    @include('header')
+    @include('ui.user.header')
 
     <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div class="flex items-center justify-between gap-4 mb-8">
             <a href="{{ route('home') }}" class="group flex items-center outline-none">
                 <div
-                    class="inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-blue-900 rounded-full group-hover:bg-blue-50 transition-colors duration-200 shadow-sm flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                        class="w-5 h-5 md:w-6 md:h-6 text-blue-900" stroke="currentColor" stroke-width="2"
-                        fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
-                            clip-rule="evenodd" />
+                    class="group flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ring-1 ring-gray-100/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                        stroke="currentColor" class="w-5 h-5 text-gray-400 group-hover:text-blue-900 transition-colors">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                     </svg>
                 </div>
             </a>
@@ -126,11 +123,11 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="text-xs font-semibold text-gray-500 uppercase">Test Type</label>
-                                    <p class="font-medium text-gray-900">{{ $jpjTest->phase_type }} (KPP03)</p>
+                                    <p class="font-medium text-gray-900">{{ $jpjTest->schedule->phase->phase_name }} (KPP03)</p>
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-gray-500 uppercase">Attempt Number</label>
-                                    <p class="font-medium text-gray-900">{{ $jpjTest->attempt_no }}</p>
+                                    <p class="font-medium text-gray-900">{{ $jpjTest->attempt->attempt_no }}</p>
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-gray-500 uppercase">Date Test</label>
@@ -316,11 +313,11 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="text-xs font-semibold text-gray-500 uppercase">Test Type</label>
-                                    <p class="font-medium text-gray-900">{{ $computerTest->phase_type }}</p>
+                                    <p class="font-medium text-gray-900">{{ $computerTest->schedule->phase->phase_name }}</p>
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-gray-500 uppercase">Attempt Number</label>
-                                    <p class="font-medium text-gray-900">{{ $computerTest->attempt_no }}</p>
+                                    <p class="font-medium text-gray-900">{{ $computerTest->attempt->attempt_no }}</p>
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold text-gray-500 uppercase">Date</label>
@@ -578,7 +575,7 @@
 
     </main>
 
-    @include('footer')
+    @include('ui.user.footer')
 
 </body>
 

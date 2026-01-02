@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Booking extends Model
+class Attempt extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'booking_id';
-
+    protected $primaryKey = 'attempt_id';
     protected $guarded = [];
 
     public function application()
@@ -18,13 +17,13 @@ class Booking extends Model
         return $this->belongsTo(Application::class, 'app_id');
     }
 
-    public function schedule()
+    public function phase()
     {
-        return $this->belongsTo(Schedule::class, 'schedule_id');
+        return $this->belongsTo(Phase::class, 'phase_id');
     }
 
-    public function attempt()
+    public function bookings()
     {
-        return $this->belongsTo(Attempt::class, 'attempt_id');
+        return $this->hasMany(Booking::class, 'attempt_id');
     }
 }

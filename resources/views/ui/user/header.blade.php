@@ -83,7 +83,7 @@
 
                         <button id="openLoginModal"
                             class="ml-6 px-6 py-2.5 bg-white text-primary font-bold rounded-full hover:bg-gray-100 hover:-translate-y-0.5 transition-all shadow-lg text-base">
-                            SIGN IN
+                            LOGIN
                         </button>
                     @endguest
 
@@ -146,7 +146,7 @@
                                     @csrf
                                     <button type="submit"
                                         class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-medium transition-colors">
-                                        Sign out
+                                        Logout
                                     </button>
                                 </form>
                             </div>
@@ -190,7 +190,7 @@
                     <div class="pt-4 mt-4 border-t border-gray-800">
                         <button id="openLoginModalMobile"
                             class="w-full py-3.5 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-500 hover:to-red-600 shadow-lg shadow-red-900/20 transition-all flex items-center justify-center gap-2">
-                            <span>Sign In</span>
+                            <span>Login</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd"
                                     d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z"
@@ -264,8 +264,8 @@
             <!-- Logo and Title -->
             <div class="text-center max-w-md mx-auto">
                 <img src="{{ asset('/image/icon/logo.png') }}" alt="logo" class="w-20 sm:w-28 md:w-32 mx-auto">
-                <h2 class="text-lg sm:text-xl font-bold mt-6">Welcome to Molek Driving Academy</h2>
-                <p class="text-sm text-gray-600 mt-1">Sign-in to enjoy experience with us</p>
+                <h2 class="text-2xl sm:text-3xl font-bold mt-3 text-blue-900 tracking-tight">LOGIN</h2>
+                <p class="text-sm text-gray-500 mt-2 font-medium">Login to enjoy experience with us</p>
 
                 <!-- Error Notification -->
                 @if ($errors->any())

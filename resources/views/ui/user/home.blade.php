@@ -47,7 +47,7 @@
 </head>
 
 <body class="font-poppins">
-    @include('header')
+    @include('ui.user.header')
 
     <section id="hero-banner" class="relative overflow-hidden h-[700px]">
         <div id="slides"
@@ -82,8 +82,8 @@
                         <h1
                             class="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] mb-8 drop-shadow-2xl font-poppins text-white">
                             WELCOME TO <br />
-                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">DRIVING
-                                ACADEMY</span>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">MOLEK
+                                DRIVING ACADEMY</span>
                         </h1>
 
                         <!-- Description with border -->
@@ -113,7 +113,7 @@
             </div>
 
             <!-- Slide 2: Official License Website Style -->
-             <div class="slide w-full flex-shrink-0 relative">
+            <div class="slide w-full flex-shrink-0 relative">
                 <div class="absolute inset-0 bg-cover bg-center"
                     style="background-image: url('/image/home/banner.gif');"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
@@ -126,10 +126,11 @@
                             </span>
                             <span class="h-[3px] w-16 bg-red-600 shadow-[0_0_15px_rgba(220,38,38,0.8)]"></span>
                         </div>
-                        <h1 class="text-5xl md:text-6xl font-black leading-tight tracking-tight neon-white drop-shadow-2xl mb-6 uppercase">
+                        <h1
+                            class="text-5xl md:text-6xl font-black leading-tight tracking-tight neon-white drop-shadow-2xl mb-6 uppercase">
                             " Get Your License With Us " <br class="hidden md:block" />
                         </h1>
-                        
+
                         <div class="mt-10 flex flex-wrap justify-center gap-5">
                             <!-- <a href="#classes"
                                 class="px-10 py-4 bg-red-600 text-white font-bold rounded-full hover:bg-red-700 shadow-lg shadow-red-600/40 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm">
@@ -143,7 +144,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
 
         <!-- Carousel indicators -->
@@ -227,10 +228,13 @@
                         </div>
 
                         <p class="text-gray-600 text-lg leading-relaxed mb-6 text-justify">
-                            Established in 1998, Molek Driving Academy is recognized by the Road Transport Department of Malaysia as a premier driving institute.
+                            Established in 1998, Molek Driving Academy is recognized by the Road Transport Department of
+                            Malaysia as a premier driving institute.
                         </p>
                         <p class="text-gray-600 text-lg leading-relaxed text-justify mb-8">
-                            With strategic campuses in Kampung Melayu Subang and Bandar Bukit Puchong 2, we are dedicated to providing top-tier professional training for both local and international candidates.
+                            With strategic campuses in Kampung Melayu Subang and Bandar Bukit Puchong 2, we are
+                            dedicated to providing top-tier professional training for both local and international
+                            candidates.
                         </p>
                     </div>
                     <div class="order-1 md:order-2 relative group">
@@ -442,7 +446,7 @@
             <!-- View All Button -->
             <div class="mt-8">
                 <a href="{{ route('class') }}"
-                    class="inline-block rounded-3xl bg-red-600 px-12 py-4 text-white font-bold shadow hover:bg-red-500 transition">
+                    class="group relative px-10 py-4 bg-red-600 text-white font-bold uppercase tracking-wider overflow-hidden rounded-full hover:bg-red-600 transition-all shadow-lg hover:shadow-red-600/50 hover:-translate-y-1">
                     View All
                 </a>
             </div>
@@ -635,7 +639,7 @@
         </svg>
     </button>
 
-    @include('footer')
+    @include('ui.user.footer')
 
     <script>
         const slidesContainer = document.getElementById("slides");

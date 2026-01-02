@@ -22,7 +22,7 @@ class ApplyController extends Controller
             $hasActiveApplication = Application::where('student_id', Auth::id())->exists();
         }
 
-        return view('apply', compact('classes', 'packages', 'hasActiveApplication'));
+        return view('ui.user.apply', compact('classes', 'packages', 'hasActiveApplication'));
     }
 
     public function store(Request $request)
@@ -56,7 +56,7 @@ class ApplyController extends Controller
             $app->phone = $request->phone;
             $app->address = $request->address;
             $app->ic_file = $path;
-            $app->current_stage = 'theory class session';
+            $app->current_stage = 'Computer Test';
             $app->class_id = $request->class_id;
             $app->package_id = $request->package_id;
             $app->save();
@@ -111,9 +111,9 @@ class ApplyController extends Controller
 
     public function applied()
     {
-        $student_id = Auth::id() ?? 1; // Fallback
+        $student_id = Auth::id() ?? 1;
         $applications = Application::where('student_id', $student_id)->with(['payment', 'payment.details', 'class', 'package'])->get();
-        return view('applied', compact('applications'));
+        return view('ui.admin.applied', compact('applications'));
     }
 }
 

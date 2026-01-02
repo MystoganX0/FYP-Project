@@ -23,7 +23,7 @@
 </head>
 
 <body class="bg-gray-50 font-poppins min-h-screen">
-    @include('sidebar')
+    @include('ui.admin.sidebar')
 
     <div class="p-4 sm:ml-72 transition-all duration-300">
         <div class="p-2 mt-4">

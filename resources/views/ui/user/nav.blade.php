@@ -121,8 +121,12 @@
                 $isComputerTestDone = \App\Models\Booking::whereHas('application', function ($q) use ($studentId) {
                     $q->where('student_id', $studentId);
                 })
-                    ->where('phase_type', 'Computer Test')
-                    ->where('booking_status', 'Done')
+                    ->whereHas('schedule', function ($q) {
+                        $q->where('phase_id', 1);
+                    })
+                    ->whereHas('attempt', function ($q) {
+                        $q->where('result', 'Pass');
+                    })
                     ->exists();
             @endphp
 
