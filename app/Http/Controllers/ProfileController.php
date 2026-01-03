@@ -46,8 +46,10 @@ class ProfileController extends Controller
             ->whereHas('schedule', function ($q) {
                 $q->where('phase_id', 3);
             })
-            ->where('booking_status', 'Done')
-            ->with('schedule')
+            ->whereHas('attempt', function ($q) {
+                $q->where('result', 'Pass');
+            })
+            ->with(['schedule', 'attempt'])
             ->latest()
             ->first();
 

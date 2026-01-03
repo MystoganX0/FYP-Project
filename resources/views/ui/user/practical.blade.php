@@ -301,19 +301,29 @@
                 @endif
 
                 @if(isset($hasActiveBooking) && $hasActiveBooking)
-                    <div class="flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
-                        role="alert">
-                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                        </svg>
-                        <span class="sr-only">Info</span>
-                        <div>
-                            <span class="font-medium">Note:</span> You have reached the limit of 5 practical training slots.
-                            You cannot book any more slots.
-                        </div>
-                    </div>
+                    <div x-data="{ show: true , progress: 0 }" x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)" x-show="show" x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-95"
+                                class="mb-6 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden" role="alert">
+                                    <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="text-white font-bold text-lg mb-2">Active Booking</h4>
+                                        <p class="text-blue-100 text-sm leading-relaxed">
+                                            You have reached the limit of 5 practical training slots. You cannot book any more slots.
+                                        </p>
+                                    </div>
+                                    <button @click="show = false" type="button" class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-blue-300 hover:text-blue-100 rounded-lg hover:bg-blue-600/20 transition-colors">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </button>
+                                    <!-- Progress Bar -->
+                                    <div class="absolute bottom-0 left-0 h-1 bg-blue-500/30 rounded-b-2xl transition-all duration-100" :style="`width: ${progress}%`"></div>
+                                </div>
                 @endif
 
                 <!-- Schedule Table -->
@@ -466,102 +476,107 @@
                         </div>
 
                         <!-- Search Group -->
-                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                            <div class="relative w-full sm:w-72" x-data="calendarFilter()" x-init="initCalendar()"
-                                @click.away="open = false">
+                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
+                            x-data="calendarFilter()" x-init="initCalendar()">
+                            <div class="relative w-full sm:w-72" @click.away="open = false">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none z-10">
+                                    <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
 
-                                <!-- Hidden Native Input -->
+                                <!-- Input trigger -->
+                                <div @click="open = !open"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 cursor-pointer hover:bg-white transition-all select-none flex items-center justify-between">
+                                    <span x-text="displayText" class="font-medium">All Months</span>
+                                    <svg class="w-4 h-4 text-gray-400 transition-transform duration-200"
+                                        :class="{'rotate-180': open}" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+
+                                <!-- Hidden Input for Form/JS -->
                                 <input type="hidden" id="month" value="all">
 
-                                <!-- Trigger Button -->
-                                <button @click="open = !open" type="button"
-                                    class="relative w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-[#0BCE83] focus:border-[#0BCE83] block pl-10 pr-10 p-2.5 outline-none transition-all cursor-pointer hover:bg-white hover:border-gray-400 text-left flex items-center justify-between">
-
-                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                                clip-rule="evenodd"></path>
-                                        </svg>
-                                    </span>
-
-                                    <span x-text="displayText" class="truncate font-medium"></span>
-
-                                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 transition-transform duration-200"
-                                            :class="{'rotate-180': open}" aria-hidden="true" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </span>
-                                </button>
-
-                                <!-- Calendar Dropdown -->
+                                <!-- Dropdown Calendar -->
                                 <div x-show="open" x-transition:enter="transition ease-out duration-100"
                                     x-transition:enter-start="transform opacity-0 scale-95"
                                     x-transition:enter-end="transform opacity-100 scale-100"
                                     x-transition:leave="transition ease-in duration-75"
                                     x-transition:leave-start="transform opacity-100 scale-100"
                                     x-transition:leave-end="transform opacity-0 scale-95"
-                                    class="absolute z-50 w-full sm:w-80 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 p-4"
-                                    style="display: none;">
+                                    class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
 
                                     <!-- Header -->
-                                    <div class="flex items-center justify-between mb-4">
-                                        <button @click="prevMonth()"
-                                            class="p-1 hover:bg-gray-100 rounded-full transition-colors text-gray-600">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div
+                                        class="flex items-center justify-between p-3 border-b border-gray-100 bg-gray-50">
+                                        <button @click="prevMonth()" type="button"
+                                            class="p-1 hover:bg-gray-200 rounded-lg transition-colors">
+                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 19l-7-7 7-7"></path>
+                                                    d="M15 19l-7-7 7-7" />
                                             </svg>
                                         </button>
-                                        <div class="font-bold text-gray-800 text-lg"
-                                            x-text="monthNames[month] + ' ' + year"></div>
-                                        <button @click="nextMonth()"
-                                            class="p-1 hover:bg-gray-100 rounded-full transition-colors text-gray-600">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <span class="font-bold text-gray-800"
+                                            x-text="monthNames[month] + ' ' + year"></span>
+                                        <button @click="nextMonth()" type="button"
+                                            class="p-1 hover:bg-gray-200 rounded-lg transition-colors">
+                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 5l7 7-7 7"></path>
+                                                    d="M9 5l7 7-7 7" />
                                             </svg>
                                         </button>
                                     </div>
 
-                                    <!-- Weekdays -->
-                                    <div class="grid grid-cols-7 mb-2 text-center">
-                                        <template x-for="day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']">
-                                            <div class="text-xs font-semibold text-gray-400 py-1" x-text="day"></div>
-                                        </template>
+                                    <!-- Quick Select Month -->
+                                    <div class="p-2 border-b border-gray-100">
+                                        <button @click="selectMonth()"
+                                            class="w-full py-2 text-sm text-blue-600 font-semibold hover:bg-blue-50 rounded-lg transition-colors">
+                                            Select Whole Month
+                                        </button>
                                     </div>
 
-                                    <!-- Days Grid -->
-                                    <div class="grid grid-cols-7 gap-1 text-center text-sm">
-                                        <template x-for="blank in blanks">
-                                            <div class="h-8"></div>
-                                        </template>
-                                        <template x-for="date in no_of_days">
-                                            <div @click="selectDate(date)"
-                                                class="h-8 w-8 mx-auto flex items-center justify-center rounded-full text-gray-700 font-medium transition-colors hover:bg-gray-100 cursor-pointer"
-                                                :class="{
+                                    <!-- Calendar Grid -->
+                                    <div class="p-3">
+                                        <div
+                                            class="grid grid-cols-7 mb-2 text-center text-xs font-medium text-gray-400">
+                                            <div>Su</div>
+                                            <div>Mo</div>
+                                            <div>Tu</div>
+                                            <div>We</div>
+                                            <div>Th</div>
+                                            <div>Fr</div>
+                                            <div>Sa</div>
+                                        </div>
+                                        <div class="grid grid-cols-7 gap-1 text-center text-sm">
+                                            <template x-for="blank in blanks">
+                                                <div class="h-8"></div>
+                                            </template>
+                                            <template x-for="date in no_of_days">
+                                                <div @click="selectDate(date)"
+                                                    class="h-8 w-8 mx-auto flex items-center justify-center rounded-full text-gray-700 font-medium transition-colors hover:bg-gray-100 cursor-pointer"
+                                                    :class="{
                                                      'bg-black text-white hover:bg-gray-800': isToday(date) && !isSelected(date),
                                                      'bg-blue-600 text-white hover:bg-blue-700 shadow-md': isSelected(date)
                                                  }">
-                                                <span x-text="date"></span>
-                                            </div>
-                                        </template>
+                                                    <span x-text="date"></span>
+                                                </div>
+                                            </template>
+                                        </div>
                                     </div>
 
-                                    <!-- Actions -->
-                                    <div
-                                        class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center px-1">
+                                    <!-- Footer -->
+                                    <div class="p-2 bg-gray-50 border-t border-gray-100">
                                         <button @click="clearFilter()"
-                                            class="text-xs text-gray-400 hover:text-gray-600 font-medium">
-                                            Clear
-                                        </button>
-                                        <button @click="selectMonth()"
-                                            class="text-sm text-blue-600 hover:text-blue-800 font-bold">
-                                            Select This Month
+                                            class="w-full py-2 text-sm text-red-500 font-medium hover:bg-red-50 rounded-lg transition-colors">
+                                            Clear Filter
                                         </button>
                                     </div>
                                 </div>
@@ -802,7 +817,7 @@
                             </div>
                         @empty
                             <div class="text-center text-gray-500 py-8">
-                                No schedules available specifically for 'Computer Test'.
+                                No schedules available specifically for 'Practical Training Slot'.
                             </div>
                         @endforelse
 
@@ -848,7 +863,7 @@
                                     <img src="/image/icon/logo.png" class="h-14 w-14" alt="MDA Logo" />
                                     <div>
                                         <p class="font-bold text-gray-800">Molek Driving Academy</p>
-                                        <p class="text-sm text-gray-500">Computer Test</p>
+                                        <p class="text-sm text-gray-500">Practical Slot</p>
                                     </div>
                                 </div>
 
@@ -857,7 +872,7 @@
                                     <div>
                                         <p class="text-gray-500 font-medium">Date</p>
                                         <p class="font-semibold"
-                                            data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('n-Y') }}">
+                                            data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('Y-m-d') }}">
                                             {{ \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') }}
                                             ({{ $schedule->day }})
                                         </p>
@@ -955,15 +970,29 @@
 
                 </div>
 
-        </div>
+                <!-- Modern Notes -->
+                <div class="mt-8 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg">
+                    <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-2">Important Notes</h4>
+                        <ul class="space-y-2 text-blue-100 text-sm">
+                            <li class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                Original MyKad must be carried at all times during your test.
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                Dress Code: Semi Formal with shoes.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
-        <!-- Notes -->
-        <div class="mt-10 text-sm text-white">
-            <p class="font-semibold">IMPORTANT NOTES*</p>
-            <ul class="list-disc ml-5 mt-2 space-y-1">
-                <li>Original MyKad must be carried at all times during your test.</li>
-                <li>Dress Code Semi Formal with shoes.</li>
-            </ul>
         </div>
         </main>
     </div>

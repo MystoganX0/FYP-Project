@@ -184,12 +184,12 @@
                                 <ul class="py-2 text-sm text-gray-700">
                                     <li><a href="#" data-filter="all"
                                             class="filter-option block px-4 py-2 hover:bg-gray-100">All</a></li>
-                                    <li><a href="#" data-filter="Done"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Done</a></li>
+                                    <li><a href="#" data-filter="Completed"
+                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Completed</a></li>
                                     <li><a href="#" data-filter="Pending"
                                             class="filter-option block px-4 py-2 hover:bg-gray-100">Pending</a></li>
-                                    <li><a href="#" data-filter="Failed"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Failed</a></li>
+                                    <li><a href="#" data-filter="Absent"
+                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Absent</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -220,7 +220,7 @@
                                 @endphp
 
                                 <div class="history-item group flex flex-col sm:flex-row justify-between sm:items-center p-5 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
-                                    data-status="{{ $booking->booking_status }}">
+                                    data-status="{{ $booking->booking_status == 'Done' ? 'Completed' : ($booking->booking_status == 'Failed' ? 'Absent' : $booking->booking_status) }}">
 
                                     <!-- Left: Date & Info -->
                                     <div class="flex items-center gap-4 mb-4 sm:mb-0">
@@ -304,32 +304,67 @@
                 </h1>
 
                 @if(session('success'))
-                    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-                        role="alert">
-                        <span class="font-medium">Success!</span> {{ session('success') }}
+                    <div x-data="{ show: true, progress: 0 }" x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)" x-show="show" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="mb-6 bg-green-900/40 backdrop-blur-md border border-green-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden" role="alert">
+                        <div class="p-3 bg-green-600/20 rounded-xl text-green-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-white font-bold text-lg mb-2">Success</h4>
+                            <p class="text-green-100 text-sm">{{ session('success') }}</p>
+                        </div>
+                        <button @click="show = false" type="button" class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-green-300 hover:text-green-100 rounded-lg hover:bg-green-600/20 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <!-- Progress Bar -->
+                        <div class="absolute bottom-0 left-0 h-1 bg-green-500/30 rounded-b-2xl transition-all duration-100" :style="`width: ${progress}%`"></div>
                     </div>
                 @endif
 
                 @if(session('error'))
-                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                        role="alert">
-                        <span class="font-medium">Error!</span> {{ session('error') }}
+                    <div x-data="{ show: true, progress: 0 }" x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)" x-show="show" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="mb-6 bg-red-900/40 backdrop-blur-md border border-red-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden" role="alert">
+                        <div class="p-3 bg-red-600/20 rounded-xl text-red-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-white font-bold text-lg mb-2">Error</h4>
+                            <p class="text-red-100 text-sm">{{ session('error') }}</p>
+                        </div>
+                        <button @click="show = false" type="button" class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-red-300 hover:text-red-100 rounded-lg hover:bg-red-600/20 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <!-- Progress Bar -->
+                        <div class="absolute bottom-0 left-0 h-1 bg-red-500/30 rounded-b-2xl transition-all duration-100" :style="`width: ${progress}%`"></div>
                     </div>
                 @endif
 
                 @if(isset($hasActiveBooking) && $hasActiveBooking)
-                    <div class="flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
-                        role="alert">
-                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                        </svg>
-                        <span class="sr-only">Info</span>
-                        <div>
-                            <span class="font-medium">Note:</span> You currently have an active booking. You cannot book
-                            another slot until your previous test is completed or failed.
+                    <div x-data="{ show: true, progress: 0 }" x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)" x-show="show" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="mb-6 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden" role="alert">
+                        <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
                         </div>
+                        <div class="flex-1">
+                            <h4 class="text-white font-bold text-lg mb-2">Active Booking</h4>
+                            <p class="text-blue-100 text-sm leading-relaxed">
+                                You currently have an active booking. You cannot book another slot until your previous test is completed or failed.
+                            </p>
+                        </div>
+                        <button @click="show = false" type="button" class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-blue-300 hover:text-blue-100 rounded-lg hover:bg-blue-600/20 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <!-- Progress Bar -->
+                        <div class="absolute bottom-0 left-0 h-1 bg-blue-500/30 rounded-b-2xl transition-all duration-100" :style="`width: ${progress}%`"></div>
                     </div>
                 @endif
 
@@ -339,30 +374,103 @@
                     <div
                         class="bg-gray-900 px-6 sm:px-8 lg:px-12 py-5 flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-gray-100">
                         <!-- Search Group -->
-                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto ml-auto">
-                            <div class="relative w-full sm:w-72">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto ml-auto"
+                            x-data="calendarFilter()" x-init="initCalendar()">
+                            <div class="relative w-full sm:w-72" @click.away="open = false">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none z-10">
                                     <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor"
-                                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                                             clip-rule="evenodd"></path>
                                     </svg>
                                 </div>
-                                <select id="month"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-[#0BCE83] focus:border-[#0BCE83] block w-full pl-10 pr-10 p-2.5 outline-none transition-all appearance-none cursor-pointer hover:bg-white hover:border-gray-400">
-                                    <option value="all">All Months</option>
-                                    @foreach($availableMonths as $month)
-                                        <option value="{{ \Carbon\Carbon::parse($month)->format('n-Y') }}">{{ $month }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
+                                <!-- Input trigger -->
+                                <div @click="open = !open"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 cursor-pointer hover:bg-white transition-all select-none flex items-center justify-between">
+                                    <span x-text="displayText" class="font-medium">All Months</span>
+                                    <svg class="w-4 h-4 text-gray-400 transition-transform duration-200"
+                                        :class="{'rotate-180': open}" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7"></path>
+                                            d="M19 9l-7 7-7-7" />
                                     </svg>
+                                </div>
+
+                                <!-- Hidden Input used by JS -->
+                                <input type="hidden" id="month" value="all">
+
+                                <!-- Dropdown Calendar -->
+                                <div x-show="open" x-transition:enter="transition ease-out duration-100"
+                                    x-transition:enter-start="transform opacity-0 scale-95"
+                                    x-transition:enter-end="transform opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-75"
+                                    x-transition:leave-start="transform opacity-100 scale-100"
+                                    x-transition:leave-end="transform opacity-0 scale-95"
+                                    class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
+
+                                    <!-- Header -->
+                                    <div class="flex items-center justify-between p-3 border-b border-gray-100 bg-gray-50">
+                                        <button @click="prevMonth()" type="button"
+                                            class="p-1 hover:bg-gray-200 rounded-lg transition-colors">
+                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 19l-7-7 7-7" />
+                                            </svg>
+                                        </button>
+                                        <span class="font-bold text-gray-800"
+                                            x-text="monthNames[month] + ' ' + year"></span>
+                                        <button @click="nextMonth()" type="button"
+                                            class="p-1 hover:bg-gray-200 rounded-lg transition-colors">
+                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <!-- Quick Select Month -->
+                                    <div class="p-2 border-b border-gray-100">
+                                        <button @click="selectMonth()"
+                                            class="w-full py-2 text-sm text-blue-600 font-semibold hover:bg-blue-50 rounded-lg transition-colors">
+                                            Select Whole Month
+                                        </button>
+                                    </div>
+
+                                    <!-- Calendar Grid -->
+                                    <div class="p-3">
+                                        <div class="grid grid-cols-7 mb-2 text-center text-xs font-medium text-gray-400">
+                                            <div>Su</div>
+                                            <div>Mo</div>
+                                            <div>Tu</div>
+                                            <div>We</div>
+                                            <div>Th</div>
+                                            <div>Fr</div>
+                                            <div>Sa</div>
+                                        </div>
+                                        <div class="grid grid-cols-7 gap-1 text-center text-sm">
+                                            <template x-for="blank in blanks">
+                                                <div class="h-8"></div>
+                                            </template>
+                                            <template x-for="date in no_of_days">
+                                                <div @click="selectDate(date)"
+                                                    class="h-8 w-8 mx-auto flex items-center justify-center rounded-full cursor-pointer transition-all duration-200 hover:bg-blue-100 text-gray-700"
+                                                    :class="{'bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-md': isSelected(date), 'border border-blue-600 text-blue-700 font-bold': isToday(date) && !isSelected(date)}"
+                                                    x-text="date"></div>
+                                            </template>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer -->
+                                    <div class="p-2 bg-gray-50 border-t border-gray-100">
+                                        <button @click="clearFilter()"
+                                            class="w-full py-2 text-sm text-red-500 font-medium hover:bg-red-50 rounded-lg transition-colors">
+                                            Clear Filter
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <button id="searchBtn"
@@ -375,12 +483,125 @@
                                 Search
                             </button>
                         </div>
+
+                            <script>
+                                function calendarFilter() {
+                                    return {
+                                        open: false,
+                                        displayText: 'All Months',
+                                        month: new Date().getMonth(),
+                                        year: new Date().getFullYear(),
+                                        selectedDate: null,
+                                        no_of_days: [],
+                                        blanks: [],
+                                        monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+
+                                        initCalendar() {
+                                            const today = new Date();
+                                            const day = String(today.getDate()).padStart(2, '0');
+                                            const month = this.monthNames[today.getMonth()];
+                                            const year = today.getFullYear();
+                                            this.displayText = `${day} ${month} ${year}`;
+
+                                            this.getNoOfDays();
+                                        },
+
+                                        isToday(date) {
+                                            const today = new Date();
+                                            return today.getDate() === date && today.getMonth() === this.month && today.getFullYear() === this.year;
+                                        },
+
+                                        isSelected(date) {
+                                            if (!this.selectedDate) return false;
+                                            const d = new Date(this.year, this.month, date);
+                                            // Format Y-m-d
+                                            const format = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                                            return this.selectedDate === format;
+                                        },
+
+                                        getNoOfDays() {
+                                            const daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+                                            const dayOfWeek = new Date(this.year, this.month).getDay(); // 0 (Sun) - 6 (Sat)
+
+                                            this.blanks = Array.from({ length: dayOfWeek }, (_, i) => i + 1);
+                                            this.no_of_days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+                                        },
+
+                                        selectDate(date) {
+                                            // Set Selected Date (Y-m-d)
+                                            const d = new Date(this.year, this.month, date);
+                                            const year = d.getFullYear();
+                                            const month = String(d.getMonth() + 1).padStart(2, '0');
+                                            const day = String(d.getDate()).padStart(2, '0');
+                                            const formatted = `${year}-${month}-${day}`;
+
+                                            this.selectedDate = formatted;
+
+                                            // Update Display Text
+                                            this.displayText = `${day} ${this.monthNames[this.month]} ${year}`;
+
+                                            // Update Hidden Input
+                                            document.getElementById('month').value = formatted;
+                                            this.open = false;
+                                        },
+
+                                        selectMonth() {
+                                            // Set Selected Month (Y-m)
+                                            const month = String(this.month + 1).padStart(2, '0');
+                                            const formatted = `${this.year}-${month}`;
+
+                                            this.selectedDate = formatted;
+                                            this.displayText = this.monthNames[this.month] + ' ' + this.year;
+                                            document.getElementById('month').value = formatted;
+                                            this.open = false;
+                                        },
+
+                                        selectMonth() {
+                                            // Set Selected Month (Y-m)
+                                            const month = String(this.month + 1).padStart(2, '0');
+                                            const formatted = `${this.year}-${month}`;
+
+                                            this.selectedDate = formatted;
+                                            this.displayText = this.monthNames[this.month] + ' ' + this.year;
+                                            document.getElementById('month').value = formatted;
+                                            this.open = false;
+                                        },
+
+                                        nextMonth() {
+                                            if (this.month === 11) {
+                                                this.month = 0;
+                                                this.year++;
+                                            } else {
+                                                this.month++;
+                                            }
+                                            this.getNoOfDays();
+                                        },
+
+                                        prevMonth() {
+                                            if (this.month === 0) {
+                                                this.month = 11;
+                                                this.year--;
+                                            } else {
+                                                this.month--;
+                                            }
+                                            this.getNoOfDays();
+                                        },
+
+                                        clearFilter() {
+                                            this.displayText = 'All Months';
+                                            this.selectedDate = null;
+                                            document.getElementById('month').value = 'all';
+                                            this.open = false;
+                                        }
+                                    }
+                                }
+                            </script>
                     </div>
 
                     <!-- Table -->
                     <div id="desktopTable"
                         class="hidden sm:block w-full text-sm text-gray-700 p-5 space-y-4 px-6 sm:px-8 lg:px-12">
-                        <div
+                        <div id="desktopTableHeader"
                             class="hidden md:grid md:grid-cols-7 bg-white rounded-lg px-4 py-2 text-sm font-semibold text-gray-500 uppercase tracking-wider text-center">
                             <div class="md:col-span-2 text-left md:px-4"></div>
                             <div class="md:col-span-1 md:px-4">Date</div>
@@ -405,7 +626,7 @@
                                 <!-- Date -->
                                 <div class="md:px-4 md:py-2 md:col-span-1">
                                     <p class="font-semibold text-base"
-                                        data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('n-Y') }}">
+                                        data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('Y-m-d') }}">
                                         {{ \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') }}
                                     </p>
                                     <p class="text-sm text-gray-500">{{ $schedule->day }}</p>
@@ -545,7 +766,7 @@
                                     <div>
                                         <p class="text-gray-500 font-medium">Date</p>
                                         <p class="font-semibold"
-                                            data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('n-Y') }}">
+                                            data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('Y-m-d') }}">
                                             {{ \Carbon\Carbon::parse($schedule->date)->format('d/m/Y') }}
                                             ({{ $schedule->day }})
                                         </p>
@@ -632,13 +853,27 @@
 
                 </div>
 
-                <!-- Notes -->
-                <div class="mt-10 text-sm text-white">
-                    <p class="font-semibold">IMPORTANT NOTES*</p>
-                    <ul class="list-disc ml-5 mt-2 space-y-1">
-                        <li>Original MyKad must be carried at all times during your test.</li>
-                        <li>Dress Code Semi Formal with shoes.</li>
-                    </ul>
+                <!-- Modern Notes -->
+                <div class="mt-8 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg">
+                    <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-2">Important Notes</h4>
+                        <ul class="space-y-2 text-blue-100 text-sm">
+                            <li class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                Original MyKad must be carried at all times during your test.
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                Dress Code: Semi Formal with shoes.
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </main>
         </div>
@@ -1009,7 +1244,7 @@
                     if (!dateElem) return;
                     const rowDate = dateElem.getAttribute('data-date');
 
-                    if (selectedValue === "all" || rowDate === selectedValue) {
+                    if (selectedValue === "all" || rowDate === selectedValue || rowDate.startsWith(selectedValue)) {
                         row.dataset.filterMatch = "true";
                     } else {
                         row.dataset.filterMatch = "false";
@@ -1022,7 +1257,7 @@
                     if (!dateElem) return;
                     const rowDate = dateElem.getAttribute('data-date');
 
-                    if (selectedValue === "all" || rowDate === selectedValue) {
+                    if (selectedValue === "all" || rowDate === selectedValue || rowDate.startsWith(selectedValue)) {
                         row.dataset.filterMatch = "true";
                     } else {
                         row.dataset.filterMatch = "false";
@@ -1107,26 +1342,46 @@
                 let desktopMsg = document.getElementById("desktopNoRecord");
                 let mobileMsg = document.getElementById("mobileNoRecord");
 
+                const desktopHeader = document.getElementById("desktopTableHeader");
+
                 if (count === 0) {
                     if (!desktopMsg) {
                         desktopMsg = document.createElement("div");
                         desktopMsg.id = "desktopNoRecord";
-                        desktopMsg.className = "text-center text-gray-500 py-4";
-                        desktopMsg.innerText = "There are no records for this selection.";
+                        desktopMsg.className = "text-center text-gray-500 py-4 flex flex-col items-center justify-center";
+                        desktopMsg.innerHTML = `
+                            <img src="/image/icon/norecord.png" alt="No Records" class="w-80 h-auto object-contain">
+                            <p class="text-base font-semibold">There are no records for this selection.</p>
+                        `;
                         desktopTableBody.appendChild(desktopMsg);
                     }
                     if (!mobileMsg) {
                         mobileMsg = document.createElement("div");
                         mobileMsg.id = "mobileNoRecord";
-                        mobileMsg.className = "text-center text-gray-500 py-4";
-                        mobileMsg.innerText = "There are no records for this selection.";
+                        mobileMsg.className = "text-center text-gray-500 py-4 flex flex-col items-center justify-center";
+                        mobileMsg.innerHTML = `
+                            <img src="/image/icon/norecord.png" alt="No Records" class="w-48 h-auto object-contain">
+                            <p class="text-base font-semibold">There are no records for this selection.</p>
+                        `;
                         mobileCardsContainer.appendChild(mobileMsg);
                     }
                     desktopMsg.style.display = "";
                     mobileMsg.style.display = "";
+
+                    // Hide Header
+                    if (desktopHeader) {
+                        desktopHeader.classList.remove('md:grid');
+                        desktopHeader.style.display = 'none';
+                    }
+
                 } else {
                     if (desktopMsg) desktopMsg.style.display = "none";
                     if (mobileMsg) mobileMsg.style.display = "none";
+                    // Show Header
+                    if (desktopHeader) {
+                        desktopHeader.classList.add('md:grid');
+                        desktopHeader.style.display = '';
+                    }
                 }
             }
 

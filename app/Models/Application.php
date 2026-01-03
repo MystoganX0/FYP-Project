@@ -13,7 +13,8 @@ class Application extends Model
         'class_id',
         'package_id',
         'app_status',
-        'current_stage'
+        'current_stage',
+        'congratulations_shown'
     ];
 
     public function student()

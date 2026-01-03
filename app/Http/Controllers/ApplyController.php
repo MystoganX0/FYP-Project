@@ -18,11 +18,21 @@ class ApplyController extends Controller
         $packages = Package::all();
 
         $hasActiveApplication = false;
+        $hasCompletedApplication = false;
+
         if (Auth::check()) {
-            $hasActiveApplication = Application::where('student_id', Auth::id())->exists();
+            // Only block if user has an application that is NOT completed
+            $hasActiveApplication = Application::where('student_id', Auth::id())
+                ->where('app_status', '!=', 'Completed')
+                ->exists();
+
+            // Check if user has completed an application
+            $hasCompletedApplication = Application::where('student_id', Auth::id())
+                ->where('app_status', 'Completed')
+                ->exists();
         }
 
-        return view('ui.user.apply', compact('classes', 'packages', 'hasActiveApplication'));
+        return view('ui.user.apply', compact('classes', 'packages', 'hasActiveApplication', 'hasCompletedApplication'));
     }
 
     public function store(Request $request)

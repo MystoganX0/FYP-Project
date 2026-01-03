@@ -639,6 +639,7 @@
         </svg>
     </button>
 
+    @include('ui.user.partials.congratulations-modal')
     @include('ui.user.footer')
 
     <script>
