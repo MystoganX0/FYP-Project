@@ -128,9 +128,50 @@ class ApplyController extends Controller
 
     public function applied()
     {
-        $student_id = Auth::id() ?? 1;
-        $applications = Application::where('student_id', $student_id)->with(['payment', 'payment.details', 'class', 'package'])->get();
+        $applications = Application::with(['student', 'payment', 'payment.details', 'class', 'package'])->get();
         return view('ui.admin.applied', compact('applications'));
+    }
+
+    public function updateStudent(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|exists:students,id',
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string',
+        ]);
+
+        $student = \App\Models\Student::find($request->student_id);
+
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+        }
+
+        $student->full_name = $request->full_name;
+        $student->email = $request->email;
+        $student->phone = $request->phone;
+        $student->address = $request->address;
+        $student->save();
+
+        return response()->json(['success' => true, 'message' => 'Student details updated successfully']);
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            'app_id' => 'required|exists:application,app_id',
+        ]);
+
+        $application = Application::find($request->app_id);
+
+        if (!$application) {
+            return response()->json(['success' => false, 'message' => 'Application not found'], 404);
+        }
+
+        $application->delete();
+
+        return response()->json(['success' => true, 'message' => 'Application deleted successfully']);
     }
 }
 

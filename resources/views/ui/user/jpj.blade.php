@@ -110,7 +110,6 @@
     </div>
 
     <div class="px-4 sm:px-6 lg:px-32 py-6 md:py-14">
-
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-x-20 items-start">
             <aside class="lg:col-span-4 flex flex-col">
                 <div class="border-4 border-white rounded-3xl bg-[#151513] p-6 shadow-sm flex-1">
@@ -437,7 +436,7 @@
                                     <div class="p-2 border-b border-gray-100">
                                         <button @click="selectMonth()"
                                             class="w-full py-2 text-sm text-blue-600 font-semibold hover:bg-blue-50 rounded-lg transition-colors">
-                                            Select Whole Month
+                                            Select This Month
                                         </button>
                                     </div>
 
@@ -507,7 +506,7 @@
                                     <img src="/image/icon/logo.png" class="h-14" alt="MDA Logo" />
                                     <div>
                                         <p class="font-bold text-gray-800 text-base">Molek Driving Academy</p>
-                                        <p class="text-sm text-gray-500">Computer Test</p>
+                                        <p class="text-sm text-gray-500">JPJ Test</p>
                                     </div>
                                 </div>
 
@@ -745,7 +744,6 @@
                 </div>
 
                 <!-- Notes -->
-                <!-- Modern Notes -->
                 <div class="mt-8 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg">
                     <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -897,6 +895,55 @@
         </div>
     </div>
 
+    <!-- Payment Modal -->
+    <div id="paymentModal" tabindex="-1" aria-hidden="true"
+        class="fixed inset-0 z-[60] flex items-center justify-center bg-gray-900/60 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div id="paymentModalContent"
+            class="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-8 text-center transform scale-90 transition-transform duration-300 overflow-hidden">
+
+            <!-- Decorative circle -->
+            <div
+                class="absolute -top-10 -right-10 w-32 h-32 bg-blue-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
+            </div>
+            <div
+                class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
+            </div>
+
+            <!-- Close Button -->
+            <button type="button"
+                class="close-payment-modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 bg-transparent hover:bg-gray-50 rounded-full p-2 transition-colors z-10">
+                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+
+            <!-- Modal Content -->
+            <div class="relative z-10 mt-2">
+                <div
+                    class="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-6 shadow-inner ring-4 ring-white">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                        </path>
+                    </svg>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Payment Required</h3>
+
+                <p class="text-gray-500 mb-8 leading-relaxed text-sm">
+                    Complete your payment to unlock the next stage of your driving course. Secure and instant.
+                </p>
+
+                <button type="button"
+                    class="close-payment-modal w-full text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:ring-4 focus:ring-blue-300 font-bold rounded-2xl text-base px-5 py-4 text-center shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300">
+                    Proceed to Payment
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const paymentModal = document.getElementById('paymentModal');
@@ -947,55 +994,6 @@
             });
         });
     </script>
-
-    <!-- Payment Modal -->
-    <div id="paymentModal" tabindex="-1" aria-hidden="true"
-        class="fixed inset-0 z-[60] flex items-center justify-center bg-gray-900/60 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
-        <div id="paymentModalContent"
-            class="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-8 text-center transform scale-90 transition-transform duration-300 overflow-hidden">
-
-            <!-- Decorative circle -->
-            <div
-                class="absolute -top-10 -right-10 w-32 h-32 bg-blue-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
-            </div>
-            <div
-                class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
-            </div>
-
-            <!-- Close Button -->
-            <button type="button"
-                class="close-payment-modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 bg-transparent hover:bg-gray-50 rounded-full p-2 transition-colors z-10">
-                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
-                </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
-
-            <!-- Modal Content -->
-            <div class="relative z-10 mt-2">
-                <div
-                    class="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-6 shadow-inner ring-4 ring-white">
-                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
-                        </path>
-                    </svg>
-                </div>
-
-                <h3 class="text-2xl font-bold text-gray-900 mb-3">Payment Required</h3>
-
-                <p class="text-gray-500 mb-8 leading-relaxed text-sm">
-                    Complete your payment to unlock the next stage of your driving course. Secure and instant.
-                </p>
-
-                <button type="button"
-                    class="close-payment-modal w-full text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:ring-4 focus:ring-blue-300 font-bold rounded-2xl text-base px-5 py-4 text-center shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300">
-                    Proceed to Payment
-                </button>
-            </div>
-        </div>
-    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1379,7 +1377,10 @@
         document.addEventListener("DOMContentLoaded", function () {
             @php
                 $totalSlots = 1;
-                $doneCount = $bookings->whereIn('booking_status', ['Done', 'Completed'])->count();
+                // Count only passed JPJ tests
+                $doneCount = $bookings->filter(function($booking) {
+                    return $booking->attempt && $booking->attempt->result === 'Pass';
+                })->count();
                 $remainingCount = max(0, $totalSlots - $doneCount);
             @endphp
 

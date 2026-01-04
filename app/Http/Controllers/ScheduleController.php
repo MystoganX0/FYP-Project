@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 class ScheduleController extends Controller
 {
 
-    // public function view()
-    // {
-    //     return view('schedule');
-    // }
+    public function index()
+    {
+        return view('ui.admin.schedule');
+    }
 }
