@@ -209,7 +209,7 @@
                                     <!-- Table -->
                                     <div
                                         class="bg-white rounded-xl border border-gray-100 overflow-hidden overflow-x-auto">
-                                        <table class="w-full text-sm text-left">
+                                        <table class="w-full text-sm text-left min-w-[600px]">
                                             <thead class="bg-gray-50/50 border-b border-gray-50 text-gray-500">
                                                 <tr>
                                                     <th class="px-4 py-3 font-medium">Stage</th>
@@ -264,14 +264,14 @@
                                 <div id="dropdownSort"
                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-xl shadow-lg border border-gray-100 w-56 mt-2">
                                     <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownSortButton">
-                                        <li><a href="#" onclick="sortTable('class', 'asc')"
-                                                class="block px-4 py-2 hover:bg-gray-50">Classes (DA, D)</a></li>
-                                        <li><a href="#" onclick="sortTable('package', 'asc')"
-                                                class="block px-4 py-2 hover:bg-gray-50">Package</a></li>
-                                        <li><a href="#" onclick="sortTable('method', 'asc')"
-                                                class="block px-4 py-2 hover:bg-gray-50">Payment Method</a></li>
+                                        <li><a href="#" onclick="sortTable('name', 'asc')"
+                                                class="block px-4 py-2 hover:bg-gray-50">Student Name (A-Z)</a></li>
+                                        <li><a href="#" onclick="sortTable('status', 'asc')"
+                                                class="block px-4 py-2 hover:bg-gray-50">Status (Pending First)</a></li>
                                         <li><a href="#" onclick="sortTable('phase', 'asc')"
-                                                class="block px-4 py-2 hover:bg-gray-50">Phase (Progress)</a></li>
+                                                class="block px-4 py-2 hover:bg-gray-50">Current Phase</a></li>
+                                        <li><a href="#" onclick="sortTable('class', 'asc')"
+                                                class="block px-4 py-2 hover:bg-gray-50">License Class</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -279,7 +279,7 @@
                     </div>
 
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-separate border-spacing-y-4">
+                        <table class="w-full text-left border-separate border-spacing-y-4 min-w-[1000px]">
                             <thead>
                                 <tr class="text-gray-400 text-sm">
                                     <th class="pb-2 pl-2 font-medium w-[280px]">Student Details</th>
@@ -303,7 +303,7 @@
                                                     {{ strtoupper(substr($app->student->full_name ?? $app->student->name, 0, 2)) }}
                                                 </div>
                                                 <div>
-                                                    <div class="text-gray-900 font-bold text-sm">
+                                                    <div class="text-gray-900 font-bold text-sm student-name">
                                                         {{ $app->student->full_name ?? $app->student->name }}
                                                     </div>
                                                     <div class="text-xs text-gray-400 mt-0.5">{{ $app->student->email }}
@@ -344,8 +344,9 @@
                                             </span>
                                         </td>
                                         <td class="bg-white border-b border-gray-50 py-4 text-center">
-                                            <span
-                                                class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">{{ $app->current_stage }}</span>
+                                            <span class="bg-gray-50 text-gray-700 px-4 py-2 rounded-xl text-xs font-bold border border-gray-700 shadow-sm">
+                                                {{ $app->current_stage }}
+                                            </span>
                                         </td>
                                         <td class="bg-white border-b border-gray-50 py-4 text-center">
                                             @php
@@ -356,8 +357,13 @@
                                                     default => 'gray'
                                                 };
                                             @endphp
-                                            <span
-                                                class="bg-{{ $statusColor }}-50 text-{{ $statusColor }}-600 px-3 py-1 rounded-full text-xs font-bold">{{ $app->app_status }}</span>
+                                            <div class="flex justify-center">
+                                                <span
+                                                    class="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold bg-{{ $statusColor }}-100 text-{{ $statusColor }}-700 ring-1 ring-inset ring-{{ $statusColor }}-600/20">
+                                                    <span class="w-2 h-2 rounded-full bg-{{ $statusColor }}-600"></span>
+                                                    {{ $app->app_status }}
+                                                </span>
+                                            </div>
                                         </td>
                                         <td
                                             class="bg-white border-b border-gray-50 py-4 text-center pr-2 first:rounded-l-2xl last:rounded-r-2xl shadow-sm">
@@ -603,7 +609,6 @@
         function sortTable(key, order) {
             const tbody = document.getElementById("registrationsTableBody");
             const rows = Array.from(tbody.querySelectorAll("tr"));
-
             const phaseOrder = {
                 'computer test': 1,
                 'practical training': 2,
@@ -613,21 +618,31 @@
                 'pending': 0
             };
 
+            const statusOrder = {
+                'pending': 1,
+                'in-progress': 2,
+                'completed': 3
+            };
+
             rows.sort((a, b) => {
+                if (a.cells.length < 2 || b.cells.length < 2) return 0; // Skip headers or empty
+
                 let valA, valB;
 
-                if (key === 'class') {
+                if (key === 'name') {
+                    // Name is in 1st column (index 0), inside .student-name
+                    valA = a.querySelector('.student-name').innerText.trim().toLowerCase();
+                    valB = b.querySelector('.student-name').innerText.trim().toLowerCase();
+                } else if (key === 'class') {
                     // Class is in 2nd column (index 1)
                     valA = a.cells[1].innerText.trim().toLowerCase();
                     valB = b.cells[1].innerText.trim().toLowerCase();
-                } else if (key === 'package') {
-                    // Package is in 3rd column (index 2)
-                    valA = a.cells[2].innerText.trim().toLowerCase();
-                    valB = b.cells[2].innerText.trim().toLowerCase();
-                } else if (key === 'method') {
-                    // Payment Method is in 4th column (index 3)
-                    valA = a.cells[3].innerText.trim().toLowerCase();
-                    valB = b.cells[3].innerText.trim().toLowerCase();
+                } else if (key === 'status') {
+                    // Status is in 7th column (index 6)
+                    const textA = a.cells[6].innerText.trim().toLowerCase();
+                    const textB = b.cells[6].innerText.trim().toLowerCase();
+                    valA = statusOrder[textA] || 99;
+                    valB = statusOrder[textB] || 99;
                 } else if (key === 'phase') {
                     // Phase is in 6th column (index 5)
                     const textA = a.cells[5].innerText.trim().toLowerCase();
@@ -636,17 +651,18 @@
                     valB = phaseOrder[textB] || 0;
                 }
 
-                if (a === b) return 0;
-
-                if (order === 'asc') {
-                    return valA > valB ? 1 : -1;
-                } else {
-                    return valA < valB ? 1 : -1;
-                }
+                if (valA === valB) return 0;
+                return (valA > valB ? 1 : -1) * (order === 'desc' ? -1 : 1);
             });
 
-            // Re-append rows in sorted order
+            // Re-append rows
             rows.forEach(row => tbody.appendChild(row));
+
+            // Close dropdown
+            const dropdown = document.getElementById('dropdownSort');
+            if (dropdown && !dropdown.classList.contains('hidden')) {
+                // Usually handled by Flowbite, but we can force hide or leave to user
+            }
         }
 
         // --- Edit Student Modal Functions ---

@@ -11,11 +11,24 @@ class AdminBookingController extends Controller
     public function index()
     {
         // Fetch all bookings with related data
-        $bookings = Booking::with(['student', 'schedule.phase', 'attempt'])
+        $allBookings = Booking::with(['student', 'schedule.phase', 'attempt'])
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('ui.admin.bookings.index', compact('bookings'));
+        // Categorize bookings
+        $computerBookings = $allBookings->filter(function ($booking) {
+            return $booking->schedule && $booking->schedule->phase_id == 1;
+        });
+
+        $practicalBookings = $allBookings->filter(function ($booking) {
+            return $booking->schedule && $booking->schedule->phase_id == 2;
+        });
+
+        $jpjBookings = $allBookings->filter(function ($booking) {
+            return $booking->schedule && $booking->schedule->phase_id == 3;
+        });
+
+        return view('ui.admin.bookings.index', compact('computerBookings', 'practicalBookings', 'jpjBookings'));
     }
 
     public function updateStatus(Request $request, $booking_id)
@@ -51,25 +64,29 @@ class AdminBookingController extends Controller
 
             // Handle JPJ Test (phase_id = 3) result changes
             if ($booking->schedule && $booking->schedule->phase_id == 3) {
-                $application = \App\Models\Application::where('student_id', $booking->student_id)->first();
+                // Use the new result from request, or fallback to current database result
+                $currentResult = $request->result ?? $booking->attempt->result;
+
+                // Find the LATEST application for this student
+                $application = \App\Models\Application::where('student_id', $booking->student_id)
+                    ->latest()
+                    ->first();
 
                 if ($application) {
                     // If JPJ Test is passed, update application status to Completed
-                    if ($request->result == 'Pass') {
-                        \Log::info('JPJ Test passed! Updating application status to Completed...');
+                    if ($currentResult == 'Pass') {
+                        \Log::info('JPJ Test passed! Updating application status to Completed for App ID: ' . $application->app_id);
                         $application->update(['app_status' => 'Completed']);
                         $message = 'Booking status updated successfully. Application status set to Completed!';
-                        \Log::info('Application status updated to Completed for student_id: ' . $booking->student_id);
                     }
-                    // If JPJ Test is Pending or Failed, reset to In-Progress and reset congratulations flag
-                    elseif (in_array($request->result, ['Pending', 'Failed'])) {
-                        \Log::info('JPJ Test set to ' . $request->result . '. Resetting to In-Progress...');
+                    // If JPJ Test is Pending or Failed, reset to In-Progress
+                    elseif (in_array($currentResult, ['Pending', 'Failed'])) {
+                        \Log::info('JPJ Test set to ' . $currentResult . '. Resetting to In-Progress for App ID: ' . $application->app_id);
                         $application->update([
                             'app_status' => 'In-Progress',
                             'congratulations_shown' => false
                         ]);
                         $message = 'Booking status updated successfully. Application status set to In-Progress.';
-                        \Log::info('Application status reset to In-Progress for student_id: ' . $booking->student_id);
                     }
                 } else {
                     \Log::warning('No application found for student_id: ' . $booking->student_id);
