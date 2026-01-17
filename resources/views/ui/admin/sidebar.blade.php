@@ -55,6 +55,20 @@
                 </a>
             </li>
 
+            <!-- Package -->
+            <li>
+                <a href="{{ route('admin.package') }}"
+                    class="flex items-center p-3 rounded-xl group transition-all duration-200 border border-transparent {{ request()->routeIs('admin.package') ? 'bg-white text-blue-900 shadow-lg scale-[1.02]' : 'text-white hover:bg-white/10 hover:border-white/5' }}">
+                    <svg class="w-6 h-6 transition-colors {{ request()->routeIs('admin.package') ? 'text-[#0E1F8E]' : 'text-blue-200 group-hover:text-white' }}"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
+                        </path>
+                    </svg>
+                    <span class="ms-3 font-bold">Package</span>
+                </a>
+            </li>
+
             <!-- Classes -->
             <li>
                 <a href="{{ route('editclass') }}"
@@ -62,7 +76,7 @@
                     <svg class="w-6 h-6 transition-colors {{ request()->routeIs('editclass') ? 'text-[#0E1F8E]' : 'text-blue-200 group-hover:text-white' }}"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0c0 .85.716 1 1 1h2c-.284 0 1-.15 1-1m-4 0h4">
                         </path>
                     </svg>
                     <span class="ms-3 font-bold">Classes</span>
@@ -155,6 +169,24 @@
 
         <!-- Footer / Sign Out -->
         <div class="mt-auto pt-6 border-t border-white/10">
+            @if(Auth::check())
+                <div class="px-3 mb-4 flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5">
+                    <div
+                        class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-200 border border-blue-400/20">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="text-[10px] text-blue-300 font-medium uppercase tracking-wider leading-tight">Logged in as
+                        </p>
+                        <p class="text-sm font-bold text-white truncate leading-tight" title="{{ Auth::user()->email }}">
+                            {{ Auth::user()->email }}
+                        </p>
+                    </div>
+                </div>
+            @endif
             <a href="#"
                 class="flex items-center p-3 text-red-300 rounded-xl hover:bg-red-500/10 hover:text-red-200 group transition-all duration-200">
                 <svg class="w-6 h-6 text-red-300 group-hover:text-red-200 transition-colors" fill="none"

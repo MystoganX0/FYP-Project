@@ -287,43 +287,102 @@
                 </h1>
 
                 @if(session('success'))
-                    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                    <div x-data="{ show: true, progress: 0 }"
+                        x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                        x-show="show" x-transition:leave="transition ease-in duration-300"
+                        x-transition:leave-start="opacity-100 transform scale-100"
+                        x-transition:leave-end="opacity-0 transform scale-95"
+                        class="mb-6 bg-green-900/40 backdrop-blur-md border border-green-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden"
                         role="alert">
-                        <span class="font-medium">Success!</span> {{ session('success') }}
+                        <div class="p-3 bg-green-600/20 rounded-xl text-green-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-white font-bold text-lg mb-2">Success</h4>
+                            <p class="text-green-100 text-sm">{{ session('success') }}</p>
+                        </div>
+                        <button @click="show = false" type="button"
+                            class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-green-300 hover:text-green-100 rounded-lg hover:bg-green-600/20 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <!-- Progress Bar -->
+                        <div class="absolute bottom-0 left-0 h-1 bg-green-500/30 rounded-b-2xl transition-all duration-100"
+                            :style="`width: ${progress}%`"></div>
                     </div>
                 @endif
 
                 @if(session('error'))
-                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    <div x-data="{ show: true, progress: 0 }"
+                        x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                        x-show="show" x-transition:leave="transition ease-in duration-300"
+                        x-transition:leave-start="opacity-100 transform scale-100"
+                        x-transition:leave-end="opacity-0 transform scale-95"
+                        class="mb-6 bg-red-900/40 backdrop-blur-md border border-red-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden"
                         role="alert">
-                        <span class="font-medium">Error!</span> {{ session('error') }}
+                        <div class="p-3 bg-red-600/20 rounded-xl text-red-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-white font-bold text-lg mb-2">Error</h4>
+                            <p class="text-red-100 text-sm">{{ session('error') }}</p>
+                        </div>
+                        <button @click="show = false" type="button"
+                            class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-red-300 hover:text-red-100 rounded-lg hover:bg-red-600/20 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <!-- Progress Bar -->
+                        <div class="absolute bottom-0 left-0 h-1 bg-red-500/30 rounded-b-2xl transition-all duration-100"
+                            :style="`width: ${progress}%`"></div>
                     </div>
                 @endif
 
                 @if(isset($hasActiveBooking) && $hasActiveBooking)
-                    <div x-data="{ show: true , progress: 0 }" x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)" x-show="show" x-transition:leave="transition ease-in duration-300"
-                                x-transition:leave-start="opacity-100 transform scale-100"
-                                x-transition:leave-end="opacity-0 transform scale-95"
-                                class="mb-6 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden" role="alert">
-                                    <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                    </div>
-                                    <div class="flex-1">
-                                        <h4 class="text-white font-bold text-lg mb-2">Active Booking</h4>
-                                        <p class="text-blue-100 text-sm leading-relaxed">
-                                            You have reached the limit of 5 practical training slots. You cannot book any more slots.
-                                        </p>
-                                    </div>
-                                    <button @click="show = false" type="button" class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-blue-300 hover:text-blue-100 rounded-lg hover:bg-blue-600/20 transition-colors">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                        </svg>
-                                    </button>
-                                    <!-- Progress Bar -->
-                                    <div class="absolute bottom-0 left-0 h-1 bg-blue-500/30 rounded-b-2xl transition-all duration-100" :style="`width: ${progress}%`"></div>
-                                </div>
+                    <div x-data="{ show: true, progress: 0 }"
+                        x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                        x-show="show" x-transition:leave="transition ease-in duration-300"
+                        x-transition:leave-start="opacity-100 transform scale-100"
+                        x-transition:leave-end="opacity-0 transform scale-95"
+                        class="mb-6 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden"
+                        role="alert">
+                        <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-white font-bold text-lg mb-2">Active Booking</h4>
+                            <p class="text-blue-100 text-sm leading-relaxed">
+                                You currently have an active booking. You cannot book another slot until your previous test
+                                is completed or failed.
+                            </p>
+                        </div>
+                        <button @click="show = false" type="button"
+                            class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-blue-300 hover:text-blue-100 rounded-lg hover:bg-blue-600/20 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <!-- Progress Bar -->
+                        <div class="absolute bottom-0 left-0 h-1 bg-blue-500/30 rounded-b-2xl transition-all duration-100"
+                            :style="`width: ${progress}%`"></div>
+                    </div>
                 @endif
 
                 <!-- Schedule Table -->
@@ -971,7 +1030,8 @@
                 </div>
 
                 <!-- Modern Notes -->
-                <div class="mt-8 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg">
+                <div
+                    class="mt-8 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg">
                     <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

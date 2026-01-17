@@ -44,6 +44,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/bookings/{id}/update', [App\Http\Controllers\AdminBookingController::class, 'updateStatus'])->name('admin.bookings.update');
     Route::delete('/admin/bookings/{id}', [App\Http\Controllers\AdminBookingController::class, 'destroy'])->name('admin.bookings.destroy');
     Route::get('/admin/schedule', [App\Http\Controllers\ScheduleController::class, 'index'])->name('admin.schedule');
+    Route::post('/admin/schedule/store', [App\Http\Controllers\ScheduleController::class, 'store'])->name('admin.schedule.store');
+    Route::post('/admin/schedule/update', [App\Http\Controllers\ScheduleController::class, 'update'])->name('admin.schedule.update');
+    Route::post('/admin/schedule/delete', [App\Http\Controllers\ScheduleController::class, 'destroy'])->name('admin.schedule.delete');
+
+    Route::get('/admin/package', [App\Http\Controllers\PackageController::class, 'index'])->name('admin.package');
+    Route::post('/admin/package/update', [App\Http\Controllers\PackageController::class, 'update'])->name('package.update');
+    Route::post('/admin/package/delete', [App\Http\Controllers\PackageController::class, 'destroy'])->name('package.delete');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

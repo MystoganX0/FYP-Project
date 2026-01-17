@@ -157,13 +157,18 @@
                                     <!-- Edit Button -->
                                     <div class="mt-8">
                                         <button onclick="openEditStudentModal()"
-                                            class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                                </path>
-                                            </svg>
-                                            Edit Details
+                                            class="w-full group flex items-center justify-center gap-2.5 px-4 py-3 bg-white border-2 border-gray-100 hover:border-blue-100 hover:bg-blue-50/50 text-gray-600 hover:text-blue-600 font-bold rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98]">
+                                            <div
+                                                class="p-1.5 rounded-lg bg-gray-50 group-hover:bg-blue-100/50 transition-colors">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <span class="text-sm tracking-wide">Edit Application Details</span>
                                         </button>
                                     </div>
                                 </div>
@@ -221,6 +226,32 @@
                                             <tbody id="profilePaymentDetailsBody" class="divide-y divide-gray-50">
                                             </tbody>
                                         </table>
+                                    </div>
+
+
+                                    <!-- Re-Test Fee History Section -->
+                                    <div id="retestFeeSection" class="mt-8 hidden">
+                                        <h3
+                                            class="font-bold text-gray-900 text-sm uppercase tracking-wide mb-4 flex items-center gap-2">
+                                            <span>Re-Test Fee History</span>
+                                            <div class="h-px bg-gray-100 flex-1"></div>
+                                        </h3>
+                                        <div
+                                            class="bg-white rounded-xl border border-gray-100 overflow-hidden overflow-x-auto">
+                                            <table class="w-full text-sm text-left min-w-[600px]">
+                                                <thead class="bg-red-50/50 border-b border-red-50 text-gray-500">
+                                                    <tr>
+                                                        <th class="px-4 py-3 font-medium">Phase Type</th>
+                                                        <th class="px-4 py-3 font-medium">Amount</th>
+                                                        <th class="px-4 py-3 font-medium">Status</th>
+                                                        <th class="px-4 py-3 font-medium text-right">Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="profileRetestDetailsBody" class="divide-y divide-gray-50">
+                                                    <!-- Dynamics rows here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -344,7 +375,8 @@
                                             </span>
                                         </td>
                                         <td class="bg-white border-b border-gray-50 py-4 text-center">
-                                            <span class="bg-gray-50 text-gray-700 px-4 py-2 rounded-xl text-xs font-bold border border-gray-700 shadow-sm">
+                                            <span
+                                                class="bg-gray-50 text-gray-700 px-4 py-2 rounded-xl text-xs font-bold border border-gray-700 shadow-sm">
                                                 {{ $app->current_stage }}
                                             </span>
                                         </td>
@@ -369,7 +401,7 @@
                                             class="bg-white border-b border-gray-50 py-4 text-center pr-2 first:rounded-l-2xl last:rounded-r-2xl shadow-sm">
                                             <div class="flex items-center justify-center gap-2">
                                                 <button
-                                                    onclick='showPaymentDetails({{ json_encode($app->payment->load("details")) }}, {{ json_encode($app->student) }})'
+                                                    onclick='showPaymentDetails({{ json_encode($app->payments->load("details")) }}, {{ json_encode($app->student) }}, "{{ $app->package->package_type }}")'
                                                     class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
@@ -505,7 +537,7 @@
     </div>
 
     <script>
-        function showPaymentDetails(paymentData, student) {
+        function showPaymentDetails(paymentsData, student, packageType) {
             const mainCard = document.getElementById('mainApplicationCard');
             const section = document.getElementById('paymentProfileSection');
 
@@ -540,26 +572,94 @@
                 icMissing.classList.remove('hidden');
             }
 
-            // Populate Payment Data
-            document.getElementById('profileTotalAmount').innerText = 'RM ' + parseFloat(paymentData.total_amount).toFixed(2);
-            document.getElementById('profilePaymentType').innerText = (paymentData.payment_type || '-').charAt(0).toUpperCase() + (paymentData.payment_type || '').slice(1);
+            // Aggregate Details from all payments
+            // paymentsData is now an array of payment objects, each with details
+            const payments = Array.isArray(paymentsData) ? paymentsData : (paymentsData ? [paymentsData] : []);
+            let allDetails = [];
+            let totalAmount = 0;
+            let primaryPaymentType = '-';
 
-            // Calculate Completion
-            const details = paymentData.details || [];
-            const paidCount = details.filter(d => d.status === 'paid').length;
-            const totalCount = details.length;
-            const percentage = totalCount > 0 ? Math.round((paidCount / totalCount) * 100) : 0;
+            payments.forEach(payment => {
+                if (payment.details) {
+                    allDetails = allDetails.concat(payment.details);
+                }
+
+                // Sum total amount
+                totalAmount += parseFloat(payment.total_amount || 0);
+
+                if (['full', 'installment'].includes(payment.payment_type)) {
+                    primaryPaymentType = payment.payment_type;
+                }
+            });
+
+            // Filter Details
+            // Standard Stages: Stage 1, Stage 2, Stage 3, Full Payment
+            const standardStages = ['Stage 1', 'Stage 2', 'Stage 3', 'Full Payment'];
+            const standardDetails = allDetails.filter(d => standardStages.includes(d.stage));
+
+            // Re-Test Stages: Logic based on Package Type
+            let retestDetails = [];
+
+            if (packageType && packageType.toLowerCase() === 'basic') {
+                // For Basic, use existing payment records found in allDetails
+                retestDetails = allDetails.filter(d => !standardStages.includes(d.stage));
+            } else {
+                // For Non-Basic (Premium, Preferred, etc.), generate from attempts
+                // Logic: Count attempts > 1 for Phase 1 (Computer) and Phase 3 (JPJ)
+                const attempts = student.attempts || [];
+
+                // Computer Test (Phase 1)
+                const computerAttempts = attempts.filter(a => a.phase_id == 1);
+                // Sort by date/id to ignore the first one (which is covered by package)
+                computerAttempts.sort((a, b) => a.id - b.id);
+
+                if (computerAttempts.length > 1) {
+                    for (let i = 1; i < computerAttempts.length; i++) {
+                        retestDetails.push({
+                            stage: 'Computer Test Retest',
+                            amount: 50.00,
+                            status: '-',
+                            updated_at: computerAttempts[i].created_at
+                        });
+                    }
+                }
+
+                // JPJ Test (Phase 3)
+                const jpjAttempts = attempts.filter(a => a.phase_id == 3);
+                jpjAttempts.sort((a, b) => a.id - b.id);
+
+                if (jpjAttempts.length > 1) {
+                    for (let i = 1; i < jpjAttempts.length; i++) {
+                        retestDetails.push({
+                            stage: 'JPJ Re-test Fee',
+                            amount: 238.95,
+                            status: '-',
+                            updated_at: jpjAttempts[i].created_at
+                        });
+                    }
+                }
+            }
+
+            // Populate Payment Data totals
+            document.getElementById('profileTotalAmount').innerText = 'RM ' + parseFloat(totalAmount).toFixed(2);
+            document.getElementById('profilePaymentType').innerText = primaryPaymentType.charAt(0).toUpperCase() + primaryPaymentType.slice(1);
+
+            // Calculate Completion (based on Standard Stages)
+            const standardPaidCount = standardDetails.filter(d => d.status === 'paid').length;
+            const standardTotalCount = standardDetails.length;
+            const percentage = standardTotalCount > 0 ? Math.round((standardPaidCount / standardTotalCount) * 100) : 0;
+
             document.getElementById('profileCompletion').innerText = percentage + '%';
             document.getElementById('profileCompletionBar').style.width = percentage + '%';
 
-            // Populate Table
+            // Populate Standard Table
             const tbody = document.getElementById('profilePaymentDetailsBody');
             tbody.innerHTML = '';
 
-            if (details.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="px-4 py-3 text-center text-gray-400 italic">No transaction history.</td></tr>';
+            if (standardDetails.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-3 text-center text-gray-400 italic">No standard installments found.</td></tr>';
             } else {
-                details.forEach(detail => {
+                standardDetails.forEach(detail => {
                     const statusColor = detail.status === 'paid' ? 'emerald' : 'orange';
                     const dateStr = detail.updated_at ? new Date(detail.updated_at).toLocaleDateString() : '-';
                     const row = `
@@ -582,6 +682,48 @@
                     tbody.innerHTML += row;
                 });
             }
+
+            // Populate Re-Test Table
+            const retestSection = document.getElementById('retestFeeSection');
+            const retestTbody = document.getElementById('profileRetestDetailsBody');
+            retestTbody.innerHTML = '';
+
+            if (retestDetails.length > 0) {
+                retestSection.classList.remove('hidden');
+                retestDetails.forEach(detail => {
+                    let statusHtml = '';
+                    let statusColor = 'gray'; // Default
+
+                    if (detail.status === '-') {
+                        statusHtml = `<span class="uppercase text-[10px] font-bold tracking-wider px-2 py-1 rounded bg-gray-100 text-gray-700 border border-gray-200">-</span>`;
+                    } else {
+                        statusColor = detail.status === 'paid' ? 'emerald' : 'orange';
+                        statusHtml = `<span class="uppercase text-[10px] font-bold tracking-wider px-2 py-1 rounded bg-${statusColor}-100 text-${statusColor}-700 border border-${statusColor}-200">${detail.status}</span>`;
+                    }
+
+                    const dateStr = detail.updated_at ? new Date(detail.updated_at).toLocaleDateString() : '-';
+                    const row = `
+                        <tr class="hover:bg-red-50/30 transition-colors group">
+                            <td class="px-4 py-3 font-medium text-gray-900">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-${statusColor}-500"></div>
+                                    ${detail.stage}
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 font-semibold text-gray-700">RM ${parseFloat(detail.amount).toFixed(2)}</td>
+                            <td class="px-4 py-3">
+                                ${statusHtml}
+                            </td>
+                            <td class="px-4 py-3 text-right text-gray-400 font-medium">${dateStr}</td>
+                        </tr>
+                    `;
+                    retestTbody.innerHTML += row;
+                });
+            } else {
+                retestSection.classList.add('hidden');
+            }
+
+
 
             // Animate View
             section.classList.remove('hidden', 'opacity-0');
@@ -726,6 +868,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify(data)

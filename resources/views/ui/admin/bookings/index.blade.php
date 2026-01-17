@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -67,53 +68,156 @@
             </div>
 
             @if(session('success'))
-                <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
-                    <span class="font-medium">Success!</span> {{ session('success') }}
+                <div x-data="{ show: true, progress: 0 }"
+                    x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                    x-show="show" x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="mb-6 bg-emerald-500 border border-emerald-600 rounded-2xl p-6 flex items-start gap-4 shadow-lg shadow-emerald-500/20 relative overflow-hidden"
+                    role="alert">
+                    <div class="p-3 bg-white/20 rounded-xl text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-white font-bold text-lg mb-1">Success</h4>
+                        <p class="text-emerald-50 text-sm font-medium">{{ session('success') }}</p>
+                    </div>
+                    <button @click="show = false" type="button"
+                        class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-emerald-100 hover:text-white rounded-lg hover:bg-white/20 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <!-- Progress Bar -->
+                    <div class="absolute bottom-0 left-0 h-1 bg-white/30 rounded-b-2xl transition-all duration-100"
+                        :style="`width: ${progress}%`"></div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div x-data="{ show: true, progress: 0 }"
+                    x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                    x-show="show" x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="mb-6 bg-red-500 border border-red-600 rounded-2xl p-6 flex items-start gap-4 shadow-lg shadow-red-500/20 relative overflow-hidden"
+                    role="alert">
+                    <div class="p-3 bg-white/20 rounded-xl text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-white font-bold text-lg mb-1">Error</h4>
+                        <p class="text-red-50 text-sm font-medium">{{ session('error') }}</p>
+                    </div>
+                    <button @click="show = false" type="button"
+                        class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-red-100 hover:text-white rounded-lg hover:bg-white/20 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <!-- Progress Bar -->
+                    <div class="absolute bottom-0 left-0 h-1 bg-white/30 rounded-b-2xl transition-all duration-100"
+                        :style="`width: ${progress}%`"></div>
+                </div>
+            @endif
+
+            @if(session('warning'))
+                <div x-data="{ show: true, progress: 0 }"
+                    x-init="setTimeout(() => show = false, 8000); let interval = setInterval(() => { progress += 1.25; if (progress >= 100) clearInterval(interval); }, 100)"
+                    x-show="show" x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="mb-6 bg-amber-500 border border-amber-600 rounded-2xl p-6 flex items-start gap-4 shadow-lg shadow-amber-500/20 relative overflow-hidden"
+                    role="alert">
+                    <div class="p-3 bg-white/20 rounded-xl text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-white font-bold text-lg mb-1">Warning</h4>
+                        <p class="text-amber-50 text-sm font-medium">{{ session('warning') }}</p>
+                    </div>
+                    <button @click="show = false" type="button"
+                        class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-amber-100 hover:text-white rounded-lg hover:bg-white/20 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <!-- Progress Bar -->
+                    <div class="absolute bottom-0 left-0 h-1 bg-white/30 rounded-b-2xl transition-all duration-100"
+                        :style="`width: ${progress}%`"></div>
                 </div>
             @endif
 
             <!-- Summary Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 <!-- Computer Card -->
-                <a href="#computer-section" class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-blue-500 hover:shadow-md transition-all duration-300">
+                <a href="#computer-section"
+                    class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-blue-500 hover:shadow-md transition-all duration-300">
                     <div class="relative flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 mb-1">Computer Theory</p>
                             <h3 class="text-3xl font-bold text-gray-900">{{ $computerBookings->count() }}</h3>
                         </div>
-                        <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                        <div
+                            class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                </path>
                             </svg>
                         </div>
                     </div>
                 </a>
 
                 <!-- Practical Card -->
-                <a href="#practical-section" class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-green-500 hover:shadow-md transition-all duration-300">
+                <a href="#practical-section"
+                    class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-green-500 hover:shadow-md transition-all duration-300">
                     <div class="relative flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 mb-1">Practical Training</p>
                             <h3 class="text-3xl font-bold text-gray-900">{{ $practicalBookings->count() }}</h3>
                         </div>
-                        <div class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors duration-300">
+                        <div
+                            class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors duration-300">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                </path>
                             </svg>
                         </div>
                     </div>
                 </a>
 
                 <!-- JPJ Card -->
-                <a href="#jpj-section" class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-red-500 hover:shadow-md transition-all duration-300">
+                <a href="#jpj-section"
+                    class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-red-500 hover:shadow-md transition-all duration-300">
                     <div class="relative flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-500 mb-1">JPJ Test</p>
                             <h3 class="text-3xl font-bold text-gray-900">{{ $jpjBookings->count() }}</h3>
                         </div>
-                        <div class="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
+                        <div
+                            class="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
                             </svg>
                         </div>
                     </div>
@@ -121,24 +225,31 @@
             </div>
 
             <!-- Computer Theory Table -->
-            <div id="computer-section" class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
+            <div id="computer-section"
+                class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
                 <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-blue-50 rounded-lg">
                             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                </path>
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900">Computer Theory</h3>
-                        <span class="px-3 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-medium shadow-sm">{{ $computerBookings->count() }} Bookings</span>
+                        <span
+                            class="px-3 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-medium shadow-sm">{{ $computerBookings->count() }}
+                            Bookings</span>
                     </div>
                     <div class="flex items-center gap-3 w-full md:w-auto">
                         <!-- Search -->
                         <div class="relative w-full md:w-48">
                             <input type="text" id="searchComputer" placeholder="Search..."
                                 class="pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-blue-500 w-full transition-all hover:bg-gray-50 placeholder-gray-400">
-                            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
                         <!-- Sort -->
@@ -146,24 +257,31 @@
                             <button id="sortBtnComputer" data-dropdown-toggle="sortDropdownComputer"
                                 class="flex items-center gap-2 bg-white shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
                                 </svg>
                                 Sort
                             </button>
                             <!-- Dropdown -->
-                            <div id="sortDropdownComputer" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-xl shadow-lg border border-gray-100 w-56 mt-2">
+                            <div id="sortDropdownComputer"
+                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-xl shadow-lg border border-gray-100 w-56 mt-2">
                                 <ul class="py-2 text-sm text-gray-700" aria-labelledby="sortBtnComputer">
-                                    <li><a href="javascript:void(0)" onclick="computerTable.sort('date', 'desc')" class="block px-4 py-2 hover:bg-gray-50">Latest Bookings</a></li>
-                                    <li><a href="javascript:void(0)" onclick="computerTable.sort('date', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Earliest Bookings</a></li>
-                                    <li><a href="javascript:void(0)" onclick="computerTable.sort('status', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Status: Pending</a></li>
-                                    <li><a href="javascript:void(0)" onclick="computerTable.sort('result', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Result: Pass</a></li>
-                                    <li><a href="javascript:void(0)" onclick="computerTable.sort('name', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Student Name (A-Z)</a></li>
+                                    <li><a href="javascript:void(0)" onclick="computerTable.sort('date', 'desc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Latest Bookings</a></li>
+                                    <li><a href="javascript:void(0)" onclick="computerTable.sort('date', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Earliest Bookings</a></li>
+                                    <li><a href="javascript:void(0)" onclick="computerTable.sort('status', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Status: Pending</a></li>
+                                    <li><a href="javascript:void(0)" onclick="computerTable.sort('result', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Result: Pass</a></li>
+                                    <li><a href="javascript:void(0)" onclick="computerTable.sort('name', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Student Name (A-Z)</a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-separate border-spacing-y-4 table-fixed min-w-[1000px]">
                         <thead class="text-gray-400 text-sm">
@@ -186,24 +304,31 @@
             </div>
 
             <!-- Practical Training Table -->
-            <div id="practical-section" class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
+            <div id="practical-section"
+                class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
                 <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-green-50 rounded-lg">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                </path>
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900">Practical Training</h3>
-                        <span class="px-3 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-medium shadow-sm">{{ $practicalBookings->count() }} Bookings</span>
+                        <span
+                            class="px-3 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-medium shadow-sm">{{ $practicalBookings->count() }}
+                            Bookings</span>
                     </div>
                     <div class="flex items-center gap-3 w-full md:w-auto">
                         <!-- Search -->
                         <div class="relative w-full md:w-48">
                             <input type="text" id="searchPractical" placeholder="Search..."
                                 class="pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-blue-500 w-full transition-all hover:bg-gray-50 placeholder-gray-400">
-                            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
                         <!-- Sort -->
@@ -211,18 +336,25 @@
                             <button id="sortBtnPractical" data-dropdown-toggle="sortDropdownPractical"
                                 class="flex items-center gap-2 bg-white shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
                                 </svg>
                                 Sort
                             </button>
                             <!-- Dropdown -->
-                            <div id="sortDropdownPractical" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-xl shadow-lg border border-gray-100 w-56 mt-2">
+                            <div id="sortDropdownPractical"
+                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-xl shadow-lg border border-gray-100 w-56 mt-2">
                                 <ul class="py-2 text-sm text-gray-700" aria-labelledby="sortBtnPractical">
-                                    <li><a href="javascript:void(0)" onclick="practicalTable.sort('date', 'desc')" class="block px-4 py-2 hover:bg-gray-50">Latest Bookings</a></li>
-                                    <li><a href="javascript:void(0)" onclick="practicalTable.sort('date', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Earliest Bookings</a></li>
-                                    <li><a href="javascript:void(0)" onclick="practicalTable.sort('status', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Status: Pending</a></li>
-                                    <li><a href="javascript:void(0)" onclick="practicalTable.sort('result', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Result: Pass</a></li>
-                                    <li><a href="javascript:void(0)" onclick="practicalTable.sort('name', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Student Name (A-Z)</a></li>
+                                    <li><a href="javascript:void(0)" onclick="practicalTable.sort('date', 'desc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Latest Bookings</a></li>
+                                    <li><a href="javascript:void(0)" onclick="practicalTable.sort('date', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Earliest Bookings</a></li>
+                                    <li><a href="javascript:void(0)" onclick="practicalTable.sort('status', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Status: Pending</a></li>
+                                    <li><a href="javascript:void(0)" onclick="practicalTable.sort('result', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Result: Pass</a></li>
+                                    <li><a href="javascript:void(0)" onclick="practicalTable.sort('name', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Student Name (A-Z)</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -251,24 +383,31 @@
             </div>
 
             <!-- JPJ Test Table -->
-            <div id="jpj-section" class="bg-white rounded-[2rem] shadow-sm border-2 border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
+            <div id="jpj-section"
+                class="bg-white rounded-[2rem] shadow-sm border-2 border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
                 <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-red-50 rounded-lg">
                             <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900">JPJ Test</h3>
-                        <span class="px-3 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-medium shadow-sm">{{ $jpjBookings->count() }} Bookings</span>
+                        <span
+                            class="px-3 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-medium shadow-sm">{{ $jpjBookings->count() }}
+                            Bookings</span>
                     </div>
                     <div class="flex items-center gap-3 w-full md:w-auto">
                         <!-- Search -->
                         <div class="relative w-full md:w-48">
                             <input type="text" id="searchJPJ" placeholder="Search..."
                                 class="pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-blue-500 w-full transition-all hover:bg-gray-50 placeholder-gray-400">
-                            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
                         <!-- Sort -->
@@ -276,18 +415,25 @@
                             <button id="sortBtnJPJ" data-dropdown-toggle="sortDropdownJPJ"
                                 class="flex items-center gap-2 bg-white shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
                                 </svg>
                                 Sort
                             </button>
                             <!-- Dropdown -->
-                            <div id="sortDropdownJPJ" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-xl shadow-lg border border-gray-100 w-56 mt-2">
+                            <div id="sortDropdownJPJ"
+                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-xl shadow-lg border border-gray-100 w-56 mt-2">
                                 <ul class="py-2 text-sm text-gray-700" aria-labelledby="sortBtnJPJ">
-                                    <li><a href="javascript:void(0)" onclick="jpjTable.sort('date', 'desc')" class="block px-4 py-2 hover:bg-gray-50">Latest Bookings</a></li>
-                                    <li><a href="javascript:void(0)" onclick="jpjTable.sort('date', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Earliest Bookings</a></li>
-                                    <li><a href="javascript:void(0)" onclick="jpjTable.sort('status', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Status: Pending</a></li>
-                                    <li><a href="javascript:void(0)" onclick="jpjTable.sort('result', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Result: Pass</a></li>
-                                    <li><a href="javascript:void(0)" onclick="jpjTable.sort('name', 'asc')" class="block px-4 py-2 hover:bg-gray-50">Student Name (A-Z)</a></li>
+                                    <li><a href="javascript:void(0)" onclick="jpjTable.sort('date', 'desc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Latest Bookings</a></li>
+                                    <li><a href="javascript:void(0)" onclick="jpjTable.sort('date', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Earliest Bookings</a></li>
+                                    <li><a href="javascript:void(0)" onclick="jpjTable.sort('status', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Status: Pending</a></li>
+                                    <li><a href="javascript:void(0)" onclick="jpjTable.sort('result', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Result: Pass</a></li>
+                                    <li><a href="javascript:void(0)" onclick="jpjTable.sort('name', 'asc')"
+                                            class="block px-4 py-2 hover:bg-gray-50">Student Name (A-Z)</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -321,33 +467,33 @@
     </div>
 </body>
 
-    <script>
-        class TablePagination {
-            constructor(tableBodyId, paginationId, itemsPerPage = 5) {
-                this.tableBody = document.getElementById(tableBodyId);
-                this.paginationContainer = document.getElementById(paginationId);
-                this.rows = Array.from(this.tableBody.querySelectorAll('tr'));
-                this.itemsPerPage = itemsPerPage;
-                this.currentPage = 1;
-                this.totalPages = Math.ceil(this.rows.length / this.itemsPerPage);
-                this.visibleRows = this.rows; // Initially all are "visible" to the pager (unless filtered)
+<script>
+    class TablePagination {
+        constructor(tableBodyId, paginationId, itemsPerPage = 5) {
+            this.tableBody = document.getElementById(tableBodyId);
+            this.paginationContainer = document.getElementById(paginationId);
+            this.rows = Array.from(this.tableBody.querySelectorAll('tr'));
+            this.itemsPerPage = itemsPerPage;
+            this.currentPage = 1;
+            this.totalPages = Math.ceil(this.rows.length / this.itemsPerPage);
+            this.visibleRows = this.rows; // Initially all are "visible" to the pager (unless filtered)
 
-                this.init();
+            this.init();
+        }
+
+        init() {
+            if (this.rows.length === 0) {
+                this.paginationContainer.innerHTML = '';
+                this.tableBody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500 italic">No bookings found in this category.</td></tr>';
+                return;
             }
 
-            init() {
-                if (this.rows.length === 0) {
-                    this.paginationContainer.innerHTML = '';
-                    this.tableBody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500 italic">No bookings found in this category.</td></tr>';
-                    return;
-                }
-                
-                this.renderControls();
-                this.showPage(1, false);
-            }
+            this.renderControls();
+            this.showPage(1, false);
+        }
 
-            renderControls() {
-                this.paginationContainer.innerHTML = `
+        renderControls() {
+            this.paginationContainer.innerHTML = `
                     <div class="pagination-controls w-full px-0 flex flex-col sm:flex-row justify-end items-center gap-4">
                         <span class="page-indicator text-sm font-medium text-gray-400 font-poppins order-2 sm:order-1">
                             Page <span class="current-page-user font-bold text-black">1</span> of <span class="total-pages-user font-bold text-black">1</span>
@@ -370,147 +516,147 @@
                     </div>
                 `;
 
-                this.prevBtn = this.paginationContainer.querySelector('.prev-btn');
-                this.nextBtn = this.paginationContainer.querySelector('.next-btn');
-                this.pageInfoSpan = this.paginationContainer.querySelector('.current-page-user');
-                this.totalInfoSpan = this.paginationContainer.querySelector('.total-pages-user');
+            this.prevBtn = this.paginationContainer.querySelector('.prev-btn');
+            this.nextBtn = this.paginationContainer.querySelector('.next-btn');
+            this.pageInfoSpan = this.paginationContainer.querySelector('.current-page-user');
+            this.totalInfoSpan = this.paginationContainer.querySelector('.total-pages-user');
 
-                this.prevBtn.addEventListener('click', () => this.prev());
-                this.nextBtn.addEventListener('click', () => this.next());
-            }
+            this.prevBtn.addEventListener('click', () => this.prev());
+            this.nextBtn.addEventListener('click', () => this.next());
+        }
 
-            showPage(page, animate = true) {
-                if(page < 1 || page > this.totalPages) return;
-                this.currentPage = page;
+        showPage(page, animate = true) {
+            if (page < 1 || page > this.totalPages) return;
+            this.currentPage = page;
 
-                const start = (this.currentPage - 1) * this.itemsPerPage;
-                const end = start + this.itemsPerPage;
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
 
-                if (animate) {
-                    // 1. Fade out current content
-                    this.tableBody.style.opacity = '0';
-                    this.tableBody.style.transform = 'translateY(5px)';
-                    
-                    // 2. Wait for fade out to complete (matching duration-300)
-                    setTimeout(() => {
-                        // 3. Swap rows while invisible
-                        this.rows.forEach(row => row.style.display = 'none');
-                        this.visibleRows.slice(start, end).forEach(row => row.style.display = '');
+            if (animate) {
+                // 1. Fade out current content
+                this.tableBody.style.opacity = '0';
+                this.tableBody.style.transform = 'translateY(5px)';
 
-                        // 4. Fade in new content
-                        requestAnimationFrame(() => {
-                            this.tableBody.style.opacity = '1';
-                            this.tableBody.style.transform = 'translateY(0)';
-                        });
-                    }, 300);
-                } else {
-                    // Instant swap for initial load or filter
+                // 2. Wait for fade out to complete (matching duration-300)
+                setTimeout(() => {
+                    // 3. Swap rows while invisible
                     this.rows.forEach(row => row.style.display = 'none');
                     this.visibleRows.slice(start, end).forEach(row => row.style.display = '');
-                }
 
-                this.updateUI();
+                    // 4. Fade in new content
+                    requestAnimationFrame(() => {
+                        this.tableBody.style.opacity = '1';
+                        this.tableBody.style.transform = 'translateY(0)';
+                    });
+                }, 300);
+            } else {
+                // Instant swap for initial load or filter
+                this.rows.forEach(row => row.style.display = 'none');
+                this.visibleRows.slice(start, end).forEach(row => row.style.display = '');
             }
 
-            updateUI() {
-                if (this.pageInfoSpan) this.pageInfoSpan.textContent = this.currentPage;
-                if (this.totalInfoSpan) this.totalInfoSpan.textContent = this.totalPages;
-                
-                if (this.prevBtn) this.prevBtn.disabled = this.currentPage === 1;
-                if (this.nextBtn) this.nextBtn.disabled = this.currentPage === this.totalPages || this.totalPages === 0;
+            this.updateUI();
+        }
 
-                if (this.totalPages <= 1) {
-                    this.paginationContainer.classList.add('hidden');
-                } else {
-                    this.paginationContainer.classList.remove('hidden');
-                }
-            }
+        updateUI() {
+            if (this.pageInfoSpan) this.pageInfoSpan.textContent = this.currentPage;
+            if (this.totalInfoSpan) this.totalInfoSpan.textContent = this.totalPages;
 
-            prev() {
-                if (this.currentPage > 1) this.showPage(this.currentPage - 1);
-            }
+            if (this.prevBtn) this.prevBtn.disabled = this.currentPage === 1;
+            if (this.nextBtn) this.nextBtn.disabled = this.currentPage === this.totalPages || this.totalPages === 0;
 
-            next() {
-                if (this.currentPage < this.totalPages) this.showPage(this.currentPage + 1);
-            }
-
-            filter(query) {
-                const lowerQuery = query.toLowerCase();
-                
-                // Reset visible rows based on search
-                this.visibleRows = this.rows.filter(row => {
-                    const name = row.querySelector('td:nth-child(1) .flex-col span:nth-child(1)')?.textContent.toLowerCase() || '';
-                    const ic = row.querySelector('td:nth-child(1) .flex-col span:nth-child(2)')?.textContent.toLowerCase() || '';
-                    return name.includes(lowerQuery) || ic.includes(lowerQuery);
-                });
-
-                this.totalPages = Math.ceil(this.visibleRows.length / this.itemsPerPage);
-                this.currentPage = 1;
-                
-                // If query is empty, show all. If query has matches, show them.
-                this.showPage(1, false);
-            }
-
-            sort(type, order) {
-                this.visibleRows.sort((a, b) => { // Sort visibleRows instead of this.rows
-                     let valA, valB;
-                    if (type === 'name') {
-                        valA = a.querySelector('td:nth-child(1) .flex-col span:nth-child(1)')?.textContent.trim().toLowerCase();
-                        valB = b.querySelector('td:nth-child(1) .flex-col span:nth-child(1)')?.textContent.trim().toLowerCase();
-                    } else if (type === 'status') {
-                        const statusOrder = { 'pending': 1, 'confirmed': 2, 'completed': 3, 'failed': 4, 'absent': 5 };
-                        valA = statusOrder[a.querySelector('td:nth-child(4)').textContent.trim().toLowerCase()] || 99;
-                        valB = statusOrder[b.querySelector('td:nth-child(4)').textContent.trim().toLowerCase()] || 99;
-                    } else if (type === 'result') {
-                        const resOrder = { 'pending': 1, 'pass': 2, 'failed': 3 };
-                        valA = resOrder[a.querySelector('td:nth-child(6)').textContent.trim().toLowerCase()] || 99;
-                        valB = resOrder[b.querySelector('td:nth-child(6)').textContent.trim().toLowerCase()] || 99;
-                    } else if (type === 'date') {
-                        // Date parsing logic
-                        // Format is DD MMM YYYY (e.g. 12 Jan 2024)
-                        const dateTextA = a.querySelector('td:nth-child(3) div:nth-child(1)').textContent.trim();
-                        const dateTextB = b.querySelector('td:nth-child(3) div:nth-child(1)').textContent.trim();
-                        
-                        // Parse manually since JS Date parsing can be fickle with formats
-                        valA = Date.parse(dateTextA) || 0;
-                        valB = Date.parse(dateTextB) || 0;
-                    }
-
-                    if (valA < valB) return order === 'asc' ? -1 : 1;
-                    if (valA > valB) return order === 'asc' ? 1 : -1;
-                    return 0;
-                });
-
-                this.showPage(1, true);
-
-                // Auto-close specific dropdown for this table
-                const prefix = this.tableBody.id.replace('Body', '');
-                const capitalizedPrefix = prefix.charAt(0).toUpperCase() + prefix.slice(1);
-                const dropdown = document.getElementById('sortDropdown' + capitalizedPrefix);
-                if (dropdown) dropdown.classList.add('hidden');
+            if (this.totalPages <= 1) {
+                this.paginationContainer.classList.add('hidden');
+            } else {
+                this.paginationContainer.classList.remove('hidden');
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const computerTable = new TablePagination('computerBody', 'computerPagination');
-            const practicalTable = new TablePagination('practicalBody', 'practicalPagination');
-            const jpjTable = new TablePagination('jpjBody', 'jpjPagination');
+        prev() {
+            if (this.currentPage > 1) this.showPage(this.currentPage - 1);
+        }
 
-            // Expose for inline onclicks
-            window.computerTable = computerTable;
-            window.practicalTable = practicalTable;
-            window.jpjTable = jpjTable;
+        next() {
+            if (this.currentPage < this.totalPages) this.showPage(this.currentPage + 1);
+        }
 
-            // Wire up independent search inputs
-            const searchComputer = document.getElementById('searchComputer');
-            if(searchComputer) searchComputer.addEventListener('keyup', (e) => computerTable.filter(e.target.value));
+        filter(query) {
+            const lowerQuery = query.toLowerCase();
 
-            const searchPractical = document.getElementById('searchPractical');
-            if(searchPractical) searchPractical.addEventListener('keyup', (e) => practicalTable.filter(e.target.value));
+            // Reset visible rows based on search
+            this.visibleRows = this.rows.filter(row => {
+                const name = row.querySelector('td:nth-child(1) .flex-col span:nth-child(1)')?.textContent.toLowerCase() || '';
+                const ic = row.querySelector('td:nth-child(1) .flex-col span:nth-child(2)')?.textContent.toLowerCase() || '';
+                return name.includes(lowerQuery) || ic.includes(lowerQuery);
+            });
 
-            const searchJPJ = document.getElementById('searchJPJ');
-            if(searchJPJ) searchJPJ.addEventListener('keyup', (e) => jpjTable.filter(e.target.value));
-        });
-    </script>
+            this.totalPages = Math.ceil(this.visibleRows.length / this.itemsPerPage);
+            this.currentPage = 1;
+
+            // If query is empty, show all. If query has matches, show them.
+            this.showPage(1, false);
+        }
+
+        sort(type, order) {
+            this.visibleRows.sort((a, b) => { // Sort visibleRows instead of this.rows
+                let valA, valB;
+                if (type === 'name') {
+                    valA = a.querySelector('td:nth-child(1) .flex-col span:nth-child(1)')?.textContent.trim().toLowerCase();
+                    valB = b.querySelector('td:nth-child(1) .flex-col span:nth-child(1)')?.textContent.trim().toLowerCase();
+                } else if (type === 'status') {
+                    const statusOrder = { 'pending': 1, 'confirmed': 2, 'completed': 3, 'failed': 4, 'absent': 5 };
+                    valA = statusOrder[a.querySelector('td:nth-child(4)').textContent.trim().toLowerCase()] || 99;
+                    valB = statusOrder[b.querySelector('td:nth-child(4)').textContent.trim().toLowerCase()] || 99;
+                } else if (type === 'result') {
+                    const resOrder = { 'pending': 1, 'pass': 2, 'failed': 3 };
+                    valA = resOrder[a.querySelector('td:nth-child(6)').textContent.trim().toLowerCase()] || 99;
+                    valB = resOrder[b.querySelector('td:nth-child(6)').textContent.trim().toLowerCase()] || 99;
+                } else if (type === 'date') {
+                    // Date parsing logic
+                    // Format is DD MMM YYYY (e.g. 12 Jan 2024)
+                    const dateTextA = a.querySelector('td:nth-child(3) div:nth-child(1)').textContent.trim();
+                    const dateTextB = b.querySelector('td:nth-child(3) div:nth-child(1)').textContent.trim();
+
+                    // Parse manually since JS Date parsing can be fickle with formats
+                    valA = Date.parse(dateTextA) || 0;
+                    valB = Date.parse(dateTextB) || 0;
+                }
+
+                if (valA < valB) return order === 'asc' ? -1 : 1;
+                if (valA > valB) return order === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            this.showPage(1, true);
+
+            // Auto-close specific dropdown for this table
+            const prefix = this.tableBody.id.replace('Body', '');
+            const capitalizedPrefix = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+            const dropdown = document.getElementById('sortDropdown' + capitalizedPrefix);
+            if (dropdown) dropdown.classList.add('hidden');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const computerTable = new TablePagination('computerBody', 'computerPagination');
+        const practicalTable = new TablePagination('practicalBody', 'practicalPagination');
+        const jpjTable = new TablePagination('jpjBody', 'jpjPagination');
+
+        // Expose for inline onclicks
+        window.computerTable = computerTable;
+        window.practicalTable = practicalTable;
+        window.jpjTable = jpjTable;
+
+        // Wire up independent search inputs
+        const searchComputer = document.getElementById('searchComputer');
+        if (searchComputer) searchComputer.addEventListener('keyup', (e) => computerTable.filter(e.target.value));
+
+        const searchPractical = document.getElementById('searchPractical');
+        if (searchPractical) searchPractical.addEventListener('keyup', (e) => practicalTable.filter(e.target.value));
+
+        const searchJPJ = document.getElementById('searchJPJ');
+        if (searchJPJ) searchJPJ.addEventListener('keyup', (e) => jpjTable.filter(e.target.value));
+    });
+</script>
 
 </html>

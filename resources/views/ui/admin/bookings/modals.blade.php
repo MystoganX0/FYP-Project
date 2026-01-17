@@ -33,10 +33,9 @@
                             <label
                                 class="block mb-1.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Attendance
                                 Status</label>
-                            <select name="booking_status"
+                            <select name="booking_status" onchange="if(this.value === 'Absent') { const resultSelect = this.closest('form').querySelector('select[name=\'result\']'); if(resultSelect) resultSelect.value = 'Failed'; }"
                                 class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 transition-shadow">
                                 <option value="Pending" {{ $booking->booking_status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="Confirmed" {{ $booking->booking_status == 'Confirmed' ? 'selected' : '' }}>Confirmed</option>
                                 <option value="Completed" {{ $booking->booking_status == 'Completed' ? 'selected' : '' }}>Completed (Attended)</option>
                                 <option value="Absent" {{ $booking->booking_status == 'Absent' ? 'selected' : '' }}>Absent</option>
                             </select>

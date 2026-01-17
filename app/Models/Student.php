@@ -56,4 +56,9 @@ class Student extends Authenticatable
     {
         return $this->hasMany(Booking::class, 'student_id');
     }
+
+    public function attempts()
+    {
+        return $this->hasMany(Attempt::class, 'student_id');
+    }
 }

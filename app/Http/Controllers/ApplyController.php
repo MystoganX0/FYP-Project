@@ -128,7 +128,7 @@ class ApplyController extends Controller
 
     public function applied()
     {
-        $applications = Application::with(['student', 'payment', 'payment.details', 'class', 'package'])->get();
+        $applications = Application::with(['student', 'student.attempts', 'payment', 'payment.details', 'payments.details', 'class', 'package'])->get();
         return view('ui.admin.applied', compact('applications'));
     }
 

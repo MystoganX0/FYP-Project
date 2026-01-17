@@ -37,6 +37,11 @@ class Application extends Model
         return $this->hasOne(Payment::class, 'app_id');
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'app_id');
+    }
+
     public function updateStage()
     {
         $computerTest = $this->bookings()->whereHas('schedule', fn($q) => $q->where('phase_id', 1))->where('booking_status', 'Done')->exists();

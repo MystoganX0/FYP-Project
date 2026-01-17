@@ -146,6 +146,7 @@
                     </div>
                 </div>
 
+                <!-- IC + Age -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- IC Number -->
                     <div class="relative">
@@ -188,6 +189,7 @@
                     </div>
                 </div>
 
+                <!-- Full Name + Phone Number -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Full Name -->
                     <div class="relative">
@@ -256,8 +258,9 @@
                     </p>
                 </div>
 
-                <!-- License Class -->
+                <!-- License Class + Package-->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- License Class -->
                     <div class="relative">
                         <label for="licenseClass"
                             class="block mb-1.5 text-base font-semibold text-gray-700 uppercase">License
@@ -297,28 +300,26 @@
                                 @php
                                     $type = strtolower($pkg->package_type);
                                     // Default styles
-                                    $borderColor = 'border-gray-200';
+                                    $borderColor = 'border-2 border-gray-200';
                                     $checkedBorder = 'peer-checked:border-blue-900';
                                     $checkedBg = 'peer-checked:bg-blue-50';
                                     $iconColor = 'text-gray-400';
-                                    $checkedIconColor = 'peer-checked:text-blue-900';
-                                    $hoverBorder = 'hover:border-blue-400';
-
                                     // Validation/Theme logic based on type name (Basic, Premium, Preferred etc)
                                     if (Str::contains($type, 'premium')) {
                                         $checkedBorder = 'peer-checked:border-yellow-500';
                                         $checkedBg = 'peer-checked:bg-yellow-50';
-                                        $checkedIconColor = 'peer-checked:text-yellow-600';
+                                        // Target children via parent
+                                        $activeColorClass = 'peer-checked:[&_.package-icon]:text-yellow-500 peer-checked:[&_.check-circle]:text-yellow-500';
                                         $hoverBorder = 'hover:border-yellow-400';
                                     } elseif (Str::contains($type, 'basic')) {
                                         $checkedBorder = 'peer-checked:border-green-500';
                                         $checkedBg = 'peer-checked:bg-green-50';
-                                        $checkedIconColor = 'peer-checked:text-green-600';
+                                        $activeColorClass = 'peer-checked:[&_.package-icon]:text-green-500 peer-checked:[&_.check-circle]:text-green-500';
                                         $hoverBorder = 'hover:border-green-400';
                                     } elseif (Str::contains($type, 'preferred') || Str::contains($type, 'preffered')) {
                                         $checkedBorder = 'peer-checked:border-purple-500';
                                         $checkedBg = 'peer-checked:bg-purple-50';
-                                        $checkedIconColor = 'peer-checked:text-purple-600';
+                                        $activeColorClass = 'peer-checked:[&_.package-icon]:text-purple-500 peer-checked:[&_.check-circle]:text-purple-500';
                                         $hoverBorder = 'hover:border-purple-400';
                                     }
                                 @endphp
@@ -329,35 +330,39 @@
 
                                     <div
                                         class="p-5 rounded-2xl border {{ $borderColor }} bg-white transition-all duration-300 shadow-sm 
-                                                                                                {{ $hoverBorder }} hover:shadow-md 
-                                                                                                {{ $checkedBorder }} {{ $checkedBg }} peer-checked:shadow-lg h-full flex flex-col justify-between">
+                                                                                                                        {{ $hoverBorder }} 
+                                                                                                                        {{ $checkedBorder }} {{ $checkedBg }} {{ $activeColorClass }} h-full flex flex-col justify-between">
 
                                         <div class="flex justify-between items-start mb-3">
                                             <div class="p-2 rounded-lg bg-gray-50 group-hover:bg-white transition-colors">
                                                 <!-- Dynamic Icon based on type -->
                                                 @if (Str::contains($type, 'premium'))
-                                                    <svg class="w-6 h-6 {{ $iconColor }} group-hover:text-yellow-500 {{ $checkedIconColor }} transition-colors"
-                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                                                    <!-- Premium: Clean Star -->
+                                                    <svg class="w-6 h-6 package-icon {{ $iconColor }} group-hover:text-yellow-500 transition-colors"
+                                                        fill="currentColor" viewBox="0 0 24 24">
+                                                        <path fill-rule="evenodd"
+                                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                                                            clip-rule="evenodd" />
                                                     </svg>
                                                 @elseif (Str::contains($type, 'basic'))
-                                                    <svg class="w-6 h-6 {{ $iconColor }} group-hover:text-green-500 {{ $checkedIconColor }} transition-colors"
-                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    <!-- Basic: Shield Check -->
+                                                    <svg class="w-6 h-6 package-icon {{ $iconColor }} group-hover:text-green-500 transition-colors"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.956 11.956 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                                     </svg>
                                                 @else
-                                                    <svg class="w-6 h-6 {{ $iconColor }} group-hover:text-purple-500 {{ $checkedIconColor }} transition-colors"
-                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M5 13l4 4L19 7" />
+                                                    <!-- Preferred/Other: Sparkles -->
+                                                    <svg class="w-6 h-6 package-icon {{ $iconColor }} group-hover:text-purple-500 transition-colors"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                                                     </svg>
                                                 @endif
                                             </div>
                                             <div class="opacity-0 peer-checked:opacity-100 transition-opacity">
                                                 <div
-                                                    class="w-6 h-6 rounded-full bg-current text-current flex items-center justify-center {{ $checkedIconColor }}">
+                                                    class="w-6 h-6 rounded-full bg-current check-circle text-gray-200 flex items-center justify-center">
                                                     <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"
                                                         stroke="currentColor" stroke-width="3">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -375,7 +380,8 @@
                                             <span
                                                 class="block text-2xl font-black text-gray-900 group-hover:scale-105 origin-left transition-transform">
                                                 <span
-                                                    class="text-sm font-medium text-gray-500 align-top mr-1">RM</span>{{ $pkg->package_price }}
+                                                    class="text-sm font-medium text-gray-500 align-top mr-1">RM</span><span
+                                                    class="dynamic-package-price">{{ $pkg->package_price }}</span>
                                             </span>
                                         </div>
                                     </div>
@@ -397,41 +403,43 @@
                             <input type="radio" id="payment-full" name="payment_type" value="full" class="hidden peer"
                                 required>
 
-                            <label for="payment-full" class="h-full flex flex-col justify-start w-full p-5 bg-white border border-gray-200 rounded-2xl cursor-pointer 
-                            transition-all duration-300 ease-out shadow-sm peer-checked:shadow-lg peer-checked:border-blue-900 peer-checked:bg-blue-50/50 
-                            hover:border-blue-400 hover:shadow-md group relative overflow-hidden">
-
-                                <div
-                                    class="absolute top-0 right-0 w-16 h-16 bg-blue-900/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110">
-                                </div>
+                            <label for="payment-full" class="h-full flex flex-col justify-start w-full p-5 bg-white border-2 border-gray-200 rounded-3xl cursor-pointer 
+                            transition-all duration-300 ease-out shadow-sm 
+                            peer-checked:border-blue-600 peer-checked:bg-gradient-to-br peer-checked:from-blue-50 peer-checked:to-white 
+                            hover:border-blue-400 group relative overflow-hidden">
 
                                 <div class="flex justify-between items-start mb-4 relative z-10">
                                     <div
-                                        class="p-2 bg-blue-100 rounded-lg text-blue-900 group-peer-checked:bg-blue-900 group-peer-checked:text-white transition-colors">
+                                        class="p-3 bg-blue-100 rounded-xl text-blue-900 group-peer-checked:bg-blue-600 group-peer-checked:text-white group-peer-checked:shadow-lg transition-all duration-300">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
                                         </svg>
                                     </div>
-                                    <div class="hidden peer-checked:block text-blue-900">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                            class="w-6 h-6">
-                                            <path fill-rule="evenodd"
-                                                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                                                clip-rule="evenodd" />
-                                        </svg>
+                                    <div class="hidden peer-checked:block text-blue-600 animate-fadeIn">
+                                        <div class="bg-blue-600 text-white rounded-full p-1 shadow-md">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor" class="w-5 h-5">
+                                                <path fill-rule="evenodd"
+                                                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="block relative z-10">
-                                    <div class="w-full text-lg font-bold text-gray-900 mb-1">Full Payment</div>
-                                    <div class="w-full text-sm text-gray-500 mb-3 leading-relaxed">Single payment for
+                                    <div
+                                        class="w-full text-xl font-bold text-gray-900 mb-1 group-peer-checked:text-blue-900 transition-colors">
+                                        Full Payment</div>
+                                    <div class="w-full text-sm text-gray-500 mb-4 leading-relaxed">Single payment for
                                         the complete package.</div>
-                                    <div class="w-full py-2 px-3 bg-gray-50 rounded-lg border border-gray-100">
+                                    <div
+                                        class="w-full py-3 px-4 bg-gray-50 rounded-xl border border-gray-100 group-peer-checked:bg-white group-peer-checked:border-blue-100 transition-colors">
                                         <div class="flex justify-between items-center">
                                             <span class="text-sm font-semibold text-gray-600">Total</span>
-                                            <span class="text-base font-bold text-blue-900">RM 0</span>
+                                            <span class="text-lg font-bold text-blue-900">RM 0</span>
                                         </div>
                                     </div>
                                 </div>
@@ -443,51 +451,55 @@
                             <input type="radio" id="payment-installment" name="payment_type" value="installment"
                                 class="hidden peer">
 
-                            <label for="payment-installment" class="h-full flex flex-col justify-between w-full p-5 bg-white border border-gray-200 rounded-2xl cursor-pointer 
-                            transition-all duration-300 ease-out shadow-sm peer-checked:shadow-lg peer-checked:border-blue-900 peer-checked:bg-blue-50/50 
-                            hover:border-blue-400 hover:shadow-md group relative overflow-hidden">
-
-                                <div
-                                    class="absolute top-0 right-0 w-16 h-16 bg-blue-900/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110">
-                                </div>
+                            <label for="payment-installment" class="h-full flex flex-col justify-between w-full p-5 bg-white border-2 border-gray-200 rounded-3xl cursor-pointer 
+                            transition-all duration-300 ease-out shadow-sm 
+                            peer-checked:border-blue-600 peer-checked:bg-gradient-to-br peer-checked:from-blue-50 peer-checked:to-white 
+                            hover:border-blue-400 group relative overflow-hidden">
 
                                 <div class="flex justify-between items-start mb-4 relative z-10">
                                     <div
-                                        class="p-2 bg-blue-100 rounded-lg text-blue-900 group-peer-checked:bg-blue-900 group-peer-checked:text-white transition-colors">
+                                        class="p-3 bg-blue-100 rounded-xl text-blue-900 group-peer-checked:bg-blue-600 group-peer-checked:text-white group-peer-checked:shadow-lg transition-all duration-300">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                         </svg>
                                     </div>
-                                    <div class="hidden peer-checked:block text-blue-900">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                            class="w-6 h-6">
-                                            <path fill-rule="evenodd"
-                                                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                                                clip-rule="evenodd" />
-                                        </svg>
+                                    <div class="hidden peer-checked:block text-blue-600 animate-fadeIn">
+                                        <div class="bg-blue-600 text-white rounded-full p-1 shadow-md">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor" class="w-5 h-5">
+                                                <path fill-rule="evenodd"
+                                                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="block relative z-10">
-                                    <div class="w-full text-lg font-bold text-gray-900 mb-1">Installment Plan</div>
-                                    <div class="w-full text-sm text-gray-500 mb-3 leading-relaxed">Flexible payment in 3
+                                    <div
+                                        class="w-full text-xl font-bold text-gray-900 mb-1 group-peer-checked:text-blue-900 transition-colors">
+                                        Installment Plan</div>
+                                    <div class="w-full text-sm text-gray-500 mb-4 leading-relaxed">Flexible payment in 3
                                         stages.</div>
                                     <div class="space-y-2">
-                                        <div class="w-full py-2 px-3 bg-gray-50 rounded-lg border border-gray-100">
+                                        <div
+                                            class="w-full py-2 px-3 bg-gray-50 rounded-xl border border-gray-100 group-peer-checked:bg-white group-peer-checked:border-blue-100 transition-colors">
                                             <div class="flex justify-between items-center">
                                                 <span class="text-sm font-semibold text-gray-600">Stage 1</span>
                                                 <span class="text-base font-bold text-blue-900">RM 0</span>
                                             </div>
                                         </div>
-                                        <div class="w-full py-2 px-3 bg-gray-50 rounded-lg border border-gray-100">
+                                        <div
+                                            class="w-full py-2 px-3 bg-gray-50 rounded-xl border border-gray-100 group-peer-checked:bg-white group-peer-checked:border-blue-100 transition-colors">
                                             <div class="flex justify-between items-center">
                                                 <span class="text-sm font-semibold text-gray-600">Stage 2</span>
                                                 <span class="text-base font-bold text-blue-900">RM 0</span>
                                             </div>
                                         </div>
-                                        <div class="w-full py-2 px-3 bg-gray-50 rounded-lg border border-gray-100">
+                                        <div
+                                            class="w-full py-2 px-3 bg-gray-50 rounded-xl border border-gray-100 group-peer-checked:bg-white group-peer-checked:border-blue-100 transition-colors">
                                             <div class="flex justify-between items-center">
                                                 <span class="text-sm font-semibold text-gray-600">Stage 3</span>
                                                 <span class="text-base font-bold text-blue-900">RM 0</span>
@@ -699,12 +711,20 @@
                 const classOption = classSelect.options[classSelect.selectedIndex];
                 const selectedPackageRadio = document.querySelector('input[name="package_id"]:checked');
 
-                // Check if options are valid (disabled 'Select Class' has no data-price)
-                if (!classOption || classOption.disabled || !selectedPackageRadio) {
-                    return; // Don't calculate if valid options aren't selected
+                let classPrice = 0;
+                // 1. Get Class Price if valid
+                if (classOption && !classOption.disabled) {
+                    classPrice = parseFloat(classOption.getAttribute('data-price')) || 0;
                 }
 
-                const classPrice = parseFloat(classOption.getAttribute('data-price')) || 0;
+                // 2. ALWAYS update package display (Total = Class + Package)
+                updatePackageCards(classPrice);
+
+                // 3. Early return if we can't calculate full summary (need both Class + Package)
+                if (!classOption || classOption.disabled || !selectedPackageRadio) {
+                    return;
+                }
+
                 const packagePrice = parseFloat(selectedPackageRadio.getAttribute('data-price')) || 0;
                 const packageName = selectedPackageRadio.getAttribute('data-name') || 'Unknown Package';
 
@@ -757,7 +777,25 @@
                 if (installmentStage2) installmentStage2.textContent = 'RM ' + stage2.toFixed(2);
                 if (installmentStage3) installmentStage3.textContent = 'RM ' + stage3.toFixed(2);
 
+                // Update Package Cards Display
+                updatePackageCards(classPrice);
+            }
 
+            function updatePackageCards(classPrice) {
+                const packageInputs = document.querySelectorAll('input[name="package_id"]');
+                packageInputs.forEach(input => {
+                    const packagePrice = parseFloat(input.getAttribute('data-price')) || 0;
+                    const total = classPrice + packagePrice;
+
+                    // Find the label wrapper (grandparent/parent)
+                    const label = input.closest('label');
+                    if (label) {
+                        const priceDisplay = label.querySelector('.dynamic-package-price');
+                        if (priceDisplay) {
+                            priceDisplay.textContent = total.toFixed(2);
+                        }
+                    }
+                });
             }
 
             // Attach Listeners
@@ -906,7 +944,25 @@
                         reader.readAsDataURL(file);
                     }
 
-                    // CLEAN & NORMALIZE OCR TEXT -> keep digits only, fix common confusions
+                    // 1. KEYWORD CHECK (Enforce it is a MyKad)
+                    // We check for typical MyKad words. We convert to uppercase for matching.
+                    const upperText = text.toUpperCase();
+                    const keywords = ["MALAYSIA", "KAD", "PENGENALAN", "MYKAD", "WARGANEGARA"];
+
+                    // Count how many keywords appear
+                    const keywordCount = keywords.reduce((count, word) => {
+                        return upperText.includes(word) ? count + 1 : count;
+                    }, 0);
+
+                    // If fewer than 1 keyword found, reject it as "not a MyKad"
+                    if (keywordCount < 1) {
+                        return {
+                            valid: false,
+                            message: "Document does not look like a MyKad (missing keywords)."
+                        };
+                    }
+
+                    // 2. CLEAN & NORMALIZE OCR TEXT -> keep digits only, fix common confusions
                     let cleaned = String(text || "")
                         .replace(/O/g, "0")
                         .replace(/o/g, "0")
@@ -1145,12 +1201,6 @@
             applyBtn.addEventListener("click", () => {
                 window.location.href = "{{ route('payment') }}";
             });
-
-            // REDIRECT TO PAYMENT PAGE
-            applyBtn.addEventListener("click", () => {
-                window.location.href = "{{ route('payment') }}";
-            });
-
         });
     </script>
 </body>

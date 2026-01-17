@@ -359,10 +359,10 @@
                 <div class="overflow-x-auto bg-white shadow-md rounded-3xl flex-1">
 
                     <div
-                        class="bg-gray-900 px-6 sm:px-8 lg:px-12 py-5 flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-gray-100">
+                        class="bg-gray-900 px-6 sm:px-8 lg:px-12 py-5 flex flex-col sm:flex-row justify-end items-center gap-4 border-b border-gray-100">
 
                         <!-- Automate Button -->
-                        <button
+                        <!-- <button
                             class="w-full sm:w-auto text-gray-900 bg-gradient-to-r from-yellow-400 to-amber-500 font-semibold focus:outline-none hover:from-yellow-300 hover:to-amber-400 focus:ring-4 focus:ring-yellow-300 font-medium rounded-2xl text-sm px-6 py-3 mr-auto sm:mr-0 transition-all shadow-lg shadow-yellow-400/30 hover:-translate-y-0.5 flex items-center gap-2">
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -371,7 +371,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v4M8 16h.01M16 16h.01" />
                             </svg>
                             Automate Slot
-                        </button>
+                        </button> -->
 
                         <!-- Search Group -->
                         <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto" x-data="calendarFilter()"
