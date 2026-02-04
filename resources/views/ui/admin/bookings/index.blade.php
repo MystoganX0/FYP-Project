@@ -26,7 +26,7 @@
 <body class="bg-gray-50 font-poppins min-h-screen">
     @include('ui.admin.sidebar')
 
-    <div class="p-4 sm:ml-72 transition-all duration-300">
+    <div class="p-4 sm:ml-72 transition-all duration-300" x-data="{ activeTab: 'all' }">
         <div class="p-2 mt-4">
             <!-- Header -->
             <div
@@ -58,9 +58,6 @@
                             <div
                                 class="bg-white/20 text-white px-4 py-1.5 rounded-lg border border-white/10 cursor-default shadow-sm font-semibold">
                                 {{ date('d M Y') }}
-                            </div>
-                            <div class="px-4 py-1.5 cursor-default hover:bg-white/5 rounded-lg transition-colors">
-                                Today
                             </div>
                         </div>
                     </div>
@@ -167,65 +164,83 @@
             <!-- Summary Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 <!-- Computer Card -->
-                <a href="#computer-section"
-                    class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-blue-500 hover:shadow-md transition-all duration-300">
-                    <div class="relative flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500 mb-1">Computer Theory</p>
-                            <h3 class="text-3xl font-bold text-gray-900">{{ $computerBookings->count() }}</h3>
-                        </div>
+                <a href="javascript:void(0)" @click="activeTab = activeTab === 'computer' ? 'all' : 'computer'"
+                    :class="{ 'ring-2 ring-blue-500 ring-offset-2': activeTab === 'computer' }"
+                    class="group relative overflow-hidden bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 border border-gray-100/50 flex flex-col items-center justify-center text-center">
+
+                    <div class="mb-4 relative">
+                        <!-- Number as Icon -->
                         <div
-                            class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                </path>
-                            </svg>
+                            class="w-20 h-20 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold transition-all duration-300 shadow-sm group-hover:scale-110">
+                            {{ $computerBookings->count() }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">Computer
+                            Theory</h3>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                            <span class="text-sm font-medium text-gray-500">KPP-01</span>
                         </div>
                     </div>
                 </a>
 
                 <!-- Practical Card -->
-                <a href="#practical-section"
-                    class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-green-500 hover:shadow-md transition-all duration-300">
-                    <div class="relative flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500 mb-1">Practical Training</p>
-                            <h3 class="text-3xl font-bold text-gray-900">{{ $practicalBookings->count() }}</h3>
-                        </div>
+                <a href="javascript:void(0)" @click="activeTab = activeTab === 'practical' ? 'all' : 'practical'"
+                    :class="{ 'ring-2 ring-green-500 ring-offset-2': activeTab === 'practical' }"
+                    class="group relative overflow-hidden bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 border border-gray-100/50 flex flex-col items-center justify-center text-center">
+
+                    <div class="mb-4 relative">
+                        <!-- Number as Icon -->
                         <div
-                            class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors duration-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                                </path>
-                            </svg>
+                            class="w-20 h-20 bg-green-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold transition-all duration-300 shadow-sm group-hover:scale-110">
+                            {{ $practicalBookings->count() }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-green-600 transition-colors">
+                            Practical Training</h3>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                            <span class="text-sm font-medium text-gray-500">KPP-02</span>
                         </div>
                     </div>
                 </a>
 
                 <!-- JPJ Card -->
-                <a href="#jpj-section"
-                    class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-red-500 hover:shadow-md transition-all duration-300">
-                    <div class="relative flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500 mb-1">JPJ Test</p>
-                            <h3 class="text-3xl font-bold text-gray-900">{{ $jpjBookings->count() }}</h3>
-                        </div>
+                <a href="javascript:void(0)" @click="activeTab = activeTab === 'jpj' ? 'all' : 'jpj'"
+                    :class="{ 'ring-2 ring-red-500 ring-offset-2': activeTab === 'jpj' }"
+                    class="group relative overflow-hidden bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 border border-gray-100/50 flex flex-col items-center justify-center text-center">
+
+                    <div class="mb-4 relative">
+                        <!-- Number as Icon -->
                         <div
-                            class="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                </path>
-                            </svg>
+                            class="w-20 h-20 bg-red-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold transition-all duration-300 shadow-sm group-hover:scale-110">
+                            {{ $jpjBookings->count() }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-red-600 transition-colors">JPJ Test
+                        </h3>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                            <span class="text-sm font-medium text-gray-500">KPP-03</span>
                         </div>
                     </div>
                 </a>
             </div>
 
             <!-- Computer Theory Table -->
-            <div id="computer-section"
+            <div id="computer-section" x-show="activeTab === 'all' || activeTab === 'computer'"
+                x-transition:enter="transition ease-out duration-500"
+                x-transition:enter-start="opacity-0 transform scale-95 translate-y-4"
+                x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave-end="opacity-0 transform scale-95 translate-y-4"
                 class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
                 <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
@@ -304,7 +319,13 @@
             </div>
 
             <!-- Practical Training Table -->
-            <div id="practical-section"
+            <div id="practical-section" x-show="activeTab === 'all' || activeTab === 'practical'"
+                x-transition:enter="transition ease-out duration-500 delay-100"
+                x-transition:enter-start="opacity-0 transform scale-95 translate-y-4"
+                x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave-end="opacity-0 transform scale-95 translate-y-4"
                 class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
                 <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
@@ -383,7 +404,13 @@
             </div>
 
             <!-- JPJ Test Table -->
-            <div id="jpj-section"
+            <div id="jpj-section" x-show="activeTab === 'all' || activeTab === 'jpj'"
+                x-transition:enter="transition ease-out duration-500 delay-200"
+                x-transition:enter-start="opacity-0 transform scale-95 translate-y-4"
+                x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave-end="opacity-0 transform scale-95 translate-y-4"
                 class="bg-white rounded-[2rem] shadow-sm border-2 border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
                 <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex items-center gap-3">

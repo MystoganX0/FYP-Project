@@ -59,9 +59,6 @@
                                 class="bg-white/20 text-white px-4 py-1.5 rounded-lg border border-white/10 cursor-default shadow-sm font-semibold">
                                 {{ date('d M Y') }}
                             </div>
-                            <div class="px-4 py-1.5 cursor-default hover:bg-white/5 rounded-lg transition-colors">
-                                Today
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -69,220 +66,242 @@
 
             <!-- Flash Messages -->
             @if(session('success'))
-                <div x-data="{ show: true, progress: 0 }" x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)" x-show="show" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" 
-                    class="mb-6 bg-emerald-500 border border-emerald-600 rounded-2xl p-6 flex items-start gap-4 shadow-lg shadow-emerald-500/20 relative overflow-hidden" 
+                <div x-data="{ show: true, progress: 0 }"
+                    x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                    x-show="show" x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="mb-6 bg-emerald-500 border border-emerald-600 rounded-2xl p-6 flex items-start gap-4 shadow-lg shadow-emerald-500/20 relative overflow-hidden"
                     role="alert">
                     <div class="p-3 bg-white/20 rounded-xl text-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                     <div class="flex-1">
                         <h4 class="text-white font-bold text-lg mb-1">Success</h4>
                         <p class="text-emerald-50 text-sm font-medium">{{ session('success') }}</p>
                     </div>
-                    <button @click="show = false" type="button" class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-emerald-100 hover:text-white rounded-lg hover:bg-white/20 transition-colors">
+                    <button @click="show = false" type="button"
+                        class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-emerald-100 hover:text-white rounded-lg hover:bg-white/20 transition-colors">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
                         </svg>
                     </button>
                     <!-- Progress Bar -->
-                    <div class="absolute bottom-0 left-0 h-1 bg-white/30 rounded-b-2xl transition-all duration-100" :style="`width: ${progress}%`"></div>
+                    <div class="absolute bottom-0 left-0 h-1 bg-white/30 rounded-b-2xl transition-all duration-100"
+                        :style="`width: ${progress}%`"></div>
                 </div>
             @endif
 
             @if(session('error'))
-                <div x-data="{ show: true, progress: 0 }" x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)" x-show="show" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" 
-                    class="mb-6 bg-rose-500 border border-rose-600 rounded-2xl p-6 flex items-start gap-4 shadow-lg shadow-rose-500/20 relative overflow-hidden" 
+                <div x-data="{ show: true, progress: 0 }"
+                    x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                    x-show="show" x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="mb-6 bg-rose-500 border border-rose-600 rounded-2xl p-6 flex items-start gap-4 shadow-lg shadow-rose-500/20 relative overflow-hidden"
                     role="alert">
                     <div class="p-3 bg-white/20 rounded-xl text-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                     <div class="flex-1">
                         <h4 class="text-white font-bold text-lg mb-1">Error</h4>
                         <p class="text-rose-50 text-sm font-medium">{{ session('error') }}</p>
                     </div>
-                    <button @click="show = false" type="button" class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-rose-100 hover:text-white rounded-lg hover:bg-white/20 transition-colors">
+                    <button @click="show = false" type="button"
+                        class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-rose-100 hover:text-white rounded-lg hover:bg-white/20 transition-colors">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
                         </svg>
                     </button>
                     <!-- Progress Bar -->
-                    <div class="absolute bottom-0 left-0 h-1 bg-white/30 rounded-b-2xl transition-all duration-100" :style="`width: ${progress}%`"></div>
+                    <div class="absolute bottom-0 left-0 h-1 bg-white/30 rounded-b-2xl transition-all duration-100"
+                        :style="`width: ${progress}%`"></div>
                 </div>
             @endif
 
             <div class="flex flex-col xl:flex-row gap-8 items-start">
                 <!-- Left Side: Stats & Table -->
                 <main class="w-full xl:w-2/3 space-y-8">
-                    
+
                     <!-- Table Section -->
                     <div id="mainApplicationCard"
-                    class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                        <div>
-                            <h2 class="text-xl font-bold text-gray-900">Available License Classes</h2>
-                            <p class="text-sm text-gray-500 mt-1">Detailed license classes history</p>
-                        </div>
-
-                        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                            <!-- Search -->
-                            <div class="relative w-full sm:w-64">
-                                <input type="text" id="searchInput" onkeyup="filterApplications()"
-                                    placeholder="Search..."
-                                    class="pl-10 pr-4 py-2.5 rounded-xl border-none bg-gray-50 text-sm focus:ring-0 w-full transition-all hover:bg-gray-100 placeholder-gray-400">
-                                <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
+                        class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full">
+                        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-900">Available License Classes</h2>
+                                <p class="text-sm text-gray-500 mt-1">Detailed license classes history</p>
                             </div>
 
-                            <!-- Sort Button -->
-                            <div class="relative">
-                                <button id="dropdownSortButton" data-dropdown-toggle="dropdownSort"
-                                    class="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-900 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors">
-                                    <svg class="w-4 h-4 text-gray-900" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                                <!-- Search -->
+                                <div class="relative w-full sm:w-64">
+                                    <input type="text" id="searchInput" onkeyup="filterApplications()"
+                                        placeholder="Search..."
+                                        class="pl-10 pr-4 py-2.5 rounded-xl border-none bg-gray-50 text-sm focus:ring-0 w-full transition-all hover:bg-gray-100 placeholder-gray-400">
+                                    <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                     </svg>
-                                    Sort
-                                </button>
-                                <!-- Dropdown menu -->
-                                <div id="dropdownSort"
-                                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-xl shadow-lg border border-gray-100 w-56 mt-2">
-                                    <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownSortButton">
-                                        <li><a href="#" onclick="sortTable('name', 'asc')"
-                                                class="block px-4 py-2 hover:bg-gray-50">Name (A-Z)</a></li>
-                                        <li><a href="#" onclick="sortTable('name', 'desc')"
-                                                class="block px-4 py-2 hover:bg-gray-50">Name (Z-A)</a></li>
-                                        <li><a href="#" onclick="sortTable('code', 'asc')"
-                                                class="block px-4 py-2 hover:bg-gray-50">Code (A-Z)</a></li>
-                                        <li><a href="#" onclick="sortTable('price', 'asc')"
-                                                class="block px-4 py-2 hover:bg-gray-50">Price (Low-High)</a></li>
-                                        <li><a href="#" onclick="sortTable('price', 'desc')"
-                                                class="block px-4 py-2 hover:bg-gray-50">Price (High-Low)</a></li>
-                                    </ul>
+                                </div>
+
+                                <!-- Sort Button -->
+                                <div class="relative">
+                                    <button id="dropdownSortButton" data-dropdown-toggle="dropdownSort"
+                                        class="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-900 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors">
+                                        <svg class="w-4 h-4 text-gray-900" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+                                        </svg>
+                                        Sort
+                                    </button>
+                                    <!-- Dropdown menu -->
+                                    <div id="dropdownSort"
+                                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-xl shadow-lg border border-gray-100 w-56 mt-2">
+                                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownSortButton">
+                                            <li><a href="#" onclick="sortTable('name', 'asc')"
+                                                    class="block px-4 py-2 hover:bg-gray-50">Name (A-Z)</a></li>
+                                            <li><a href="#" onclick="sortTable('name', 'desc')"
+                                                    class="block px-4 py-2 hover:bg-gray-50">Name (Z-A)</a></li>
+                                            <li><a href="#" onclick="sortTable('code', 'asc')"
+                                                    class="block px-4 py-2 hover:bg-gray-50">Code (A-Z)</a></li>
+                                            <li><a href="#" onclick="sortTable('price', 'asc')"
+                                                    class="block px-4 py-2 hover:bg-gray-50">Price (Low-High)</a></li>
+                                            <li><a href="#" onclick="sortTable('price', 'desc')"
+                                                    class="block px-4 py-2 hover:bg-gray-50">Price (High-Low)</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-separate border-spacing-y-4 table-fixed min-w-[800px]">
-                            <thead>
-                                <tr class="text-gray-400 text-sm">
-                                    <th class="pb-2 pl-4 font-medium text-center w-32">Classes Image</th>
-                                    <th class="pb-2 pl-4 font-medium text-center w-24">Class Code</th>
-                                    <th class="pb-2 pl-4 font-medium text-center w-48">Class Name</th>
-                                    <th class="pb-2 font-medium text-center w-32">Price</th>
-                                    <th class="pb-2 font-medium text-center pr-2 w-24">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="classListBody" class="transition-all duration-300 ease-in-out pb-2">
-                                @forelse($classes as $class)
-                                    <tr class="group">
-                                        <td
-                                            class="bg-white border-b border-gray-50 py-4 pl-4 first:rounded-l-2xl shadow-sm">
-                                            <div
-                                                class="h-32 w-48 flex-shrink-0 flex items-center justify-center p-1">
-                                                <img src="{{ $class->class_image ? asset($class->class_image) : asset('image/classes/b.png') }}"
-                                                    class="h-full object-contain" alt="{{ $class->class_name }}">
-                                            </div>
-                                        </td>
-                                        <td class="bg-white border-b border-gray-50 py-4 pl-4 text-center">
-                                            <span
-                                                class="inline-flex items-center rounded-md bg-blue-50 px-3 py-1.5 text-base font-bold text-blue-700 ring-1 ring-inset ring-blue-700/10">{{ $class->class_code }}</span>
-                                        </td>
-                                        <td class="bg-white border-b border-gray-50 py-4 pl-4 text-center">
-                                            <div class="text-gray-900 font-bold text-sm">{{ $class->class_name }}</div>
-                                        </td>
-                                        <td class="bg-white border-b border-gray-50 py-4 text-center">
-                                            <div class="flex flex-col gap-1 items-center">
-                                                <span class="font-bold text-green-600">RM {{ number_format($class->class_price, 2) }}</span>
-                                            </div>
-                                        </td>
-                                        <td
-                                            class="bg-white border-b border-gray-50 py-4 text-center pr-2 first:rounded-l-2xl last:rounded-r-2xl shadow-sm">
-                                            <div class="flex items-center justify-center gap-2">
-                                                <button
-                                                    class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors js-edit-btn"
-                                                    data-id="{{ $class->class_id }}"
-                                                    data-name="{{ $class->class_name }}"
-                                                    data-code="{{ $class->class_code }}"
-                                                    data-price="{{ $class->class_price }}">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                                <button onclick="confirmDelete({{ $class->class_id }})"
-                                                    class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
+                        <div class="overflow-x-auto">
+                            <table
+                                class="w-full text-left border-separate border-spacing-y-4 table-fixed min-w-[800px]">
+                                <thead>
+                                    <tr class="text-gray-400 text-sm">
+                                        <th class="pb-2 pl-4 font-medium text-center w-32">Classes Image</th>
+                                        <th class="pb-2 pl-4 font-medium text-center w-24">Class Code</th>
+                                        <th class="pb-2 pl-4 font-medium text-center w-48">Class Name</th>
+                                        <th class="pb-2 font-medium text-center w-32">Price</th>
+                                        <th class="pb-2 font-medium text-center pr-2 w-24">Action</th>
                                     </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center py-6 text-gray-500">
-                                            No classes found.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody id="classListBody" class="transition-all duration-300 ease-in-out pb-2">
+                                    @forelse($classes as $class)
+                                        <tr class="group">
+                                            <td
+                                                class="bg-white border-b border-gray-50 py-4 pl-4 first:rounded-l-2xl shadow-sm">
+                                                <div class="h-32 w-48 flex-shrink-0 flex items-center justify-center p-1">
+                                                    <img src="{{ $class->class_image ? asset($class->class_image) : asset('image/classes/b.png') }}"
+                                                        class="h-full object-contain" alt="{{ $class->class_name }}">
+                                                </div>
+                                            </td>
+                                            <td class="bg-white border-b border-gray-50 py-4 pl-4 text-center">
+                                                <span
+                                                    class="inline-flex items-center rounded-md bg-blue-50 px-3 py-1.5 text-base font-bold text-blue-700 ring-1 ring-inset ring-blue-700/10">{{ $class->class_code }}</span>
+                                            </td>
+                                            <td class="bg-white border-b border-gray-50 py-4 pl-4 text-center">
+                                                <div class="text-gray-900 font-bold text-sm">{{ $class->class_name }}</div>
+                                            </td>
+                                            <td class="bg-white border-b border-gray-50 py-4 text-center">
+                                                <div class="flex flex-col gap-1 items-center">
+                                                    <span class="font-bold text-green-600">RM
+                                                        {{ number_format($class->class_price, 2) }}</span>
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="bg-white border-b border-gray-50 py-4 text-center pr-2 first:rounded-l-2xl last:rounded-r-2xl shadow-sm">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <button
+                                                        class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors js-edit-btn"
+                                                        data-id="{{ $class->class_id }}"
+                                                        data-name="{{ $class->class_name }}"
+                                                        data-code="{{ $class->class_code }}"
+                                                        data-price="{{ $class->class_price }}">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+                                                            </path>
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                    <button onclick="confirmDelete({{ $class->class_id }})"
+                                                        class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center py-6 text-gray-500">
+                                                No classes found.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
 
 
-                    <!-- Pagination Controls -->
-                    <div
-                        class="pagination-controls px-0 flex flex-col sm:flex-row justify-end items-center gap-4 hidden">
-                        <span class="page-indicator text-sm font-medium text-gray-400 font-poppins order-2 sm:order-1">
-                            Page <span class="current-page-user font-bold text-black">1</span> of <span
-                                class="total-pages-user font-bold text-black">1</span>
-                        </span>
+                        <!-- Pagination Controls -->
+                        <div
+                            class="pagination-controls px-0 flex flex-col sm:flex-row justify-end items-center gap-4 hidden">
+                            <span
+                                class="page-indicator text-sm font-medium text-gray-400 font-poppins order-2 sm:order-1">
+                                Page <span class="current-page-user font-bold text-black">1</span> of <span
+                                    class="total-pages-user font-bold text-black">1</span>
+                            </span>
 
-                        <div class="flex gap-2 order-1 sm:order-2">
-                            <button
-                                class="prev-btn flex items-center justify-center px-4 py-2 text-sm font-bold text-black bg-blue-100 border border-gray-700 rounded-xl hover:bg-blue-200 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 19l-7-7 7-7" />
-                                </svg>
-                                Previous
-                            </button>
-                            <button
-                                class="next-btn flex items-center justify-center px-4 py-2 text-sm font-bold text-black bg-blue-100 border border-gray-700 rounded-xl hover:bg-blue-200 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
-                                Next
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
+                            <div class="flex gap-2 order-1 sm:order-2">
+                                <button
+                                    class="prev-btn flex items-center justify-center px-4 py-2 text-sm font-bold text-black bg-blue-100 border border-gray-700 rounded-xl hover:bg-blue-200 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                    Previous
+                                </button>
+                                <button
+                                    class="next-btn flex items-center justify-center px-4 py-2 text-sm font-bold text-black bg-blue-100 border border-gray-700 rounded-xl hover:bg-blue-200 hover:text-black focus:z-10 focus:ring-2 focus:ring-blue-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                                    Next
+                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </main>
 
                 <!-- Right Side: Edit/Add Form -->
                 <aside class="w-full xl:w-1/3">
-                    <form action="{{ route('classes.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                        
+                    <form action="{{ route('classes.store') }}" method="POST" enctype="multipart/form-data"
+                        class="space-y-6">
+
                         <!-- Pricing Card -->
                         <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6">
                             <h2 class="text-xl font-bold text-gray-900 mb-6">Pricing Packages</h2>
@@ -342,32 +361,38 @@
                             <div class="space-y-6">
                                 <!-- Image Upload -->
                                 <div class="space-y-2">
-                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide ml-1">Class
+                                    <label
+                                        class="block text-xs font-bold text-gray-500 uppercase tracking-wide ml-1">Class
                                         Icon/Image</label>
                                     <label for="dropzone-file"
                                         class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer bg-gray-50 hover:bg-blue-50 hover:border-blue-300 transition-all group overflow-hidden relative">
-                                        
+
                                         <!-- Placeholder Content -->
-                                        <div id="upload-placeholder" class="flex flex-col items-center justify-center pt-5 pb-6 text-center">
-                                            <div class="p-3 bg-white rounded-full shadow-sm mb-3 group-hover:scale-110 transition-transform">
+                                        <div id="upload-placeholder"
+                                            class="flex flex-col items-center justify-center pt-5 pb-6 text-center">
+                                            <div
+                                                class="p-3 bg-white rounded-full shadow-sm mb-3 group-hover:scale-110 transition-transform">
                                                 <svg class="w-6 h-6 text-gray-400 group-hover:text-blue-500 transition-colors"
                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
                                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                                                     </path>
                                                 </svg>
                                             </div>
                                             <p class="mb-1 text-sm text-gray-500"><span
-                                                    class="font-bold text-blue-600">Click to upload</span> or drag and drop
+                                                    class="font-bold text-blue-600">Click to upload</span> or drag and
+                                                drop
                                             </p>
                                             <p class="text-xs text-gray-400">SVG, PNG, JPG (MAX. 800x400px)</p>
                                         </div>
 
                                         <!-- Image Preview -->
-                                        <img id="image-preview" src="#" alt="Preview" class="hidden absolute inset-0 w-full h-full object-contain p-2 bg-white">
-                                        
-                                        <input id="dropzone-file" type="file" name="class_image" class="hidden" accept="image/*"
-                                            onchange="displayFileName(event)" required />
+                                        <img id="image-preview" src="#" alt="Preview"
+                                            class="hidden absolute inset-0 w-full h-full object-contain p-2 bg-white">
+
+                                        <input id="dropzone-file" type="file" name="class_image" class="hidden"
+                                            accept="image/*" onchange="displayFileName(event)" required />
                                     </label>
                                 </div>
 
@@ -397,7 +422,8 @@
                                         class="block text-xs font-bold text-gray-500 uppercase tracking-wide ml-1">Class
                                         Price (Base)</label>
                                     <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                                        <div
+                                            class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
                                             <span class="text-gray-400 font-semibold text-sm">RM</span>
                                         </div>
                                         <input type="number" name="class_price" id="class-price"
@@ -514,7 +540,7 @@
 
             // Premium = Base + Premium Package Price
             const premiumPrice = basePrice + (packagePrices['premium'] || 0);
-            
+
             // Preferred = Base + Preferred Package Price
             const preferredPrice = basePrice + (packagePrices['preferred'] || 0);
 
@@ -534,8 +560,8 @@
                     valA = a.querySelector('td:nth-child(3) .text-gray-900').textContent.trim().toLowerCase();
                     valB = b.querySelector('td:nth-child(3) .text-gray-900').textContent.trim().toLowerCase();
                 } else if (column === 'code') { // class code
-                     valA = a.querySelector('td:nth-child(2)').textContent.trim().toLowerCase();
-                     valB = b.querySelector('td:nth-child(2)').textContent.trim().toLowerCase();
+                    valA = a.querySelector('td:nth-child(2)').textContent.trim().toLowerCase();
+                    valB = b.querySelector('td:nth-child(2)').textContent.trim().toLowerCase();
                 } else if (column === 'price') {
                     // Extract number from "RM 1,200.00"
                     const textA = a.querySelector('td:nth-child(4)').textContent.replace(/[^\d.-]/g, '');
@@ -559,9 +585,9 @@
             const rows = document.querySelectorAll('#classListBody tr');
 
             rows.forEach(row => {
-                const nameCell = row.querySelector('td:nth-child(3)'); 
+                const nameCell = row.querySelector('td:nth-child(3)');
                 const className = nameCell ? nameCell.textContent.toLowerCase() : '';
-                
+
                 if (className.includes(searchValue) || searchValue === "") {
                     row.style.display = "";
                 } else {
@@ -575,16 +601,16 @@
             const input = event.target;
             const preview = document.getElementById('image-preview');
             const placeholder = document.getElementById('upload-placeholder');
-            
+
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                
-                reader.onload = function(e) {
+
+                reader.onload = function (e) {
                     preview.src = e.target.result;
                     preview.classList.remove('hidden');
                     placeholder.classList.add('hidden');
                 }
-                
+
                 reader.readAsDataURL(input.files[0]);
             }
         }
@@ -602,28 +628,28 @@
                 document.getElementById('class-name').value = name;
                 document.getElementById('class-code').value = code;
                 document.getElementById('class-price').value = price;
-                
+
                 // Remove required from image input when editing
                 document.getElementById('dropzone-file').removeAttribute('required');
-                
+
                 // Update Form Action
                 const form = document.querySelector('form');
                 form.action = "{{ route('classes.update') }}";
                 document.getElementById('class-code').value = code;
                 document.getElementById('class-price').value = price;
-                
+
                 // Set Image Preview
                 // Find the image src from the row
                 const row = this.closest('tr');
                 const imgSrc = row.querySelector('img').src;
-                
+
                 const preview = document.getElementById('image-preview');
                 const placeholder = document.getElementById('upload-placeholder');
-                
+
                 preview.src = imgSrc;
                 preview.classList.remove('hidden');
                 placeholder.classList.add('hidden');
-                
+
                 // Trigger calculation
                 calculatePrices();
 
@@ -643,23 +669,23 @@
             e.preventDefault();
             document.querySelector('form').reset();
             document.getElementById('class-id').value = '';
-            
+
             // Re-add required to image input
             document.getElementById('dropzone-file').setAttribute('required', 'required');
-            
+
             // Reset Action
             document.querySelector('form').action = "{{ route('classes.store') }}";
-            
+
             // Reset Image Preview
             document.getElementById('image-preview').classList.add('hidden');
             document.getElementById('image-preview').src = '#';
             document.getElementById('upload-placeholder').classList.remove('hidden');
-            
+
             // Reset Prices
             document.getElementById('price-basic').value = '';
             document.getElementById('price-premium').value = '';
             document.getElementById('price-preferred').value = '';
-            
+
             document.getElementById('submitBtnText').textContent = "Add New Class";
         });
 
@@ -669,7 +695,7 @@
 
         function confirmDelete(id) {
             document.getElementById('deleteClassId').value = id;
-            
+
             // Show modal
             deleteModal.classList.remove('hidden');
             // Small delay to allow display:block to apply before opacity transition
@@ -685,7 +711,7 @@
             deleteModal.classList.add('opacity-0');
             deleteModalPanel.classList.remove('scale-100');
             deleteModalPanel.classList.add('scale-95');
-            
+
             // Wait for transition to finish
             setTimeout(() => {
                 deleteModal.classList.add('hidden');
@@ -693,7 +719,7 @@
         }
 
         // --- Pagination Logic ---
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const rowsPerPage = 4;
             const tableBody = document.getElementById('classListBody');
             const rows = Array.from(tableBody.querySelectorAll('tr'));
@@ -726,7 +752,7 @@
 
                     currentPageSpan.textContent = page;
                     totalPagesSpan.textContent = totalPages;
-                    
+
                     prevBtn.disabled = page === 1;
                     nextBtn.disabled = page === totalPages;
 
@@ -745,7 +771,7 @@
                 } else {
                     paginationControls.classList.remove('hidden');
                 }
-                
+
                 // Initial load - no delay
                 const start = (currentPage - 1) * rowsPerPage;
                 const end = start + rowsPerPage;

@@ -26,7 +26,7 @@
 <body class="bg-gray-50 font-poppins min-h-screen">
     @include('ui.admin.sidebar')
 
-    <div class="p-4 sm:ml-72 transition-all duration-300">
+    <div class="p-4 sm:ml-72 transition-all duration-300" x-data="{ activeTab: 'all' }">
         <div class="p-2 mt-4">
             <!-- Header -->
             <div
@@ -53,7 +53,7 @@
 
                     <div class="flex items-center gap-4">
                         <button type="button" onclick="openAddModal()"
-                            class="group relative inline-flex items-center justify-center px-6 py-2.5 font-bold text-white transition-all duration-200 bg-white/10 border border-white/20 rounded-xl hover:bg-white hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
+                            class="group relative inline-flex items-center justify-center px-6 py-2.5 font-bold text-blue-900 transition-all duration-200 bg-white border border-transparent rounded-xl hover:bg-blue-50 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white shadow-md shadow-blue-900/20">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 4v16m8-8H4"></path>
@@ -106,70 +106,84 @@
 
             <!-- Summary Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <!-- Total Schedules Card -->
-                <div
-                    class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-blue-500 hover:shadow-md transition-all duration-300">
-                    <div class="relative flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500 mb-1">Total Schedules</p>
-                            <h3 class="text-3xl font-bold text-gray-900">{{ $schedules->count() }}</h3>
-                        </div>
-                        <div
-                            class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
+                <!-- Computer Card -->
+                <a href="javascript:void(0)" @click="activeTab = activeTab === 'computer' ? 'all' : 'computer'"
+                    :class="{ 'ring-2 ring-blue-500 ring-offset-2': activeTab === 'computer' }"
+                    class="group relative overflow-hidden bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 border border-gray-100/50 flex flex-col items-center justify-center text-center">
 
-                <!-- Active Schedules Card (Future Dates) -->
-                @php
-                    $activeCount = $schedules->where('date', '>=', now()->toDateString())->count();
-                @endphp
-                <div
-                    class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-green-500 hover:shadow-md transition-all duration-300">
-                    <div class="relative flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500 mb-1">Upcoming Schedules</p>
-                            <h3 class="text-3xl font-bold text-gray-900">{{ $activeCount }}</h3>
-                        </div>
+                    <div class="mb-4 relative">
+                        <!-- Number as Icon -->
                         <div
-                            class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors duration-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                            class="w-20 h-20 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold transition-all duration-300 shadow-sm group-hover:scale-110">
+                            {{ $computerSchedules->count() }}
                         </div>
                     </div>
-                </div>
 
-                <!-- Past Schedules Card -->
-                @php
-                    $pastCount = $schedules->where('date', '<', now()->toDateString())->count();
-                @endphp
-                <div
-                    class="group relative overflow-hidden bg-white rounded-[2rem] p-6 shadow-sm border-2 border-gray-300 hover:shadow-md transition-all duration-300">
-                    <div class="relative flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500 mb-1">Past Schedules</p>
-                            <h3 class="text-3xl font-bold text-gray-900">{{ $pastCount }}</h3>
-                        </div>
-                        <div
-                            class="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-600 group-hover:bg-gray-600 group-hover:text-white transition-colors duration-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">Computer
+                            Theory</h3>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                            <span class="text-sm font-medium text-gray-500">Schedules</span>
                         </div>
                     </div>
-                </div>
+                </a>
+
+                <!-- Practical Card -->
+                <a href="javascript:void(0)" @click="activeTab = activeTab === 'practical' ? 'all' : 'practical'"
+                    :class="{ 'ring-2 ring-green-500 ring-offset-2': activeTab === 'practical' }"
+                    class="group relative overflow-hidden bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 border border-gray-100/50 flex flex-col items-center justify-center text-center">
+
+                    <div class="mb-4 relative">
+                        <!-- Number as Icon -->
+                        <div
+                            class="w-20 h-20 bg-green-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold transition-all duration-300 shadow-sm group-hover:scale-110">
+                            {{ $practicalSchedules->count() }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-green-600 transition-colors">
+                            Practical Training</h3>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                            <span class="text-sm font-medium text-gray-500">Schedules</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- JPJ Card -->
+                <a href="javascript:void(0)" @click="activeTab = activeTab === 'jpj' ? 'all' : 'jpj'"
+                    :class="{ 'ring-2 ring-red-500 ring-offset-2': activeTab === 'jpj' }"
+                    class="group relative overflow-hidden bg-white rounded-3xl p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 border border-gray-100/50 flex flex-col items-center justify-center text-center">
+
+                    <div class="mb-4 relative">
+                        <!-- Number as Icon -->
+                        <div
+                            class="w-20 h-20 bg-red-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold transition-all duration-300 shadow-sm group-hover:scale-110">
+                            {{ $jpjSchedules->count() }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 group-hover:text-red-600 transition-colors">JPJ Test
+                        </h3>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                            <span class="text-sm font-medium text-gray-500">Schedules</span>
+                        </div>
+                    </div>
+                </a>
             </div>
 
             <!-- Computer Theory Section -->
-            <div id="computer-section"
+            <div id="computer-section" x-show="activeTab === 'all' || activeTab === 'computer'"
+                x-transition:enter="transition ease-out duration-500"
+                x-transition:enter-start="opacity-0 transform scale-95 translate-y-4"
+                x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave-end="opacity-0 transform scale-95 translate-y-4"
                 class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
                 <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
@@ -246,7 +260,13 @@
             </div>
 
             <!-- Practical Training Section -->
-            <div id="practical-section"
+            <div id="practical-section" x-show="activeTab === 'all' || activeTab === 'practical'"
+                x-transition:enter="transition ease-out duration-500 delay-100"
+                x-transition:enter-start="opacity-0 transform scale-95 translate-y-4"
+                x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave-end="opacity-0 transform scale-95 translate-y-4"
                 class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
                 <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
@@ -323,7 +343,13 @@
             </div>
 
             <!-- JPJ Test Section -->
-            <div id="jpj-section"
+            <div id="jpj-section" x-show="activeTab === 'all' || activeTab === 'jpj'"
+                x-transition:enter="transition ease-out duration-500 delay-200"
+                x-transition:enter-start="opacity-0 transform scale-95 translate-y-4"
+                x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+                x-transition:leave-end="opacity-0 transform scale-95 translate-y-4"
                 class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8 flex flex-col w-full mb-8 scroll-mt-24">
                 <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex items-center gap-3">

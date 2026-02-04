@@ -26,163 +26,169 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite-charts@1.0.0/dist/flowbite-charts.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 
 </head>
 
-<body class="font-poppins bg-[#0E1F8E]">
+<body class="font-poppins bg-[#2e70c7]">
     @include('ui.user.header')
-    <!-- SUB NAV (tabs) -->
-    <div class="bg-white border-b border-gray-200">
-        <div
-            class="px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+    <!-- SUB NAV (floating) -->
+    <div class="px-4 pt-4 flex flex-col md:flex-row items-center justify-center gap-4 relative z-40">
 
-            <!-- Navigation Links -->
-            <nav class="flex-1 w-full md:w-auto">
-                <div class="flex flex-wrap justify-center md:justify-start items-center gap-2 p-1">
-
-                    <!-- Label -->
-                    <span
-                        class="font-medium text-base font-bold text-gray-400 uppercase tracking-widest mr-4 hidden md:block">
-                        License Phases
-                    </span>
-
-                    <!-- Computer Test -->
-                    <a href="{{ route('computer') }}"
-                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('computer') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
-                        <div
-                            class="mr-2.5 {{ request()->routeIs('computer') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                        </div>
-                        Computer Test
-                    </a>
-
-                    <!-- Divider Arrow -->
-                    <svg class="w-5 h-5 text-black hidden sm:block" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-
-                    <!-- Practical Slot -->
-                    <a href="{{ route('practical') }}"
-                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('practical') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
-                        <div
-                            class="mr-2.5 {{ request()->routeIs('practical') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8h3c0 2.76 2.24 5 5 5s5-2.24 5-5h3c0 4.41-3.59 8-8 8z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12v-5">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l4 4">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l-4 4">
-                                </path>
-                            </svg>
-                        </div>
-                        Practical Slot
-                    </a>
-
-                    <!-- Divider Arrow -->
-                    <svg class="w-5 h-5 text-black hidden sm:block" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-
-                    <!-- JPJ Test -->
-                    <a href="{{ route('jpj') }}"
-                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('jpj') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
-                        <div
-                            class="mr-2.5 {{ request()->routeIs('jpj') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        JPJ Test
-                    </a>
-                </div>
-            </nav>
-        </div>
+        <!-- Floating Navigation Menu -->
+        <nav
+            class="bg-[#151513] rounded-full px-2 py-2 flex items-center shadow-2xl overflow-x-auto no-scrollbar max-w-full">
+            <div class="flex items-center gap-1">
+                <a href="{{ route('computer') }}"
+                    class="relative whitespace-nowrap px-7 py-3 rounded-full text-base font-semibold transition-all duration-300 {{ request()->routeIs('computer') ? 'bg-[#2C2C2A] text-white shadow-inner ring-1 ring-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                    Computer Test
+                </a>
+                <a href="{{ route('practical') }}"
+                    class="relative whitespace-nowrap px-7 py-3 rounded-full text-base font-semibold transition-all duration-300 {{ request()->routeIs('practical') ? 'bg-[#2C2C2A] text-white shadow-inner ring-1 ring-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                    Practical Slot
+                </a>
+                <a href="{{ route('jpj') }}"
+                    class="relative whitespace-nowrap px-7 py-3 rounded-full text-base font-semibold transition-all duration-300 {{ request()->routeIs('jpj') ? 'bg-[#2C2C2A] text-white shadow-inner ring-1 ring-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                    JPJ Test
+                </a>
+            </div>
+        </nav>
     </div>
+
+    @php
+        $studentId = \Illuminate\Support\Facades\Auth::id();
+
+        // Get Application to check payment type
+        $application = \App\Models\Application::where('student_id', $studentId)
+            ->with('payment')
+            ->latest()
+            ->first();
+
+        $paymentType = $application && $application->payment ? $application->payment->payment_type : null;
+
+        // Check if user has passed JPJ Test
+        $isJPJTestDone = \App\Models\Booking::where('student_id', $studentId)
+            ->whereHas('schedule', function ($q) {
+                $q->where('phase_id', 3); // JPJ Test phase
+            })
+            ->whereHas('attempt', function ($q) {
+                $q->where('result', 'Pass');
+            })
+            ->exists();
+
+        // Dynamic Slot Calculation
+        $availableSlots = 1; // Default: 1 slot available
+
+        if ($isJPJTestDone) {
+            // If passed JPJ Test, no more slots needed
+            $availableSlots = 0;
+        } else {
+            // Check for active (Pending/Confirmed) bookings
+            $hasActiveBooking = \App\Models\Booking::where('student_id', $studentId)
+                ->whereHas('schedule', function ($q) {
+                    $q->where('phase_id', 3); // JPJ Test phase
+                })
+                ->whereIn('booking_status', ['Pending', 'Confirmed'])
+                ->exists();
+
+            if ($hasActiveBooking) {
+                // If booking is active, slot is taken
+                $availableSlots = 0;
+            } else {
+                // No active booking - check if user has failed previously
+                $hasFailed = \App\Models\Booking::where('student_id', $studentId)
+                    ->whereHas('schedule', function ($q) {
+                        $q->where('phase_id', 3); // JPJ Test phase
+                    })
+                    ->whereHas('attempt', function ($q) {
+                        $q->where('result', 'Fail');
+                    })
+                    ->exists();
+
+                if ($hasFailed) {
+                    // User failed - check if they paid for retest
+                    if ($paymentType === 'Retest') {
+                        $availableSlots = 1; // Paid for retest, 1 slot available
+                    } else {
+                        $availableSlots = 0; // Failed but not paid for retest yet
+                    }
+                }
+                // If never failed and no active booking, $availableSlots remains 1
+            }
+        }
+    @endphp
 
     <div class="px-4 sm:px-6 lg:px-32 py-6 md:py-14">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-x-20 items-start">
             <aside class="lg:col-span-4 flex flex-col">
-                <div class="border-4 border-white rounded-3xl bg-[#151513] p-6 shadow-sm flex-1">
-                    <div class="flex justify-between mb-3">
-                        <div class="flex justify-center items-center mb-3 w-full">
-                            <h5 class="text-2xl font-bold leading-none text-white text-center pe-2">
-                                JPJ Test Progress
-                            </h5>
+                <div class="border-4 border-black rounded-3xl bg-gray-900 p-4 shadow-sm flex-1">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex-1"></div>
+                        <h5 class="flex-1 text-2xl font-bold leading-none text-white text-center whitespace-nowrap">
+                            KPP-03
+                        </h5>
+                        <div class="flex-1 flex justify-end">
+                            <div
+                                class="flex items-center justify-center w-10 h-10 rounded-full bg-red-600 text-white font-bold text-lg shadow-lg border border-blue-500/30">
+                                {{ $availableSlots }}
+                            </div>
                         </div>
                     </div>
 
                     <!-- Indicator -->
                     <div class="flex flex-col" id="devices">
-                        <div class="flex justify-center items-center text-center">
-                            <span class="text-xl font-semibold text-gray-300">Total Slot:</span>
-                            <span class="text-xl font-bold text-blue-500 ms-2">1</span>
+                        <div class="flex flex-col sm:flex-row justify-center items-center w-full gap-4 sm:gap-0">
+                            <div class="flex items-center gap-3">
+                                <!-- Done -->
+                                <div
+                                    class="flex items-center gap-2 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
+                                    <span
+                                        class="w-3 h-3 rounded-full bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"></span>
+                                    <span class="text-sm font-medium text-gray-300">Done</span>
+                                </div>
+
+                                <!-- Remaining -->
+                                <div
+                                    class="flex items-center gap-2 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
+                                    <span
+                                        class="w-3 h-3 rounded-full bg-[#0E1F8E] shadow-[0_0_10px_rgba(14,31,142,0.5)]"></span>
+                                    <span class="text-sm font-medium text-gray-300">Remaining</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Chart -->
-                    <div class="py-4" id="donut-chart"></div>
-
-                    <div class="flex flex-col" id="devices">
-                        <div class="flex items-center justify-center space-x-6 py-2">
-                            <!-- Done -->
-                            <div
-                                class="flex items-center gap-3 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
-                                <span
-                                    class="w-3 h-3 rounded-full bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"></span>
-                                <span class="text-sm font-medium text-gray-300">Done</span>
-                            </div>
-
-                            <!-- Remaining -->
-                            <div
-                                class="flex items-center gap-3 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
-                                <span
-                                    class="w-3 h-3 rounded-full bg-[#0E1F8E] shadow-[0_0_10px_rgba(14,31,142,0.5)]"></span>
-                                <span class="text-sm font-medium text-gray-300">Remaining</span>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="py-6" id="donut-chart"></div>
 
                     <!-- Status booked -->
-                    <div class="border-t border-white mt-4 pt-5 pb-6">
-                        <div class="flex justify-center items-center gap-3 mb-6">
-                            <h5 class="text-2xl font-bold text-white">History</h5>
-                        <button id="historyDropdownButton" data-dropdown-toggle="historyDropdown"
-                                class="text-white bg-gray-700 hover:bg-gray-600 focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm px-3 py-1.5 inline-flex items-center">
-                                Filter
-                                <svg class="w-4 h-4 ml-1" aria-hidden="true" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-
-                            <div id="historyDropdown"
-                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-32">
-                                <ul class="py-2 text-sm text-gray-700">
-                                    <li><a href="#" data-filter="all"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">All</a></li>
-                                    <li><a href="#" data-filter="Completed"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Completed</a></li>
-                                    <li><a href="#" data-filter="Pending"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Pending</a></li>
-                                    <li><a href="#" data-filter="Absent"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Absent</a></li>
-                                </ul>
-                            </div>
+                    <div class="pb-6" x-data="{ historyOpen: true }">
+                        <div class="flex justify-center items-center gap-3 mb-6 cursor-pointer"
+                            @click="historyOpen = !historyOpen">
+                            <h5 class="nav-link text-white/90 hover:text-white font-bold text-xl transition-colors">
+                                History</h5>
+                            <!-- Dropdown Icon -->
+                            <svg x-show="!historyOpen" class="w-5 h-5 text-white/90 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                            <svg x-show="historyOpen" class="w-5 h-5 text-white/90 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 15l7-7 7 7" />
+                            </svg>
                         </div>
 
                         <!-- History List -->
-                        <div id="historyList" class="space-y-4">
+                        <div id="historyList" class="space-y-4 overflow-hidden" x-show="historyOpen"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform -translate-y-2"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-2">
                             @forelse($bookings as $booking)
                                 @php
                                     // Attendance / Logistics Status
@@ -206,46 +212,81 @@
                                     };
                                 @endphp
 
-                                <div class="history-item group flex flex-col sm:flex-row justify-between sm:items-center p-5 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
+                                <div class="history-item group flex flex-col sm:flex-row justify-between sm:items-center p-5 bg-white/10 backdrop-blur-md rounded-2xl shadow-sm hover:shadow-lg hover:bg-white/15 transition-all duration-300 border border-white/20"
                                     data-status="{{ $booking->booking_status == 'Done' ? 'Completed' : ($booking->booking_status == 'Failed' ? 'Absent' : $booking->booking_status) }}">
 
                                     <!-- Left: Date & Info -->
                                     <div class="flex items-center gap-4 mb-4 sm:mb-0">
                                         <div class="flex flex-col">
                                             <span
-                                                class="text-[10px] text-gray-400 font-extrabold uppercase tracking-widest leading-none mb-1">Test
+                                                class="text-[10px] text-white/60 font-extrabold uppercase tracking-widest leading-none mb-1">Test
                                                 Date</span>
-                                            <span class="text-base font-bold text-gray-800 leading-none">
+                                            <span class="text-base font-bold text-white leading-none">
                                                 {{ \Carbon\Carbon::parse($booking->schedule->date)->format('d M Y') }}
+                                                <button type="button"
+                                                    class="ml-2 inline-flex items-center text-white/80 hover:text-white transition-colors cursor-pointer open-booking-details"
+                                                    data-date="{{ \Carbon\Carbon::parse($booking->schedule->date)->format('d M Y') }}"
+                                                    data-day="{{ $booking->schedule->day }}"
+                                                    data-start="{{ \Carbon\Carbon::parse($booking->schedule->start_time)->format('h:i A') }}"
+                                                    data-end="{{ \Carbon\Carbon::parse($booking->schedule->time_out)->format('h:i A') }}"
+                                                    data-duration="{{ $booking->schedule->duration }}"
+                                                    title="View Schedule Details">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                    </svg>
+                                                </button>
                                             </span>
                                         </div>
                                     </div>
 
                                     <!-- Right: Statuses -->
                                     <div
-                                        class="grid grid-cols-2 sm:flex sm:items-center gap-4 w-full sm:w-auto border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0 mt-2 sm:mt-0">
+                                        class="grid grid-cols-2 sm:flex sm:items-center gap-4 w-full sm:w-auto border-t sm:border-t-0 border-white/10 pt-3 sm:pt-0 mt-2 sm:mt-0">
 
                                         <!-- Attendance Status -->
                                         <div class="flex flex-col items-start sm:items-end">
                                             <span
-                                                class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Attendance</span>
-                                            <span
-                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-{{ $statusColor }}-50 text-{{ $statusColor }}-700 border border-{{ $statusColor }}-100 whitespace-nowrap">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-{{ $statusColor }}-500"></span>
+                                                class="text-[10px] text-white/60 font-bold uppercase tracking-wider mb-1">Attendance</span>
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap
+                                                                                                                @if($booking->booking_status == 'Done' || $booking->booking_status == 'Completed')
+                                                                                                                    bg-[#0BCE83] text-black border border-white/20
+                                                                                                                @elseif($booking->booking_status == 'Failed')
+                                                                                                                    bg-red-600 text-white border border-white/20
+                                                                                                                @else
+                                                                                                                    bg-{{ $statusColor }}-50 text-{{ $statusColor }}-700 border border-{{ $statusColor }}-100
+                                                                                                                @endif">
+                                                @if($booking->booking_status == 'Done' || $booking->booking_status == 'Completed')
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                @else
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-{{ $statusColor }}-500"></span>
+                                                @endif
                                                 {{ $booking->booking_status }}
                                             </span>
                                         </div>
 
                                         <!-- Divider (Desktop Only) -->
-                                        <div class="h-8 w-px bg-gray-200 hidden sm:block"></div>
+                                        <div class="h-8 w-px bg-white/20 hidden sm:block"></div>
 
                                         <!-- Result Status -->
                                         @if($booking->attempt)
                                             <div class="flex flex-col items-start sm:items-end">
                                                 <span
-                                                    class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Result</span>
-                                                <span
-                                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-{{ $resultColor }}-50 text-{{ $resultColor }}-700 border border-{{ $resultColor }}-100 whitespace-nowrap">
+                                                    class="text-[10px] text-white/60 font-bold uppercase tracking-wider mb-1">Result</span>
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap
+                                                                                                @if($result == 'Pass')
+                                                                                                    bg-[#0BCE83] text-black border border-white/20
+                                                                                                @elseif($result == 'Failed')
+                                                                                                    bg-red-600 text-white border border-white/20
+                                                                                                @else
+                                                                                                    bg-{{ $resultColor }}-50 text-{{ $resultColor }}-700 border border-{{ $resultColor }}-100
+                                                                                                @endif">
                                                     @if($result == 'Pass')
                                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -277,81 +318,102 @@
             </aside>
 
             <main class="lg:col-span-8 flex flex-col">
-                <h1
-                    class="text-xl sm:text-2xl font-bold mb-6 text-white text-center flex justify-center items-center gap-3">
-                    <span>JPJ Slot</span>
-                    <span class="w-0.5 h-6 bg-white/30 hidden sm:block"></span>
-                    <span class="hidden sm:block">
-                        {{ optional($application->class)->class_code ?? 'N/A' }} -
-                        {{ optional($application->class)->class_name ?? 'N/A' }}
-                    </span>
-                    <span class="sm:hidden block">
-                        - {{ optional($application->class)->class_code ?? 'N/A' }}
-                    </span>
-                </h1>
-
                 @if(session('success'))
-                    <div x-data="{ show: true, progress: 0 }" x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)" x-show="show" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="mb-6 bg-green-900/40 backdrop-blur-md border border-green-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden" role="alert">
+                    <div x-data="{ show: true, progress: 0 }"
+                        x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                        x-show="show" x-transition:leave="transition ease-in duration-300"
+                        x-transition:leave-start="opacity-100 transform scale-100"
+                        x-transition:leave-end="opacity-0 transform scale-95"
+                        class="mb-6 bg-green-900/40 backdrop-blur-md border border-green-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden"
+                        role="alert">
                         <div class="p-3 bg-green-600/20 rounded-xl text-green-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
                         <div class="flex-1">
                             <h4 class="text-white font-bold text-lg mb-2">Success</h4>
                             <p class="text-green-100 text-sm">{{ session('success') }}</p>
                         </div>
-                        <button @click="show = false" type="button" class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-green-300 hover:text-green-100 rounded-lg hover:bg-green-600/20 transition-colors">
+                        <button @click="show = false" type="button"
+                            class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-green-300 hover:text-green-100 rounded-lg hover:bg-green-600/20 transition-colors">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
                             </svg>
                         </button>
                         <!-- Progress Bar -->
-                        <div class="absolute bottom-0 left-0 h-1 bg-green-500/30 rounded-b-2xl transition-all duration-100" :style="`width: ${progress}%`"></div>
+                        <div class="absolute bottom-0 left-0 h-1 bg-green-500/30 rounded-b-2xl transition-all duration-100"
+                            :style="`width: ${progress}%`"></div>
                     </div>
                 @endif
 
                 @if(session('error'))
-                    <div x-data="{ show: true, progress: 0 }" x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)" x-show="show" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="mb-6 bg-red-900/40 backdrop-blur-md border border-red-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden" role="alert">
+                    <div x-data="{ show: true, progress: 0 }"
+                        x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                        x-show="show" x-transition:leave="transition ease-in duration-300"
+                        x-transition:leave-start="opacity-100 transform scale-100"
+                        x-transition:leave-end="opacity-0 transform scale-95"
+                        class="mb-6 bg-red-900/40 backdrop-blur-md border border-red-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden"
+                        role="alert">
                         <div class="p-3 bg-red-600/20 rounded-xl text-red-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
                         <div class="flex-1">
                             <h4 class="text-white font-bold text-lg mb-2">Error</h4>
                             <p class="text-red-100 text-sm">{{ session('error') }}</p>
                         </div>
-                        <button @click="show = false" type="button" class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-red-300 hover:text-red-100 rounded-lg hover:bg-red-600/20 transition-colors">
+                        <button @click="show = false" type="button"
+                            class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-red-300 hover:text-red-100 rounded-lg hover:bg-red-600/20 transition-colors">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
                             </svg>
                         </button>
                         <!-- Progress Bar -->
-                        <div class="absolute bottom-0 left-0 h-1 bg-red-500/30 rounded-b-2xl transition-all duration-100" :style="`width: ${progress}%`"></div>
+                        <div class="absolute bottom-0 left-0 h-1 bg-red-500/30 rounded-b-2xl transition-all duration-100"
+                            :style="`width: ${progress}%`"></div>
                     </div>
                 @endif
 
                 @if(isset($hasActiveBooking) && $hasActiveBooking)
-                    <div x-data="{ show: true, progress: 0 }" x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)" x-show="show" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95" class="mb-6 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden" role="alert">
+                    <div x-data="{ show: true, progress: 0 }"
+                        x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                        x-show="show" x-transition:leave="transition ease-in duration-300"
+                        x-transition:leave-start="opacity-100 transform scale-100"
+                        x-transition:leave-end="opacity-0 transform scale-95"
+                        class="mb-6 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg relative overflow-hidden"
+                        role="alert">
                         <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
                         <div class="flex-1">
                             <h4 class="text-white font-bold text-lg mb-2">Active Booking</h4>
                             <p class="text-blue-100 text-sm leading-relaxed">
-                                You currently have an active booking. You cannot book another slot until your previous test is completed or failed.
+                                You currently have an active booking. You cannot book another slot until your previous test
+                                is completed or failed.
                             </p>
                         </div>
-                        <button @click="show = false" type="button" class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-blue-300 hover:text-blue-100 rounded-lg hover:bg-blue-600/20 transition-colors">
+                        <button @click="show = false" type="button"
+                            class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-blue-300 hover:text-blue-100 rounded-lg hover:bg-blue-600/20 transition-colors">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
                             </svg>
                         </button>
                         <!-- Progress Bar -->
-                        <div class="absolute bottom-0 left-0 h-1 bg-blue-500/30 rounded-b-2xl transition-all duration-100" :style="`width: ${progress}%`"></div>
+                        <div class="absolute bottom-0 left-0 h-1 bg-blue-500/30 rounded-b-2xl transition-all duration-100"
+                            :style="`width: ${progress}%`"></div>
                     </div>
                 @endif
 
@@ -360,22 +422,9 @@
 
                     <div
                         class="bg-gray-900 px-6 sm:px-8 lg:px-12 py-5 flex flex-col sm:flex-row justify-end items-center gap-4 border-b border-gray-100">
-
-                        <!-- Automate Button -->
-                        <!-- <button
-                            class="w-full sm:w-auto text-gray-900 bg-gradient-to-r from-yellow-400 to-amber-500 font-semibold focus:outline-none hover:from-yellow-300 hover:to-amber-400 focus:ring-4 focus:ring-yellow-300 font-medium rounded-2xl text-sm px-6 py-3 mr-auto sm:mr-0 transition-all shadow-lg shadow-yellow-400/30 hover:-translate-y-0.5 flex items-center gap-2">
-                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                <rect width="18" height="10" x="3" y="11" rx="2" />
-                                <circle cx="12" cy="5" r="2" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v4M8 16h.01M16 16h.01" />
-                            </svg>
-                            Automate Slot
-                        </button> -->
-
                         <!-- Search Group -->
-                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto" x-data="calendarFilter()"
-                            x-init="initCalendar()">
+                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
+                            x-data="calendarFilter()" x-init="initCalendar()">
                             <div class="relative w-full sm:w-72" @click.away="open = false">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none z-10">
                                     <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor"
@@ -411,21 +460,20 @@
                                     class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
 
                                     <!-- Header -->
-                                    <div class="flex items-center justify-between p-3 border-b border-gray-100 bg-gray-50">
+                                    <div
+                                        class="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100/50">
                                         <button @click="prevMonth()" type="button"
-                                            class="p-1 hover:bg-gray-200 rounded-lg transition-colors">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
+                                            class="p-1.5 text-gray-400 hover:text-gray-900 hover:bg-gray-50 rounded-full transition-all">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15 19l-7-7 7-7" />
                                             </svg>
                                         </button>
-                                        <span class="font-bold text-gray-800"
+                                        <span class="text-sm font-semibold text-gray-900 tracking-wide"
                                             x-text="monthNames[month] + ' ' + year"></span>
                                         <button @click="nextMonth()" type="button"
-                                            class="p-1 hover:bg-gray-200 rounded-lg transition-colors">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
+                                            class="p-1.5 text-gray-400 hover:text-gray-900 hover:bg-gray-50 rounded-full transition-all">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9 5l7 7-7 7" />
                                             </svg>
@@ -442,7 +490,8 @@
 
                                     <!-- Calendar Grid -->
                                     <div class="p-3">
-                                        <div class="grid grid-cols-7 mb-2 text-center text-xs font-medium text-gray-400">
+                                        <div
+                                            class="grid grid-cols-7 mb-2 text-center text-xs font-medium text-gray-400">
                                             <div>Su</div>
                                             <div>Mo</div>
                                             <div>Tu</div>
@@ -500,7 +549,7 @@
 
                         @forelse($schedules as $schedule)
                             <div
-                                class="bg-white border rounded-lg shadow p-4 px-4 md:grid md:grid-cols-7 md:items-center md:text-center hover:border-blue-900 hover:border-[3px]">
+                                class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 md:grid md:grid-cols-7 md:items-center md:text-center transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-600">
                                 <!-- Academy -->
                                 <div class="flex items-center gap-4 md:px-4 text-left md:col-span-2">
                                     <img src="/image/icon/logo.png" class="h-14" alt="MDA Logo" />
@@ -744,7 +793,8 @@
                 </div>
 
                 <!-- Notes -->
-                <div class="mt-8 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg">
+                <div
+                    class="mt-8 bg-blue-900/40 backdrop-blur-md border border-blue-500/30 rounded-2xl p-6 flex items-start gap-4 shadow-lg">
                     <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -828,12 +878,13 @@
                     class="close-confirm-modal w-full px-6 py-3.5 rounded-xl bg-gray-50 text-gray-700 font-bold hover:bg-gray-100 hover:text-gray-900 transition-all border border-gray-200">
                     Cancel
                 </button>
-                <form method="POST" action="{{ route('booking.store') }}" class="w-full">
+                <form method="POST" action="{{ route('booking.store') }}" class="w-full"
+                    onsubmit="this.querySelector('button[type=submit]').disabled = true; this.querySelector('button[type=submit]').innerHTML = 'Processing...';">
                     @csrf
                     <input type="hidden" name="schedule_id" id="modalScheduleId">
                     <input type="hidden" name="phase_type" id="modalPhaseTypeVal">
                     <button type="submit"
-                        class="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 text-white font-bold hover:from-blue-800 hover:to-blue-700 shadow-lg shadow-blue-600/30 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all">
+                        class="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 text-white font-bold hover:from-blue-800 hover:to-blue-700 shadow-lg shadow-blue-600/30 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                         Confirm
                     </button>
                 </form>
@@ -939,6 +990,82 @@
                 <button type="button"
                     class="close-payment-modal w-full text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:ring-4 focus:ring-blue-300 font-bold rounded-2xl text-base px-5 py-4 text-center shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300">
                     Proceed to Payment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Details Modal -->
+    <div id="bookingDetailsModal" tabindex="-1" aria-hidden="true"
+        class="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 backdrop-blur-sm hidden opacity-0 transition-opacity duration-200">
+        <div id="bookingDetailsContent"
+            class="relative bg-white rounded-3xl shadow-xl w-full max-w-sm mx-4 overflow-hidden transform scale-95 transition-transform duration-200">
+
+            <!-- Header -->
+            <div class="px-6 pt-6 pb-4 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">Schedule Details</h3>
+                    <button type="button"
+                        class="close-booking-details text-gray-400 hover:text-gray-600 transition-colors p-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="px-6 py-5 space-y-3">
+                <!-- Date Section -->
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs text-gray-500 font-medium mb-0.5">Date</p>
+                        <p class="text-base font-semibold text-gray-900" id="modalBookingDate">--</p>
+                        <p class="text-sm text-gray-600" id="modalBookingDay">--</p>
+                    </div>
+                </div>
+
+                <!-- Time & Duration -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-gray-50 rounded-2xl p-3">
+                        <p class="text-xs text-gray-500 font-medium mb-1">Time</p>
+                        <p class="text-sm font-semibold text-gray-900">
+                            <span id="modalBookingStart">--</span><br>
+                            <span id="modalBookingEnd">--</span>
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 rounded-2xl p-3">
+                        <p class="text-xs text-gray-500 font-medium mb-1">Duration</p>
+                        <p class="text-sm font-semibold text-gray-900">
+                            <span id="modalBookingDuration">--</span> Hours
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Academy -->
+                <div class="flex items-center gap-3 bg-gray-50 rounded-2xl p-3">
+                    <div class="flex-shrink-0 w-8 h-8 bg-white rounded-lg shadow-sm flex items-center justify-center">
+                        <img src="/image/icon/logo.png" class="w-5 h-5 object-contain" alt="MDA">
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs text-gray-500 font-medium">Academy</p>
+                        <p class="text-sm font-semibold text-gray-900">Molek Driving Academy</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 pb-6">
+                <button type="button"
+                    class="close-booking-details w-full py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-full transition-colors">
+                    Close
                 </button>
             </div>
         </div>
@@ -1076,7 +1203,6 @@
         });
     </script>
 
-    <!-- Calendar Filter Alpine Data -->
     <script>
         function calendarFilter() {
             return {
@@ -1169,7 +1295,6 @@
         }
     </script>
 
-    <!-- Filter Dates & Pagination Logic -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -1186,7 +1311,7 @@
             const mobileCardsContainer = document.getElementById("mobileCards");
 
             // Row Selectors (GET ALL rows, excluding header)
-            const allDesktopRows = Array.from(document.querySelectorAll("#desktopTable > div.hover\\:border-blue-900"));
+            const allDesktopRows = Array.from(document.querySelectorAll("#desktopTable > div.hover\\:border-blue-600"));
             const allMobileRows = Array.from(document.querySelectorAll("#mobileCards > div.bg-white"));
 
             // Pagination Elements
@@ -1378,7 +1503,7 @@
             @php
                 $totalSlots = 1;
                 // Count only passed JPJ tests
-                $doneCount = $bookings->filter(function($booking) {
+                $doneCount = $bookings->filter(function ($booking) {
                     return $booking->attempt && $booking->attempt->result === 'Pass';
                 })->count();
                 $remainingCount = max(0, $totalSlots - $doneCount);
@@ -1511,6 +1636,68 @@
                 // Auto open if payment required
                 setTimeout(openFeeModal, 500);
             @endif
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('bookingDetailsModal');
+            const modalContent = document.getElementById('bookingDetailsContent');
+            // Select all buttons dynamically
+            const openBtns = document.querySelectorAll('.open-booking-details');
+            const closeBtns = document.querySelectorAll('.close-booking-details');
+
+            // Fields
+            const dateEl = document.getElementById('modalBookingDate');
+            const dayEl = document.getElementById('modalBookingDay');
+            const startEl = document.getElementById('modalBookingStart');
+            const endEl = document.getElementById('modalBookingEnd');
+            const durationEl = document.getElementById('modalBookingDuration');
+
+            function openModal(btn) {
+                // Populate Data
+                dateEl.textContent = btn.dataset.date;
+                dayEl.textContent = btn.dataset.day;
+                startEl.textContent = btn.dataset.start;
+                endEl.textContent = btn.dataset.end;
+                durationEl.textContent = btn.dataset.duration;
+
+                modal.classList.remove('hidden');
+                void modal.offsetWidth; // Trigger reflow
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-90');
+                modalContent.classList.add('scale-100');
+            }
+
+            function closeModal() {
+                modal.classList.add('opacity-0');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 200);
+            }
+
+            // Delegate event listener for dynamic content if needed, but for now simple attach
+            // Since elements might be in a loop, attach to all found
+            document.querySelectorAll('.open-booking-details').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openModal(btn);
+                });
+            });
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', closeModal);
+            });
+
+            // Close on backdrop click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
         });
     </script>
 </body>

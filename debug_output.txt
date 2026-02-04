@@ -1,0 +1,303 @@
+[2026-01-11 06:11:00] local.INFO: Booking Update - Booking ID: 31
+[2026-01-11 06:11:00] local.INFO: Has attempt: Yes
+[2026-01-11 06:11:01] local.INFO: Attempt updated. Result: Pass
+[2026-01-11 06:11:01] local.INFO: Has schedule: Yes
+[2026-01-11 06:11:01] local.INFO: Phase ID: 3
+[2026-01-11 06:11:01] local.INFO: Request result: Pass
+[2026-01-11 06:11:01] local.INFO: App ID 20 stage updated to: License Acquired
+[2026-01-11 06:11:01] local.INFO: JPJ Test passed! Updating application status to Completed for App ID: 20
+[2026-01-11 06:11:29] local.INFO: Congratulations Modal Check {"user_id":9,"has_completed_app":"yes","should_show":"yes","app_id":20}
+[2026-01-11 06:11:29] local.INFO: Congratulations flag set to true for app_id: 20
+[2026-01-11 06:12:47] local.INFO: Congratulations Modal Check {"user_id":9,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-11 06:39:08] local.INFO: Congratulations Modal Check {"user_id":10,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-11 06:57:49] local.INFO: Congratulations Modal Check {"user_id":10,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-11 06:58:47] local.INFO: Congratulations Modal Check {"user_id":10,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-11 17:22:23] local.INFO: Congratulations Modal Check {"user_id":10,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-11 17:44:28] local.INFO: Booking Update - Booking ID: 32
+[2026-01-11 17:44:28] local.INFO: Has attempt: Yes
+[2026-01-11 17:44:28] local.INFO: Attempt updated. Result: Pass
+[2026-01-11 17:44:28] local.INFO: Has schedule: Yes
+[2026-01-11 17:44:28] local.INFO: Phase ID: 1
+[2026-01-11 17:44:28] local.INFO: Request result: Pass
+[2026-01-11 17:44:28] local.INFO: App ID 21 stage updated to: Practical Slot
+[2026-01-11 17:44:28] local.INFO: Not a JPJ test or schedule not found
+[2026-01-11 17:53:58] local.INFO: Booking Update - Booking ID: 37
+[2026-01-11 17:53:58] local.INFO: Has attempt: Yes
+[2026-01-11 17:53:58] local.INFO: Attempt updated. Result: Pending
+[2026-01-11 17:53:58] local.INFO: Has schedule: Yes
+[2026-01-11 17:53:58] local.INFO: Phase ID: 2
+[2026-01-11 17:53:58] local.INFO: Request result: Pending
+[2026-01-11 17:53:58] local.INFO: Not a JPJ test or schedule not found
+[2026-01-11 17:54:03] local.INFO: Booking Update - Booking ID: 36
+[2026-01-11 17:54:03] local.INFO: Has attempt: Yes
+[2026-01-11 17:54:03] local.INFO: Attempt updated. Result: Pending
+[2026-01-11 17:54:03] local.INFO: Has schedule: Yes
+[2026-01-11 17:54:03] local.INFO: Phase ID: 2
+[2026-01-11 17:54:03] local.INFO: Request result: Pending
+[2026-01-11 17:54:03] local.INFO: Not a JPJ test or schedule not found
+[2026-01-11 17:54:09] local.INFO: Booking Update - Booking ID: 35
+[2026-01-11 17:54:09] local.INFO: Has attempt: Yes
+[2026-01-11 17:54:09] local.INFO: Attempt updated. Result: Pending
+[2026-01-11 17:54:09] local.INFO: Has schedule: Yes
+[2026-01-11 17:54:09] local.INFO: Phase ID: 2
+[2026-01-11 17:54:09] local.INFO: Request result: Pending
+[2026-01-11 17:54:09] local.INFO: Not a JPJ test or schedule not found
+[2026-01-11 17:54:20] local.INFO: Booking Update - Booking ID: 34
+[2026-01-11 17:54:20] local.INFO: Has attempt: Yes
+[2026-01-11 17:54:20] local.INFO: Attempt updated. Result: Pending
+[2026-01-11 17:54:20] local.INFO: Has schedule: Yes
+[2026-01-11 17:54:20] local.INFO: Phase ID: 2
+[2026-01-11 17:54:20] local.INFO: Request result: Pending
+[2026-01-11 17:54:20] local.INFO: Not a JPJ test or schedule not found
+[2026-01-11 17:54:29] local.INFO: Booking Update - Booking ID: 33
+[2026-01-11 17:54:29] local.INFO: Has attempt: Yes
+[2026-01-11 17:54:29] local.INFO: Attempt updated. Result: Pending
+[2026-01-11 17:54:29] local.INFO: Has schedule: Yes
+[2026-01-11 17:54:29] local.INFO: Phase ID: 2
+[2026-01-11 17:54:29] local.INFO: Request result: Pending
+[2026-01-11 17:54:29] local.INFO: App ID 21 stage updated to: JPJ Test
+[2026-01-11 17:54:29] local.INFO: Not a JPJ test or schedule not found
+[2026-01-11 17:57:28] local.INFO: Booking Update - Booking ID: 38
+[2026-01-11 17:57:28] local.INFO: Has attempt: Yes
+[2026-01-11 17:57:28] local.INFO: Attempt updated. Result: Failed
+[2026-01-11 17:57:28] local.INFO: Has schedule: Yes
+[2026-01-11 17:57:28] local.INFO: Phase ID: 3
+[2026-01-11 17:57:28] local.INFO: Request result: Failed
+[2026-01-11 17:57:28] local.INFO: JPJ Test set to Failed. Resetting to In-Progress for App ID: 21
+[2026-01-11 17:59:14] local.INFO: Booking Update - Booking ID: 39
+[2026-01-11 17:59:14] local.INFO: Has attempt: Yes
+[2026-01-11 17:59:14] local.INFO: Attempt updated. Result: Pass
+[2026-01-11 17:59:14] local.INFO: Has schedule: Yes
+[2026-01-11 17:59:14] local.INFO: Phase ID: 3
+[2026-01-11 17:59:14] local.INFO: Request result: Pass
+[2026-01-11 17:59:14] local.INFO: App ID 21 stage updated to: License Acquired
+[2026-01-11 17:59:14] local.INFO: JPJ Test passed! Updating application status to Completed for App ID: 21
+[2026-01-11 17:59:24] local.INFO: Congratulations Modal Check {"user_id":10,"has_completed_app":"yes","should_show":"yes","app_id":21}
+[2026-01-11 17:59:24] local.INFO: Congratulations flag set to true for app_id: 21
+[2026-01-11 18:33:41] local.INFO: Congratulations Modal Check {"user_id":10,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-16 04:21:20] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-16 04:42:54] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-16 04:43:21] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 01:55:21] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 01:55:25] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 02:08:58] local.INFO: Congratulations Modal Check {"user_id":11,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 02:51:38] local.INFO: Congratulations Modal Check {"user_id":11,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 03:49:46] local.INFO: Booking Update - Booking ID: 25
+[2026-01-17 03:49:46] local.INFO: Has attempt: Yes
+[2026-01-17 03:49:46] local.INFO: Attempt updated. Result: Pass
+[2026-01-17 03:49:46] local.INFO: Has schedule: Yes
+[2026-01-17 03:49:46] local.INFO: Phase ID: 1
+[2026-01-17 03:49:46] local.INFO: Request result: Pass
+[2026-01-17 03:49:46] local.INFO: Not a JPJ test or schedule not found
+[2026-01-17 03:57:39] local.INFO: Booking Update - Booking ID: 24
+[2026-01-17 03:57:39] local.INFO: Has attempt: Yes
+[2026-01-17 03:57:39] local.INFO: Attempt updated. Result: Pass
+[2026-01-17 03:57:39] local.INFO: Has schedule: Yes
+[2026-01-17 03:57:39] local.INFO: Phase ID: 3
+[2026-01-17 03:57:39] local.INFO: Request result: Pass
+[2026-01-17 03:57:39] local.INFO: App ID 19 stage updated to: License Acquired
+[2026-01-17 03:57:39] local.INFO: JPJ Test passed! Updating application status to Completed for App ID: 19
+[2026-01-17 03:57:41] local.INFO: Exam result email sent to iamkhairul0612@gmail.com for JPJ Test
+[2026-01-17 03:59:11] local.INFO: Booking Update - Booking ID: 24
+[2026-01-17 03:59:11] local.INFO: Has attempt: Yes
+[2026-01-17 03:59:11] local.INFO: Attempt updated. Result: Pending
+[2026-01-17 03:59:11] local.INFO: Has schedule: Yes
+[2026-01-17 03:59:11] local.INFO: Phase ID: 3
+[2026-01-17 03:59:11] local.INFO: Request result: Pending
+[2026-01-17 03:59:11] local.INFO: App ID 19 stage updated to: JPJ Test
+[2026-01-17 03:59:11] local.INFO: JPJ Test set to Pending. Resetting to In-Progress for App ID: 19
+[2026-01-17 04:01:26] local.INFO: Booking Update - Booking ID: 24
+[2026-01-17 04:01:26] local.INFO: Has attempt: Yes
+[2026-01-17 04:01:26] local.INFO: Attempt updated. Result: Pass
+[2026-01-17 04:01:26] local.INFO: Has schedule: Yes
+[2026-01-17 04:01:26] local.INFO: Phase ID: 3
+[2026-01-17 04:01:26] local.INFO: Request result: Pass
+[2026-01-17 04:01:26] local.INFO: App ID 19 stage updated to: License Acquired
+[2026-01-17 04:01:26] local.INFO: JPJ Test passed! Updating application status to Completed for App ID: 19
+[2026-01-17 04:01:27] local.INFO: Exam result email sent to iamkhairul0612@gmail.com for JPJ Test
+[2026-01-17 04:07:49] local.INFO: Booking Update - Booking ID: 31
+[2026-01-17 04:07:49] local.INFO: Has attempt: Yes
+[2026-01-17 04:07:49] local.INFO: Attempt updated. Result: Pending
+[2026-01-17 04:07:49] local.INFO: Has schedule: Yes
+[2026-01-17 04:07:49] local.INFO: Phase ID: 3
+[2026-01-17 04:07:49] local.INFO: Request result: Pending
+[2026-01-17 04:07:49] local.INFO: App ID 20 stage updated to: JPJ Test
+[2026-01-17 04:07:49] local.INFO: JPJ Test set to Pending. Resetting to In-Progress for App ID: 20
+[2026-01-17 04:28:38] local.INFO: Congratulations Modal Check {"user_id":11,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 04:30:46] local.INFO: Congratulations Modal Check {"user_id":11,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 04:31:22] local.INFO: Congratulations Modal Check {"user_id":11,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 04:31:39] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 04:32:01] local.INFO: Booking Update - Booking ID: 31
+[2026-01-17 04:32:01] local.INFO: Has attempt: Yes
+[2026-01-17 04:32:01] local.INFO: Attempt updated. Result: Pass
+[2026-01-17 04:32:01] local.INFO: Has schedule: Yes
+[2026-01-17 04:32:01] local.INFO: Phase ID: 3
+[2026-01-17 04:32:01] local.INFO: Request result: Pass
+[2026-01-17 04:32:01] local.INFO: App ID 20 stage updated to: License Acquired
+[2026-01-17 04:32:01] local.INFO: JPJ Test passed! Updating application status to Completed for App ID: 20
+[2026-01-17 04:32:06] local.INFO: Exam result email sent to amirul.akmal.putrajaya2003@gmail.com for JPJ Test
+[2026-01-17 04:40:45] local.INFO: Booking Update - Booking ID: 24
+[2026-01-17 04:40:45] local.INFO: Has attempt: Yes
+[2026-01-17 04:40:45] local.INFO: Attempt updated. Result: Pending
+[2026-01-17 04:40:45] local.INFO: Has schedule: Yes
+[2026-01-17 04:40:45] local.INFO: Phase ID: 3
+[2026-01-17 04:40:45] local.INFO: Request result: Pending
+[2026-01-17 04:40:45] local.INFO: App ID 19 stage updated to: JPJ Test
+[2026-01-17 04:40:45] local.INFO: JPJ Test set to Pending. Resetting to In-Progress for App ID: 19
+[2026-01-17 04:41:12] local.INFO: Booking Update - Booking ID: 24
+[2026-01-17 04:41:12] local.INFO: Has attempt: Yes
+[2026-01-17 04:41:12] local.INFO: Attempt updated. Result: Pass
+[2026-01-17 04:41:12] local.INFO: Has schedule: Yes
+[2026-01-17 04:41:12] local.INFO: Phase ID: 3
+[2026-01-17 04:41:12] local.INFO: Request result: Pass
+[2026-01-17 04:41:12] local.INFO: App ID 19 stage updated to: License Acquired
+[2026-01-17 04:41:12] local.INFO: JPJ Test passed! Updating application status to Completed for App ID: 19
+[2026-01-17 04:41:17] local.INFO: Exam result email sent to iamkhairul0612@gmail.com for JPJ Test
+[2026-01-17 05:04:48] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 05:05:28] local.INFO: Congratulations Modal Check {"user_id":11,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 05:10:06] local.INFO: Congratulations Modal Check {"user_id":11,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 05:10:19] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 05:16:39] local.INFO: Congratulations Modal Check {"user_id":11,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-17 05:17:34] local.INFO: Booking Update - Booking ID: 41
+[2026-01-17 05:17:34] local.INFO: Has attempt: Yes
+[2026-01-17 05:17:34] local.INFO: Attempt updated. Result: Pass
+[2026-01-17 05:17:34] local.INFO: Has schedule: Yes
+[2026-01-17 05:17:34] local.INFO: Phase ID: 1
+[2026-01-17 05:17:34] local.INFO: Request result: Pass
+[2026-01-17 05:17:34] local.INFO: App ID 22 stage updated to: Practical Slot
+[2026-01-17 05:17:34] local.INFO: Not a JPJ test or schedule not found
+[2026-01-17 05:17:40] local.INFO: Exam result email sent to kerulhkmi112@gmail.com for Computer Test
+[2026-01-17 05:19:27] local.INFO: Booking Update - Booking ID: 46
+[2026-01-17 05:19:27] local.INFO: Has attempt: Yes
+[2026-01-17 05:19:27] local.INFO: Attempt updated. Result: Pass
+[2026-01-17 05:19:27] local.INFO: Has schedule: Yes
+[2026-01-17 05:19:27] local.INFO: Phase ID: 2
+[2026-01-17 05:19:27] local.INFO: Request result: Pass
+[2026-01-17 05:19:27] local.INFO: Not a JPJ test or schedule not found
+[2026-01-17 05:19:27] local.INFO: Practical completion check. Student 11 has 1 completed sessions.
+[2026-01-17 05:19:33] local.INFO: Booking Update - Booking ID: 42
+[2026-01-17 05:19:33] local.INFO: Has attempt: Yes
+[2026-01-17 05:19:33] local.INFO: Attempt updated. Result: Pending
+[2026-01-17 05:19:33] local.INFO: Has schedule: Yes
+[2026-01-17 05:19:33] local.INFO: Phase ID: 2
+[2026-01-17 05:19:33] local.INFO: Request result: Pending
+[2026-01-17 05:19:33] local.INFO: Not a JPJ test or schedule not found
+[2026-01-17 05:19:33] local.INFO: Practical completion check. Student 11 has 2 completed sessions.
+[2026-01-17 05:19:39] local.INFO: Booking Update - Booking ID: 43
+[2026-01-17 05:19:39] local.INFO: Has attempt: Yes
+[2026-01-17 05:19:39] local.INFO: Attempt updated. Result: Pending
+[2026-01-17 05:19:39] local.INFO: Has schedule: Yes
+[2026-01-17 05:19:39] local.INFO: Phase ID: 2
+[2026-01-17 05:19:39] local.INFO: Request result: Pending
+[2026-01-17 05:19:39] local.INFO: Not a JPJ test or schedule not found
+[2026-01-17 05:19:39] local.INFO: Practical completion check. Student 11 has 3 completed sessions.
+[2026-01-17 05:19:45] local.INFO: Booking Update - Booking ID: 44
+[2026-01-17 05:19:45] local.INFO: Has attempt: Yes
+[2026-01-17 05:19:45] local.INFO: Attempt updated. Result: Pending
+[2026-01-17 05:19:45] local.INFO: Has schedule: Yes
+[2026-01-17 05:19:45] local.INFO: Phase ID: 2
+[2026-01-17 05:19:45] local.INFO: Request result: Pending
+[2026-01-17 05:19:45] local.INFO: Not a JPJ test or schedule not found
+[2026-01-17 05:19:45] local.INFO: Practical completion check. Student 11 has 4 completed sessions.
+[2026-01-17 05:19:50] local.INFO: Booking Update - Booking ID: 45
+[2026-01-17 05:19:50] local.INFO: Has attempt: Yes
+[2026-01-17 05:19:50] local.INFO: Attempt updated. Result: Pending
+[2026-01-17 05:19:50] local.INFO: Has schedule: Yes
+[2026-01-17 05:19:50] local.INFO: Phase ID: 2
+[2026-01-17 05:19:50] local.INFO: Request result: Pending
+[2026-01-17 05:19:50] local.INFO: App ID 22 stage updated to: JPJ Test
+[2026-01-17 05:19:50] local.INFO: Not a JPJ test or schedule not found
+[2026-01-17 05:19:50] local.INFO: Practical completion check. Student 11 has 5 completed sessions.
+[2026-01-17 05:19:55] local.INFO: Practical completion email sent to kerulhkmi112@gmail.com
+[2026-01-17 05:25:48] local.INFO: Congratulations Modal Check {"user_id":11,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-21 02:22:12] local.INFO: Congratulations Modal Check {"user_id":12,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-23 10:18:20] local.INFO: Congratulations Modal Check {"user_id":13,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-23 10:19:21] local.INFO: Congratulations Modal Check {"user_id":13,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-23 10:21:45] local.INFO: Congratulations Modal Check {"user_id":13,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-23 10:22:10] local.INFO: Congratulations Modal Check {"user_id":13,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-23 10:23:12] local.INFO: Booking Update - Booking ID: 47
+[2026-01-23 10:23:12] local.INFO: Has attempt: Yes
+[2026-01-23 10:23:12] local.INFO: Attempt updated. Result: Pass
+[2026-01-23 10:23:12] local.INFO: Has schedule: Yes
+[2026-01-23 10:23:12] local.INFO: Phase ID: 1
+[2026-01-23 10:23:12] local.INFO: Request result: Pass
+[2026-01-23 10:23:12] local.INFO: App ID 24 stage updated to: Practical Slot
+[2026-01-23 10:23:12] local.INFO: Not a JPJ test or schedule not found
+[2026-01-23 10:23:18] local.INFO: Exam result email sent to hafiz12@gmail.com for Computer Test
+[2026-01-23 10:24:04] local.INFO: Congratulations Modal Check {"user_id":13,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-23 10:30:11] local.INFO: Booking Update - Booking ID: 48
+[2026-01-23 10:30:11] local.INFO: Has attempt: Yes
+[2026-01-23 10:30:11] local.INFO: Attempt updated. Result: Pending
+[2026-01-23 10:30:11] local.INFO: Has schedule: Yes
+[2026-01-23 10:30:11] local.INFO: Phase ID: 2
+[2026-01-23 10:30:11] local.INFO: Request result: Pending
+[2026-01-23 10:30:11] local.INFO: Not a JPJ test or schedule not found
+[2026-01-23 10:30:11] local.INFO: Practical completion check. Student 13 has 1 completed sessions.
+[2026-01-23 10:31:30] local.INFO: Congratulations Modal Check {"user_id":13,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-01-23 10:31:45] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 08:51:38] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 08:59:21] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 09:05:59] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 10:41:10] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 10:42:22] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 10:43:02] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 10:44:48] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 10:46:34] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 11:13:08] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 13:31:24] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 13:32:09] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 16:07:13] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 16:08:10] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 16:50:36] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-02 16:51:07] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-03 08:04:12] local.INFO: Congratulations Modal Check {"user_id":10,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-03 08:08:29] local.INFO: Congratulations Modal Check {"user_id":10,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-03 15:14:56] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-03 15:15:14] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-03 15:24:24] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-03 15:35:21] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-03 15:39:07] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-03 15:39:37] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-03 16:05:45] local.INFO: Booking Update - Booking ID: 46
+[2026-02-03 16:05:45] local.INFO: Has attempt: Yes
+[2026-02-03 16:05:45] local.INFO: Attempt updated. Result: Pending
+[2026-02-03 16:05:45] local.INFO: Has schedule: Yes
+[2026-02-03 16:05:45] local.INFO: Phase ID: 2
+[2026-02-03 16:05:45] local.INFO: Request result: Pending
+[2026-02-03 16:05:45] local.INFO: Not a JPJ test or schedule not found
+[2026-02-03 16:05:45] local.INFO: Practical completion check. Student 11 has 5 completed sessions.
+[2026-02-03 16:05:52] local.INFO: Practical completion email sent to kerulhkmi112@gmail.com
+[2026-02-03 17:56:17] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 09:20:51] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 09:30:32] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 09:33:58] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 09:47:56] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 09:50:32] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 10:36:52] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 10:37:54] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 10:38:13] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 10:39:52] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 10:40:05] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 10:44:03] local.INFO: Congratulations Modal Check {"user_id":6,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 10:48:38] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 10:55:32] local.INFO: Congratulations Modal Check {"user_id":7,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 10:55:40] local.INFO: Congratulations Modal Check {"user_id":7,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 10:56:04] local.INFO: Congratulations Modal Check {"user_id":7,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 11:01:39] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 11:01:55] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 11:02:14] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 11:02:36] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 11:06:28] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:11:10] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:11:32] local.INFO: Congratulations Modal Check {"user_id":7,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:19:48] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:19:53] local.INFO: Congratulations Modal Check {"user_id":5,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:20:05] local.INFO: Congratulations Modal Check {"user_id":7,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:21:10] local.INFO: Congratulations Modal Check {"user_id":7,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:24:09] local.INFO: Congratulations Modal Check {"user_id":14,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:25:24] local.INFO: Congratulations Modal Check {"user_id":14,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:39:34] local.INFO: Congratulations Modal Check {"user_id":14,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:39:51] local.INFO: Congratulations Modal Check {"user_id":14,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 13:48:39] local.INFO: Congratulations Modal Check {"user_id":14,"has_completed_app":"no","should_show":"no","app_id":"N/A"}
+[2026-02-04 14:05:56] local.INFO: Booking Request Started {"student_id":14,"schedule_ids":["4"],"request_all":{"_token":"4Fj467eKrYH5wX0wb3n88SnFIjMufgfztceW2UG8","schedule_id":"4","phase_type":"Computer Test"}}
+[2026-02-04 14:05:56] local.INFO: Slot Decremented {"schedule_id":"4","new_slot_count":23}

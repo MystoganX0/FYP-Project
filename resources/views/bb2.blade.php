@@ -109,7 +109,7 @@
         <div class="w-10 md:w-12 flex-shrink-0"></div>
     </div>
 
-    <section class="w-full flex flex-col lg:flex-row gap-4 md:gap-8 py-2 md:py-4 px-4 md:px-8 lg:px-12 xl:px-48 mb-10">
+    <section class="w-full flex flex-col lg:flex-row gap-4 md:gap-8 py-4 md:py-6 px-4 md:px-8 lg:px-12 xl:px-48 mb-10">
         <div id="formSection" class="w-full min-w-0 bg-white rounded-3xl p-8 text-black hover:shadow-2xl">
 
             <form id="registrationForm" action="{{ route('apply.store') }}" method="POST" enctype="multipart/form-data"
@@ -609,7 +609,7 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold uppercase tracking-wider text-gray-100">Summary
+                            <h3 class="text-lg font-bold uppercase tracking-wider text-gray-100">Application Summary
                             </h3>
                             <p class="text-xs text-blue-300/80 font-light">Invoice Breakdown</p>
                         </div>

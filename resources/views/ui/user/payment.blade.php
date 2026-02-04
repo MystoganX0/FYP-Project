@@ -279,9 +279,9 @@
                 <p class="text-gray-500 mb-8">Thank you for your payment. Your registration has been confirmed.</p>
 
                 <div class="space-y-3">
-                    <a href="#"
+                    <a href="#" id="receipt-link"
                         class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-600/30 transition-all duration-200">
-                        Download Receipt
+                        View Receipt
                     </a>
                     <a href="{{ route('history') }}"
                         class="block w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl transition-all duration-200">
@@ -327,6 +327,15 @@
                     payButton.disabled = false;
 
                     if (data.success) {
+                        // Store detail_id for receipt link
+                        window.paymentDetailId = data.detail_id;
+
+                        // Update View Receipt link
+                        const receiptLink = document.querySelector('#receipt-link');
+                        if (receiptLink && data.detail_id) {
+                            receiptLink.href = `/receipt/${data.detail_id}`;
+                        }
+
                         successModal.classList.remove('hidden');
                         // Trigger reflow
                         void successModal.offsetWidth;

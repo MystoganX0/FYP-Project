@@ -58,9 +58,6 @@
                                 class="bg-white/20 text-white px-4 py-1.5 rounded-lg border border-white/10 cursor-default shadow-sm font-semibold">
                                 {{ date('d M Y') }}
                             </div>
-                            <div class="px-4 py-1.5 cursor-default hover:bg-white/5 rounded-lg transition-colors">
-                                Today
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -43,7 +43,7 @@
                                 student showed up.</p>
                         </div>
 
-                        @if($booking->attempt)
+                        @if($booking->attempt && $booking->schedule->phase_id != 2)
                             <div>
                                 <label
                                     class="block mb-1.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Academic

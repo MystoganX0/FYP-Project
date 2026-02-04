@@ -55,16 +55,7 @@
     </style>
 </head>
 
-<body class="font-poppins bg-pattern min-h-screen flex items-center justify-center p-4">
-    <!-- Background Decor Elements -->
-    <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div
-            class="absolute top-10 left-10 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float">
-        </div>
-        <div class="absolute bottom-10 right-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"
-            style="animation-delay: 2s"></div>
-    </div>
-
+<body class="font-poppins bg-white min-h-screen flex items-center justify-center p-4">
     <!-- Main Container -->
     <div
         class="glass-card w-full max-w-[1000px] rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row relative z-10 animate-fade-in">

@@ -35,49 +35,30 @@
                 </svg>
             </div>
         </a>
-        <div class="flex-1 flex justify-center min-w-0">
-            <div
-                class="flex items-center space-x-2 md:space-x-3 border-2 border-blue-900 rounded-xl bg-blue-100 px-4 py-2 md:px-6 md:py-3 truncate max-w-full">
-                <h2 class="text-sm sm:text-lg md:text-xl font-bold text-blue-900 truncate">LICENSE CLASS DETAILS</h2>
-            </div>
+        <div class="flex-1 flex justify-start min-w-0 px-4">
+            <h1 class="text-xl md:text-2xl font-bold text-black">Package Details</h1>
         </div>
         <div class="w-10 md:w-12 flex-shrink-0"></div>
     </div>
 
     <!-- Hero Section -->
-    <div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
+    <div class="max-w-7xl mx-auto px-2">
         <div
             class="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 shadow-2xl p-8 md:p-12 lg:p-16 text-white isolate">
-            <!-- Decorative blobs -->
-            <div
-                class="absolute -top-24 -left-24 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse">
-            </div>
-            <div
-                class="absolute -bottom-24 -right-24 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-700">
-            </div>
-
             <div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
                 <!-- Image Column -->
                 <div class="flex justify-center">
                     <div class="relative group">
-                        <div
-                            class="absolute inset-0 bg-white/10 rounded-3xl transform rotate-3 scale-105 transition-transform duration-500 group-hover:rotate-6">
-                        </div>
                         <img src="{{ asset($class->class_image) }}" alt="{{ $class->class_code }}"
-                            class="relative w-64 md:w-80 lg:w-96 rounded-2xl shadow-2xl transform transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3 object-cover">
+                            class="relative w-64 md:w-80 lg:w-96 rounded-2xl shadow-2xl object-cover">
                     </div>
                 </div>
 
                 <!-- Content Column -->
                 <div class="space-y-8 text-center md:text-left">
                     <div>
-                        <span
-                            class="inline-block px-6 py-3 rounded-full bg-blue-500/30 border border-blue-400/30 text-blue-200 text-sm font-medium mb-4 backdrop-blur-sm">
-                            {{ $class->class_name }}
-                        </span>
                         <h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
-                            Class <span
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-white">{{ $class->class_code }}</span>
+                            Class <span class="text-white">{{ $class->class_code }}</span>
                         </h1>
                         <p class="text-lg text-blue-100/80 max-w-lg mx-auto md:mx-0 leading-relaxed">
                             Start your journey with our comprehensive driving course designed for safety and confidence.
@@ -125,7 +106,6 @@
         </div>
 
         <div class="relative space-y-12">
-            <!-- Vertical Connecting Line -->
             <div
                 class="absolute left-6 md:left-1/2 top-4 bottom-0 w-0.5 bg-gradient-to-b from-blue-200 via-blue-400 to-transparent -translate-x-1/2 block">
             </div>
@@ -336,19 +316,21 @@
             <!-- Level 5 -->
             <div class="relative flex flex-col md:flex-row gap-8 items-start md:items-center group">
                 <div class="hidden md:block flex-1 text-right">
-                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-blue-700 transition-colors">Level 5: QTI
-                    </h3>
-                    <p class="text-blue-600 font-medium">Pre-Test Assessment</p>
+                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors">Level 5:
+                        JPJ Test</h3>
+                    <p class="text-green-600 font-medium">Final Assessment</p>
                 </div>
 
                 <div
-                    class="relative z-10 w-12 h-12 rounded-full bg-white border-4 border-blue-500 text-blue-900 font-black flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform flex-shrink-0 mx-0 md:mx-0">
-                    5
+                    class="relative z-10 w-12 h-12 rounded-full bg-green-500 border-4 border-green-100 text-white font-black flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform flex-shrink-0 mx-0 md:mx-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
                 </div>
 
                 <div class="flex-1 md:hidden pl-4 -mt-14 mb-4 ml-12">
-                    <h3 class="text-xl font-bold text-gray-900">Level 5: QTI</h3>
-                    <p class="text-blue-600 font-medium">Pre-Test Assessment</p>
+                    <h3 class="text-xl font-bold text-gray-900">Level 5: JPJ Test</h3>
+                    <p class="text-green-600 font-medium">Final Assessment</p>
                 </div>
 
                 <div class="flex-1 pl-16 md:pl-0 w-full">
@@ -356,36 +338,6 @@
                         class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 group-hover:shadow-lg transition-shadow relative">
                         <div
                             class="absolute top-6 -left-2 w-4 h-4 bg-white transform rotate-45 border-l border-b border-gray-100 hidden md:block">
-                        </div>
-                        <ul class="space-y-3 text-sm text-gray-600">
-                            <li class="flex items-start gap-3">
-                                <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <span>Duration: 1 Hour</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <span>Route & Safety Check</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Level 6 -->
-            <div class="relative flex flex-col md:flex-row gap-8 items-start md:items-center group">
-                <div class="flex-1 text-right order-3 md:order-1 md:text-left pl-16 md:pl-0 w-full">
-                    <div
-                        class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 group-hover:shadow-lg transition-shadow relative">
-                        <div
-                            class="absolute top-6 -right-2 w-4 h-4 bg-white transform rotate-45 border-r border-t border-gray-100 hidden md:block">
                         </div>
                         <ul class="space-y-3 text-sm text-gray-600">
                             <li class="flex items-start gap-3">
@@ -408,23 +360,6 @@
                         </ul>
                     </div>
                 </div>
-
-                <div
-                    class="relative z-10 w-12 h-12 rounded-full bg-green-500 border-4 border-green-100 text-white font-black flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform flex-shrink-0 order-1 md:order-2 mx-0 md:mx-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                </div>
-
-                <div class="hidden md:block flex-1 md:order-3 pl-8">
-                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors">Level 6:
-                        JPJ Test</h3>
-                    <p class="text-green-600 font-medium">Final Assessment</p>
-                </div>
-                <div class="md:hidden flex-1 pl-4 -mt-14 mb-4 order-2 ml-12">
-                    <h3 class="text-xl font-bold text-gray-900">Level 6: JPJ Test</h3>
-                    <p class="text-green-600 font-medium">Final Assessment</p>
-                </div>
             </div>
 
         </div>
@@ -434,7 +369,7 @@
     <section class="max-w-7xl mx-auto px-4 py-16 mb-10">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Choose Your Package</h2>
-            <p class="text-gray-500 mt-4 text-lg">Select the best driving course that fits your schedule.</p>
+            <p class="text-gray-500 mt-4 text-md">Select the best driving package that fits your needs.</p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8 items-start">
@@ -443,64 +378,85 @@
                     $totalPrice = $class->class_price + $package->package_price;
                     $formattedPrice = number_format($totalPrice);
 
-                    // Determine color theme based on package type
-                    $theme = 'purple'; // Default
+                    $theme = 'blue';
                     if (Str::contains(strtolower($package->package_type), 'premium')) {
-                        $theme = 'yellow';
+                        $theme = 'amber';
                     } elseif (Str::contains(strtolower($package->package_type), 'basic')) {
                         $theme = 'green';
                     }
 
-                    // Define colors
-                    $bgClass = "bg-{$theme}-100 border-{$theme}-100";
-                    $gradientClass = "from-{$theme}-400 to-{$theme}-600";
-                    if ($theme === 'purple') {
-                        $bgClass = "bg-purple-200 border-purple-100";
-                        $gradientClass = "from-purple-600 to-purple-800";
+                    if ($theme === 'blue') {
+                        $borderColor = 'border-blue-200 hover:border-blue-700';
+                        $textColor = 'text-blue-900';
+                        $priceColor = 'text-gray-900';
+                        $badgeBg = 'bg-blue-900 text-white border-blue-100';
+                        $btnBg = 'bg-blue-800 hover:bg-blue-900 text-white';
+                        $iconColor = 'text-blue-700';
+                        $dividerBg = 'bg-blue-700';
                     } elseif ($theme === 'green') {
-                        $bgClass = "bg-green-100 border-green-100";
-                        $gradientClass = "from-green-500 to-green-700";
+                        $borderColor = 'border-green-200 hover:border-green-500';
+                        $textColor = 'text-green-700';
+                        $priceColor = 'text-gray-900';
+                        $badgeBg = 'bg-green-600 text-white border-green-100';
+                        $btnBg = 'bg-green-600 hover:bg-green-700 text-white';
+                        $iconColor = 'text-green-600';
+                        $dividerBg = 'bg-green-500';
+                    } elseif ($theme === 'amber') {
+                        $borderColor = 'border-amber-200 hover:border-amber-500';
+                        $textColor = 'text-amber-500';
+                        $priceColor = 'text-gray-900';
+                        $badgeBg = 'bg-amber-500 text-white border-amber-100';
+                        $btnBg = 'bg-amber-500 hover:bg-amber-600 text-white';
+                        $iconColor = 'text-amber-500';
+                        $dividerBg = 'bg-amber-500';
                     }
 
                     // Define labels
                     $label = '';
-                    if ($theme === 'purple') {
+                    if ($theme === 'blue') {
                         $label = 'Most Popular';
-                    } elseif ($theme === 'yellow') {
-                        $label = 'Most Suitable';
+                    } elseif ($theme === 'amber') {
+                        $label = 'Best Value';
                     } elseif ($theme === 'green') {
                         $label = 'Most Affordable';
                     }
                 @endphp
 
                 <div
-                    class="group relative {{ $bgClass }} rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border flex flex-col h-full">
-                    <div class="bg-gradient-to-br {{ $gradientClass }} p-8 text-white relative overflow-hidden">
-                        <div class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-white opacity-10 rounded-full blur-xl">
+                    class="group relative bg-white rounded-[2rem] p-8 border-2 {{ $borderColor }} transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full">
+
+                    <!-- Header -->
+                    <div class="mb-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold {{ $textColor }} uppercase tracking-wide">
+                                {{ $package->package_type }}
+                            </h3>
+                            @if ($label)
+                                <span
+                                    class="px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider border {{ $badgeBg }}">
+                                    {{ $label }}
+                                </span>
+                            @endif
                         </div>
-                        <h3 class="text-xl font-semibold opacity-90 mb-1">{{ $package->package_type }}</h3>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-sm font-light">RM</span>
-                            <span class="text-4xl font-bold">{{ $formattedPrice }}</span>
+
+                        <div class="flex items-baseline gap-1 mt-2">
+                            <span class="text-sm font-medium text-gray-500">RM</span>
+                            <span
+                                class="text-5xl font-extrabold {{ $priceColor }} tracking-tight">{{ $formattedPrice }}</span>
                         </div>
-                        @if ($label)
-                            <div
-                                class="mt-4 inline-block bg-white/20 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm border border-white/10">
-                                {{ $label }}
-                            </div>
-                        @endif
-                        @if ($theme === 'purple')
-                            <div
-                                class="mt-4 inline-block bg-white/20 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm border border-white/10">
-                                More Flexible</div>
-                        @endif
                     </div>
 
-                    <div class="p-8 flex-1">
-                        <ul class="space-y-4 text-gray-600 text-sm leading-relaxed">
-                            {!! $package->package_desc !!}
-                        </ul>
+                    <!-- Divider -->
+                    <div class="w-full h-px {{ $dividerBg }} mb-6"></div>
 
+                    <!-- Features -->
+                    <div class="flex-1">
+                        <div
+                            class="prose prose-sm text-gray-600 prose-ul:p-0 prose-li:list-none prose-li:flex prose-li:items-start prose-li:gap-6 prose-li:mb-10 prose-li:text-[0.8rem] prose-li:leading-relaxed last:prose-li:mb-0">
+                            <div class="package-desc-{{ $package->id }}">
+                                {!! $package->package_desc !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
             @endforeach

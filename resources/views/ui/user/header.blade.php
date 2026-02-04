@@ -71,7 +71,7 @@
                                 class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
                                 CLASSES
                             </a>
-                            <a href="{{ route('computer') }}"
+                            <a href="#"
                                 class="nav-link text-white/90 hover:text-white font-medium text-base transition-colors">
                                 ABOUT US
                             </a>
@@ -137,10 +137,10 @@
                                     <p class="text-xs text-gray-500 uppercase font-semibold">Signed in as</p>
                                     <p class="text-sm font-bold text-gray-900 truncate">{{ Auth::user()->email }}</p>
                                 </div>
-                                <a href="#"
+                                <!-- <a href="#"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">Profile</a>
                                 <a href="#"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">Settings</a>
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">Settings</a> -->
                                 <div class="border-t border-gray-100 my-1"></div>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf

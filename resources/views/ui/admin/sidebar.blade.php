@@ -110,49 +110,6 @@
                 </a>
             </li>
 
-            <!-- Booking Dropdown -->
-            <li>
-                <button type="button"
-                    class="flex items-center w-full p-3 rounded-xl group transition-all duration-200 border border-transparent {{ (request()->routeIs('computer') || request()->routeIs('practical') || request()->routeIs('jpj')) ? 'bg-white text-blue-900 shadow-lg' : 'text-white hover:bg-white/10 hover:border-white/5' }}"
-                    aria-controls="dropdown-booking" data-collapse-toggle="dropdown-booking"
-                    aria-expanded="{{ (request()->routeIs('computer') || request()->routeIs('practical') || request()->routeIs('jpj')) ? 'true' : 'false' }}">
-                    <svg class="w-6 h-6 transition-colors {{ (request()->routeIs('computer') || request()->routeIs('practical') || request()->routeIs('jpj')) ? 'text-[#0E1F8E]' : 'text-blue-200 group-hover:text-white' }}"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                        </path>
-                    </svg>
-                    <span class="flex-1 ms-3 text-left font-semibold whitespace-nowrap">Booking</span>
-                    <svg class="w-3 h-3 transition-transform duration-200 group-[aria-expanded=true]:rotate-180 {{ (request()->routeIs('computer') || request()->routeIs('practical') || request()->routeIs('jpj')) ? 'text-[#0E1F8E]' : 'text-blue-200 group-hover:text-white' }}"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 4 4 4-4" />
-                    </svg>
-                </button>
-
-                <ul id="dropdown-booking"
-                    class="{{ (request()->routeIs('computer') || request()->routeIs('practical') || request()->routeIs('jpj')) ? 'py-2 space-y-1 pl-4' : 'hidden py-2 space-y-1 pl-4' }}">
-                    <li>
-                        <a href="{{ route('computer') }}"
-                            class="flex items-center w-full p-2.5 text-base transition-colors rounded-lg pl-11 group {{ request()->routeIs('computer') ? 'bg-white/10 text-white font-semibold' : 'text-blue-100 hover:text-white hover:bg-white/10' }}">
-                            Computer Test
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('practical') }}"
-                            class="flex items-center w-full p-2.5 text-base transition-colors rounded-lg pl-11 group {{ request()->routeIs('practical') ? 'bg-white/10 text-white font-semibold' : 'text-blue-100 hover:text-white hover:bg-white/10' }}">
-                            Practical Slot
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('jpj') }}"
-                            class="flex items-center w-full p-2.5 text-base transition-colors rounded-lg pl-11 group {{ request()->routeIs('jpj') ? 'bg-white/10 text-white font-semibold' : 'text-blue-100 hover:text-white hover:bg-white/10' }}">
-                            JPJ Test
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
             <!-- Schedule -->
             <li>
                 <a href="{{ route('admin.schedule') }}"
@@ -169,7 +126,7 @@
 
         <!-- Footer / Sign Out -->
         <div class="mt-auto pt-6 border-t border-white/10">
-            @if(Auth::check())
+            @if(Auth::guard('admin')->check())
                 <div class="px-3 mb-4 flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5">
                     <div
                         class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-200 border border-blue-400/20">
@@ -181,22 +138,26 @@
                     <div class="overflow-hidden">
                         <p class="text-[10px] text-blue-300 font-medium uppercase tracking-wider leading-tight">Logged in as
                         </p>
-                        <p class="text-sm font-bold text-white truncate leading-tight" title="{{ Auth::user()->email }}">
-                            {{ Auth::user()->email }}
+                        <p class="text-sm font-bold text-white truncate leading-tight"
+                            title="{{ Auth::guard('admin')->user()->admin_email }}">
+                            {{ Auth::guard('admin')->user()->admin_email }}
                         </p>
                     </div>
                 </div>
             @endif
-            <a href="#"
-                class="flex items-center p-3 text-red-300 rounded-xl hover:bg-red-500/10 hover:text-red-200 group transition-all duration-200">
-                <svg class="w-6 h-6 text-red-300 group-hover:text-red-200 transition-colors" fill="none"
-                    stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                    </path>
-                </svg>
-                <span class="ms-3 font-semibold">Sign Out</span>
-            </a>
+            <form method="POST" action="{{ route('admin.logout') }}">
+                @csrf
+                <button type="submit"
+                    class="w-full flex items-center p-3 text-red-300 rounded-xl hover:bg-red-500/10 hover:text-red-200 group transition-all duration-200 cursor-pointer">
+                    <svg class="w-6 h-6 text-red-300 group-hover:text-red-200 transition-colors" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                        </path>
+                    </svg>
+                    <span class="ms-3 font-semibold">Sign Out</span>
+                </button>
+            </form>
         </div>
 
     </div>

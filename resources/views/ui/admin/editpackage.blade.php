@@ -57,9 +57,6 @@
                                 class="bg-white/20 text-white px-4 py-1.5 rounded-lg border border-white/10 cursor-default shadow-sm font-semibold">
                                 {{ date('d M Y') }}
                             </div>
-                            <div class="px-4 py-1.5 cursor-default hover:bg-white/5 rounded-lg transition-colors">
-                                Today
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -156,7 +153,7 @@
                                                             <div class="flex items-center gap-3">
                                                                 <div
                                                                     class="w-10 h-10 rounded-full flex items-center justify-center 
-                                                                                                                                            {{ strtolower($package->package_type) == 'premium' ? 'bg-amber-100 text-amber-600' :
+                                                                                                                                                                    {{ strtolower($package->package_type) == 'premium' ? 'bg-amber-100 text-amber-600' :
                                 (strtolower($package->package_type) == 'basic' ? 'bg-green-100 text-green-600' :
                                     (strtolower($package->package_type) == 'preferred' ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-600')) }}">
                                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

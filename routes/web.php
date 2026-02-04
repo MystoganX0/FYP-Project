@@ -27,6 +27,7 @@ Route::get('/practical-slot', [BookingController::class, 'practical'])->name('pr
 Route::get('/jpj-slot', [BookingController::class, 'jpj'])->name('jpj');
 Route::get('/payment', [PaymentController::class, 'view'])->name('payment');
 Route::post('/payment/process', [PaymentController::class, 'process'])->name('payment.process');
+Route::get('/receipt/{detail_id}', [PaymentController::class, 'receipt'])->name('receipt');
 Route::get('/history', [ProfileController::class, 'history'])->name('history');
 Route::get('/edit-class', [ClassController::class, 'view'])->name('editclass');
 Route::post('/classes/store', [ClassController::class, 'store'])->name('classes.store');
@@ -35,11 +36,19 @@ Route::post('/classes/delete', [ClassController::class, 'destroy'])->name('class
 Route::get('/applied-dashboard', [ApplyController::class, 'applied'])->name('applied');
 
 //admin routes
-Route::get('/dashboard', function () {
-    return view('ui.admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])
+    ->middleware(['auth:admin'])
+    ->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+//Admin Auth Routes
+Route::get('/signup', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'createAdmin'])
+    ->name('admin.login');
+Route::post('/signup', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'storeAdmin'])
+    ->name('admin.login.store');
+Route::post('/admin/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroyAdmin'])
+    ->name('admin.logout');
+
+Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/bookings', [App\Http\Controllers\AdminBookingController::class, 'index'])->name('admin.bookings.index');
     Route::post('/admin/bookings/{id}/update', [App\Http\Controllers\AdminBookingController::class, 'updateStatus'])->name('admin.bookings.update');
     Route::delete('/admin/bookings/{id}', [App\Http\Controllers\AdminBookingController::class, 'destroy'])->name('admin.bookings.destroy');

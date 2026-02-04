@@ -103,10 +103,17 @@
                                     Learn More
                                 </span>
                             </a>
-                            <a href="{{ route('apply') }}"
-                                class="px-10 py-4 border-2 border-white/20 text-white font-bold uppercase tracking-wider hover:bg-red-600 hover:border-red-600 transition-all rounded-full backdrop-blur-sm hover:-translate-y-1">
-                                Apply
-                            </a>
+                            @auth
+                                <a href="{{ route('apply') }}"
+                                    class="px-10 py-4 border-2 border-white/20 text-white font-bold uppercase tracking-wider hover:bg-red-600 hover:border-red-600 transition-all rounded-full backdrop-blur-sm hover:-translate-y-1">
+                                    Apply
+                                </a>
+                            @else
+                                <button type="button" onclick="openLoginModal()"
+                                    class="px-10 py-4 border-2 border-white/20 text-white font-bold uppercase tracking-wider hover:bg-red-600 hover:border-red-600 transition-all rounded-full backdrop-blur-sm hover:-translate-y-1">
+                                    Apply
+                                </button>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -132,14 +139,17 @@
                         </h1>
 
                         <div class="mt-10 flex flex-wrap justify-center gap-5">
-                            <!-- <a href="#classes"
-                                class="px-10 py-4 bg-red-600 text-white font-bold rounded-full hover:bg-red-700 shadow-lg shadow-red-600/40 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm">
-                                Learn More
-                            </a> -->
-                            <a href="{{ route('apply') }}"
-                                class="px-10 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-red-900 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm shadow-lg">
-                                Apply Now
-                            </a>
+                            @auth
+                                <a href="{{ route('apply') }}"
+                                    class="px-10 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-red-900 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm shadow-lg">
+                                    Apply Now
+                                </a>
+                            @else
+                                <button type="button" onclick="openLoginModal()"
+                                    class="px-10 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-red-900 transition-all transform hover:-translate-y-1 hover:scale-105 uppercase tracking-wider backdrop-blur-sm shadow-lg">
+                                    Apply Now
+                                </button>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -212,7 +222,6 @@
                 <h2 class="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
                     Who We Are
                 </h2>
-                <div class="w-20 h-1.5 bg-red-600 mx-auto mt-4 rounded-full"></div>
             </div>
 
             <!-- Content Grid -->
@@ -306,7 +315,6 @@
                 <h2 class="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
                     Key Features
                 </h2>
-                <div class="w-20 h-1.5 bg-red-600 mx-auto mt-4 rounded-full"></div>
                 <p class="mt-6 text-xl text-gray-600 max-w-2xl mx-auto">
                     We prioritize your comfort and safety with premium services designed for the best learning
                     experience.
@@ -401,7 +409,6 @@
                 <h2 class="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
                     Explore Our License Classes
                 </h2>
-                <div class="w-20 h-1.5 bg-red-600 mx-auto mt-4 rounded-full"></div>
                 <p class="mt-6 text-xl text-gray-600 max-w-2xl mx-auto">
                     Choose the right license class for your needs. We offer comprehensive training for all vehicle
                     types.
@@ -461,7 +468,6 @@
                 <h2 class="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
                     License Process
                 </h2>
-                <div class="w-20 h-1.5 bg-red-600 mx-auto mt-4 rounded-full"></div>
                 <p class="mt-6 text-xl text-gray-600 max-w-2xl mx-auto">
                     We are all about our client’s comfort and safety. That’s why we provide the best service you can
                     imagine.
@@ -484,7 +490,6 @@
                 <h2 class="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
                     Dress Code
                 </h2>
-                <div class="w-24 h-1.5 bg-red-600 mx-auto mt-4 rounded-full"></div>
                 <p class="mt-6 text-xl text-gray-600 max-w-2xl mx-auto">
                     Professionalism starts with appearance. Please adhere to the following dress code guidelines for
                     your classes and tests.

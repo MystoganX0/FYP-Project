@@ -60,6 +60,20 @@ class PaymentController extends Controller
         }
         $payment->save();
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, 'detail_id' => $pendingDetail?->detail_id]);
+    }
+
+    public function receipt($detail_id)
+    {
+        $paymentDetail = \App\Models\PaymentDetail::with(['payment.application.student', 'payment.application.class', 'payment.application.package'])
+            ->findOrFail($detail_id);
+
+        // Ensure the payment detail belongs to the authenticated user
+        $user_id = Auth::id();
+        if ($paymentDetail->payment->application->student_id !== $user_id) {
+            abort(403, 'Unauthorized access');
+        }
+
+        return view('ui.user.receipt', compact('paymentDetail'));
     }
 }

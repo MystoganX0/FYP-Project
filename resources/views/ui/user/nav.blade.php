@@ -27,85 +27,49 @@
     </script>
     <!-- Flowbite -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
 </head>
 
-<body class="font-poppins">
-    <!-- SUB NAV (tabs) -->
-    <div class="bg-white border-b border-gray-200">
-        <div
-            class="px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+<body class="font-poppins bg-transparent">
+    <!-- SUB NAV (floating) -->
+    <div class="px-4 pb-2 pt-2 flex flex-col md:flex-row items-center justify-center gap-4 relative z-40">
 
-            <!-- Navigation Links -->
-            <nav class="flex-1 w-full md:w-auto overflow-x-auto no-scrollbar">
-                <div class="flex items-center gap-2 p-1">
+        <!-- Floating Navigation Menu -->
+        <nav class="bg-[#151513] rounded-full px-2 py-2 flex items-center shadow-2xl overflow-x-auto no-scrollbar max-w-full">
+            <div class="flex items-center gap-1">
 
-                    <!-- Label -->
-                    <span
-                        class="font-medium text-base font-bold text-gray-400 uppercase tracking-widest mr-4 hidden md:block">
-                        License Phases
-                    </span>
+                <!-- Computer Test -->
+                <a href="{{ route('computer') }}"
+                    class="relative whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 {{ request()->routeIs('computer') ? 'bg-[#2C2C2A] text-white shadow-inner ring-1 ring-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                   Computer Test
+                </a>
 
-                    <!-- Computer Test -->
-                    <a href="{{ route('computer') }}"
-                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('computer') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
-                        <div
-                            class="mr-2.5 {{ request()->routeIs('computer') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                        </div>
-                        Computer Test
-                    </a>
+                <!-- Practical Slot -->
+                <a href="{{ route('practical') }}"
+                    class="relative whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 {{ request()->routeIs('practical') ? 'bg-[#2C2C2A] text-white shadow-inner ring-1 ring-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                   Practical Slot
+                </a>
 
-                    <!-- Divider Arrow -->
-                    <svg class="w-5 h-5 text-black hidden sm:block" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
+                <!-- JPJ Test -->
+                <a href="{{ route('jpj') }}"
+                    class="relative whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 {{ request()->routeIs('jpj') ? 'bg-[#2C2C2A] text-white shadow-inner ring-1 ring-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                    JPJ Test
+                </a>
+            </div>
+        </nav>
 
-                    <!-- Practical Slot -->
-                    <a href="{{ route('practical') }}"
-                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('practical') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
-                        <div
-                            class="mr-2.5 {{ request()->routeIs('practical') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8h3c0 2.76 2.24 5 5 5s5-2.24 5-5h3c0 4.41-3.59 8-8 8z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12v-5">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l4 4">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l-4 4">
-                                </path>
-                            </svg>
-                        </div>
-                        Practical Slot
-                    </a>
-
-                    <!-- Divider Arrow -->
-                    <svg class="w-5 h-5 text-black hidden sm:block" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-
-                    <!-- JPJ Test -->
-                    <a href="{{ route('jpj') }}"
-                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('jpj') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
-                        <div
-                            class="mr-2.5 {{ request()->routeIs('jpj') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        JPJ Test
-                    </a>
-                </div>
-            </nav>
-
+        <!-- Next Phase Button (Beside the menu) -->
             @php
                 $studentId = \Illuminate\Support\Facades\Auth::id();
 
@@ -133,7 +97,7 @@
             @if($isComputerTestDone)
                 @if($paymentType === 'full')
                     <a href="{{ route('practical') }}"
-                        class="flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95 font-semibold">
+                        class="flex shrink-0 items-center gap-2 px-6 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm font-bold rounded-full shadow-lg shadow-green-900/20 transition-all active:scale-95">
                         <span>Next Phase</span>
                         <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -142,7 +106,7 @@
                     </a>
                 @else
                     <button
-                        class="open-payment-modal font-semibold flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95">
+                        class="open-payment-modal shrink-0 flex items-center gap-2 px-6 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm font-bold rounded-full shadow-lg shadow-green-900/20 transition-all active:scale-95">
                         <span>Next Phase</span>
                         <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -152,7 +116,7 @@
                 @endif
             @else
                 <button disabled title="Complete Computer Test to unlock"
-                    class="flex items-center justify-center gap-2 px-5 py-3 bg-gray-300 text-gray-500 cursor-not-allowed text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm transition-all opacity-70">
+                    class="flex shrink-0 items-center gap-2 px-6 py-3 bg-[#151513] border border-white/10 text-gray-500 cursor-not-allowed text-sm font-bold rounded-full shadow-lg transition-all opacity-50">
                     <span>Next Phase</span>
                     <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -161,8 +125,6 @@
                 </button>
             @endif
 
-        </div>
-    </div>
     </div>
 
     <!-- Payment Modal -->
@@ -212,7 +174,6 @@
                 </button>
             </div>
         </div>
-    </div>
     </div>
 
     <script>

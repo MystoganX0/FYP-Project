@@ -289,94 +289,123 @@ class BookingController extends Controller
             return redirect()->back()->with('error', 'No schedule selected.');
         }
 
-        // Validate all schedules first
-        foreach ($scheduleIds as $id) {
-            $schedule = \App\Models\Schedule::find($id);
-            if (!$schedule || $schedule->slot <= 0) {
-                return redirect()->back()->with('error', 'One or more selected slots are unavailable.');
-            }
-        }
+        \Illuminate\Support\Facades\Log::info('Booking Request Started', [
+            'student_id' => $studentId,
+            'schedule_ids' => $scheduleIds,
+            'request_all' => $request->all()
+        ]);
 
-        // Get phase from first schedule (assuming homogeneous bulk action)
-        $firstSchedule = \App\Models\Schedule::find($scheduleIds[0]);
-        $phaseId = $firstSchedule->phase_id;
-        $countToBook = count($scheduleIds);
-
-        // Validation based on Phase
-        if ($phaseId == 2) { // Practical Slot
-            // Check existing bookings (Pending + Confirmed + Completed/Done if restricting total lifetime slots? Usually just active limit)
-            // Requirement says "You can only have a maximum of 5 active practical slots." 
-            // Logic in blade: $isPracticalDone = $bookings->whereIn('booking_status', ['Done', 'Completed'])->count() >= 5;
-            // Here we check active count to prevent hoarding.
-            $activeBookingsCount = \App\Models\Booking::where('student_id', $studentId)
-                ->whereHas('schedule', function ($q) use ($phaseId) {
-                    $q->where('phase_id', $phaseId);
-                })
-                ->whereIn('booking_status', ['Pending', 'Confirmed'])
-                ->count();
-
-            if (($activeBookingsCount + $countToBook) > 5) {
-                return redirect()->back()->with('error', "Maximum 5 active slots allowed. You have {$activeBookingsCount} active, trying to book {$countToBook}.");
-            }
-        } else {
-            // Computer/JPJ - Single active booking allowed
-            $hasActiveBooking = \App\Models\Booking::where('student_id', $studentId)
-                ->whereHas('schedule', function ($q) use ($phaseId) {
-                    $q->where('phase_id', $phaseId);
-                })
-                ->whereIn('booking_status', ['Pending', 'Confirmed'])
-                ->exists();
-
-            if ($hasActiveBooking) {
-                return redirect()->back()->with('error', 'You already have an active booking.');
+        return \Illuminate\Support\Facades\DB::transaction(function () use ($scheduleIds, $studentId, $application) {
+            // Validate all schedules first
+            foreach ($scheduleIds as $id) {
+                // LOCK the schedule row for update to prevent race conditions
+                $schedule = \App\Models\Schedule::where('schedule_id', $id)->lockForUpdate()->first();
+                if (!$schedule || $schedule->slot <= 0) {
+                    // Rollback implicitly by throwing exception or return redirect response (which will bubble up if handled, but simpler to throw)
+                    // However, inside transaction closure, returning response works if returned from closure and transaction returns it.
+                    // But redirect inside transaction might not rollback if flow continues.
+                    // Throwing ValidationException is cleaner or simple exception.
+                    throw \Illuminate\Validation\ValidationException::withMessages(['error' => 'One or more selected slots are unavailable or taken.']);
+                }
             }
 
-            // Re-test Fee Logic (JPJ)
-            if ($phaseId === 3 && $application->package && $application->package->package_type === 'Basic') {
-                $failedAttempts = \App\Models\Attempt::where('student_id', $studentId)
-                    ->where('phase_id', 3)
-                    ->where('result', 'Failed')
+            // Get phase from first schedule
+            $firstSchedule = \App\Models\Schedule::find($scheduleIds[0]);
+            $phaseId = $firstSchedule->phase_id;
+            $countToBook = count($scheduleIds);
+
+            // Validation based on Phase INSIDE Transaction/Lock
+            // Checks existing bookings again to be sure (Active Booking Check)
+            if ($phaseId == 2) { // Practical Slot
+                $activeBookingsCount = \App\Models\Booking::where('student_id', $studentId)
+                    ->whereHas('schedule', function ($q) use ($phaseId) {
+                        $q->where('phase_id', $phaseId);
+                    })
+                    ->whereIn('booking_status', ['Pending', 'Confirmed'])
+                    ->lockForUpdate()
                     ->count();
 
-                if ($failedAttempts > 0) {
-                    $retestFeeUnpaid = \App\Models\PaymentDetail::whereHas('payment', function ($q) use ($application) {
-                        $q->where('app_id', $application->app_id);
-                    })->where('stage', 'JPJ Re-test Fee')
-                        ->where('status', '!=', 'paid')
-                        ->exists();
+                if (($activeBookingsCount + $countToBook) > 5) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['error' => "Maximum 5 active slots allowed. You have {$activeBookingsCount} active, trying to book {$countToBook}."]);
+                }
+            } else {
+                // Computer/JPJ - Single active booking allowed
+                $hasActiveBooking = \App\Models\Booking::where('student_id', $studentId)
+                    ->whereHas('schedule', function ($q) use ($phaseId) {
+                        $q->where('phase_id', $phaseId);
+                    })
+                    ->whereIn('booking_status', ['Pending', 'Confirmed'])
+                    ->lockForUpdate()
+                    ->exists();
 
-                    if ($retestFeeUnpaid) {
-                        return redirect()->back()->with('error', 'You must pay the re-test fee of RM 238.95 before booking another slot.');
+                if ($hasActiveBooking) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['error' => 'You already have an active booking.']);
+                }
+
+                // Re-test Fee Logic (JPJ)
+                if ($phaseId === 3 && $application->package && $application->package->package_type === 'Basic') {
+                    $failedAttempts = \App\Models\Attempt::where('student_id', $studentId)
+                        ->where('phase_id', 3)
+                        ->where('result', 'Failed')
+                        ->count();
+
+                    if ($failedAttempts > 0) {
+                        $retestFeeUnpaid = \App\Models\PaymentDetail::whereHas('payment', function ($q) use ($application) {
+                            $q->where('app_id', $application->app_id);
+                        })->where('stage', 'JPJ Re-test Fee')
+                            ->where('status', '!=', 'paid')
+                            ->exists();
+
+                        if ($retestFeeUnpaid) {
+                            throw \Illuminate\Validation\ValidationException::withMessages(['error' => 'You must pay the re-test fee of RM 238.95 before booking another slot.']);
+                        }
                     }
                 }
             }
-        }
 
-        // Create Bookings
-        foreach ($scheduleIds as $schedId) {
-            $previousAttempts = \App\Models\Attempt::where('student_id', $studentId)
-                ->where('phase_id', $phaseId)
-                ->count();
+            // Create Bookings
+            foreach ($scheduleIds as $schedId) {
+                $schedule = \App\Models\Schedule::where('schedule_id', $schedId)->lockForUpdate()->first(); // Already locked above, but retrieval ensures fresh data
 
-            $attempt = \App\Models\Attempt::create([
-                'student_id' => $studentId,
-                'phase_id' => $phaseId,
-                'attempt_no' => $previousAttempts + 1,
-                'result' => 'Pending',
-            ]);
+                // Double check if *this specific* schedule is already booked by user (for computer test, mainly) 
+                // to prevent double-click same schedule insert
+                $alreadyBooked = \App\Models\Booking::where('student_id', $studentId)
+                    ->where('schedule_id', $schedId)
+                    ->lockForUpdate()
+                    ->exists();
 
-            \App\Models\Booking::create([
-                'student_id' => $studentId,
-                'schedule_id' => $schedId,
-                'booking_status' => 'Pending',
-                'attempt_id' => $attempt->attempt_id,
-            ]);
+                if ($alreadyBooked) {
+                    // If purely duplicate request, we can just ignore or throw.
+                    // Throwing ensures no decrement happens.
+                    throw \Illuminate\Validation\ValidationException::withMessages(['error' => 'You have already booked this slot.']);
+                }
 
-            // Deduct slot from schedule
-            $s = \App\Models\Schedule::find($schedId);
-            $s->decrement('slot');
-        }
+                $previousAttempts = \App\Models\Attempt::where('student_id', $studentId)
+                    ->where('phase_id', $phaseId)
+                    ->count();
 
-        return redirect()->back()->with('success', 'Booking(s) successful!');
+                $attempt = \App\Models\Attempt::create([
+                    'student_id' => $studentId,
+                    'phase_id' => $phaseId,
+                    'attempt_no' => $previousAttempts + 1,
+                    'result' => 'Pending',
+                ]);
+
+                \App\Models\Booking::create([
+                    'student_id' => $studentId,
+                    'schedule_id' => $schedId,
+                    'booking_status' => 'Pending',
+                    'attempt_id' => $attempt->attempt_id,
+                ]);
+
+                // Deduct slot from schedule - using manual calculation to avoid DB::raw bug
+                $newSlotValue = $schedule->slot - 1;
+                \Illuminate\Support\Facades\DB::table('schedules')
+                    ->where('schedule_id', $schedId)
+                    ->update(['slot' => $newSlotValue]);
+            }
+
+            return redirect()->back()->with('success', 'Booking(s) successful!');
+        });
     }
 }

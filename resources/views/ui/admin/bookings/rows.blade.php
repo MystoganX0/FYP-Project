@@ -50,7 +50,7 @@
             </span>
         </td>
         <td class="bg-white border-b border-gray-50 py-4 text-center">
-            @if ($booking->attempt)
+            @if ($booking->attempt && $booking->schedule->phase_id != 2)
                 @php
                     $resColor = match ($booking->attempt->result) {
                         'Pass' => 'green',

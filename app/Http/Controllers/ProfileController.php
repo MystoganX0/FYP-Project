@@ -53,6 +53,10 @@ class ProfileController extends Controller
             ->latest()
             ->first();
 
+        if (!$application) {
+            return view('errors.no-application');
+        }
+
         return view('ui.user.history', compact('application', 'computerTest', 'practicalBookings', 'jpjTest'));
     }
 

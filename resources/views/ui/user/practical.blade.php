@@ -29,189 +29,159 @@
 
 </head>
 
-<body class="font-poppins bg-[#0E1F8E]">
+<body class="font-poppins bg-[#2e70c7]">
     @include('ui.user.header')
-    <!-- SUB NAV (tabs) -->
-    <div class="bg-white border-b border-gray-200">
-        <div
-            class="px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+    <!-- SUB NAV (floating) -->
+    <div class="px-4 pt-4 flex flex-col md:flex-row items-center justify-center gap-4 relative z-40">
 
-            <!-- Navigation Links -->
+        <!-- Floating Navigation Menu -->
+        <nav
+            class="bg-[#151513] rounded-full px-2 py-2 flex items-center shadow-2xl overflow-x-auto no-scrollbar max-w-full">
+            <div class="flex items-center gap-1">
+                <a href="{{ route('computer') }}"
+                    class="relative whitespace-nowrap px-7 py-3 rounded-full text-base font-semibold transition-all duration-300 {{ request()->routeIs('computer') ? 'bg-[#2C2C2A] text-white shadow-inner ring-1 ring-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                    Computer Test
+                </a>
+                <a href="{{ route('practical') }}"
+                    class="relative whitespace-nowrap px-7 py-3 rounded-full text-base font-semibold transition-all duration-300 {{ request()->routeIs('practical') ? 'bg-[#2C2C2A] text-white shadow-inner ring-1 ring-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                    Practical Slot
+                </a>
+                <span
+                    class="relative whitespace-nowrap px-7 py-3 rounded-full text-base font-semibold transition-all duration-300 {{ request()->routeIs('jpj') ? 'bg-[#2C2C2A] text-white shadow-inner ring-1 ring-white/10' : 'text-gray-400' }}">
+                    JPJ Test
+                </span>
+            </div>
+        </nav>
+
+        @php
+            $studentId = \Illuminate\Support\Facades\Auth::id();
+
+            // Get Application to check payment type
+            $application = \App\Models\Application::where('student_id', $studentId)
+                ->with('payment')
+                ->latest()
+                ->first();
+
+            $paymentType = $application && $application->payment ? $application->payment->payment_type : null;
+            $activeBookingsCount = $bookings->where('booking_status', '!=', 'Absent')->count();
+
+            $completedPracticalSlots = $bookings->whereIn('booking_status', ['Done', 'Completed'])->count();
+
+            $activePracticalSlots = $bookings->whereIn('booking_status', ['Pending', 'Confirmed'])->count();
+
+            $isPracticalDone = $completedPracticalSlots >= 5;
+
+            // Calculate Available Slots (Default 5 - (Completed + Active))
+            $availableSlots = max(0, 5 - ($completedPracticalSlots + $activePracticalSlots));
+        @endphp
+
+        <!-- Next Phase Button -->
+        @if($isPracticalDone)
             @php
-                $studentId = \Illuminate\Support\Facades\Auth::id();
-
-                // Get Application to check payment type
-                $application = \App\Models\Application::where('student_id', $studentId)
-                    ->with('payment')
-                    ->latest()
-                    ->first();
-
-                $paymentType = $application && $application->payment ? $application->payment->payment_type : null;
-                $activeBookingsCount = $bookings->where('booking_status', '!=', 'Absent')->count();
-
-                // Check completed practical slots
-                $completedPracticalSlots = $bookings->whereIn('booking_status', ['Done', 'Completed'])->count();
-                $isPracticalDone = $completedPracticalSlots >= 5;
+                // Check if Stage 3 payment is required (Installment plan)
+                $stage3Pending = isset($stage3Payment) && $stage3Payment && $stage3Payment->status != 'paid';
             @endphp
-            <nav class="flex-1 w-full md:w-auto">
-                <div class="flex flex-wrap justify-center md:justify-start items-center gap-2 p-1">
 
-                    <!-- Label -->
-                    <span
-                        class="font-medium text-base font-bold text-gray-400 uppercase tracking-widest mr-4 hidden md:block">
-                        License Phases
-                    </span>
-
-                    <!-- Computer Test -->
-                    <a href="{{ route('computer') }}"
-                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('computer') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
-                        <div
-                            class="mr-2.5 {{ request()->routeIs('computer') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                        </div>
-                        Computer Test
-                    </a>
-
-                    <!-- Divider Arrow -->
-                    <svg class="w-5 h-5 text-black hidden sm:block" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-
-                    <!-- Practical Slot -->
-                    <a href="{{ route('practical') }}"
-                        class="group relative flex items-center px-4 py-2.5 rounded-full font-medium text-base font-semibold transition-all duration-300 {{ request()->routeIs('practical') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent text-gray-500 hover:bg-gray-50 hover:text-blue-600' }}">
-                        <div
-                            class="mr-2.5 {{ request()->routeIs('practical') ? 'text-white' : 'text-gray-400 group-hover:text-blue-500' }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8h3c0 2.76 2.24 5 5 5s5-2.24 5-5h3c0 4.41-3.59 8-8 8z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12v-5">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l4 4">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l-4 4">
-                                </path>
-                            </svg>
-                        </div>
-                        Practical Slot
-                    </a>
-
-            </nav>
-
-            @if($isPracticalDone)
-                @if($paymentType === 'full')
-                    <a href="{{ route('jpj') }}"
-                        class="flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95 font-semibold">
-                        <span>Next Phase</span>
-                        <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                @else
-                    <button
-                        class="open-payment-modal font-semibold flex items-center justify-center gap-2 px-5 py-3 bg-[#0BCE83] hover:bg-green-400 text-black text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm hover:shadow-md transition-all active:scale-95">
-                        <span>Next Phase</span>
-                        <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </button>
-                @endif
-            @else
-                <button disabled title="Complete 5 Practical Training slots to unlock"
-                    class="flex items-center justify-center gap-2 px-5 py-3 bg-gray-300 text-gray-500 cursor-not-allowed text-sm sm:text-base font-medium rounded-2xl w-full md:w-auto shadow-sm transition-all opacity-70">
+            @if($stage3Pending)
+                <button onclick="openPaymentModal()"
+                    class="flex shrink-0 items-center gap-2 px-7 py-3.5 bg-[#0BCE83] hover:bg-green-400 text-black text-base font-bold rounded-full shadow-lg shadow-green-900/20 hover:shadow-green-900/40 transition-all hover:-translate-y-0.5 active:scale-95">
                     <span>Next Phase</span>
-                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                 </button>
+            @else
+                <a href="{{ route('jpj') }}"
+                    class="flex shrink-0 items-center gap-2 px-7 py-3.5 bg-[#0BCE83] hover:bg-green-400 text-black text-base font-bold rounded-full shadow-lg shadow-green-900/20 hover:shadow-green-900/40 transition-all hover:-translate-y-0.5 active:scale-95">
+                    <span>Next Phase</span>
+                    <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
             @endif
-
-        </div>
+        @else
+            <button disabled title="Complete 5 Practical Training slots to unlock"
+                class="flex shrink-0 items-center gap-2 px-7 py-3.5 bg-[#151513] border border-white/10 text-gray-500 cursor-not-allowed text-base font-bold rounded-full shadow-lg transition-all opacity-50">
+                <span>Next Phase</span>
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+            </button>
+        @endif
     </div>
 
     <div class="px-4 sm:px-6 lg:px-32 py-6 md:py-14">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-x-20 items-start">
             <aside class="lg:col-span-4 flex flex-col">
-                <div class="border-4 border-white rounded-3xl bg-gray-900 p-6 shadow-sm flex-1">
-                    <div class="flex justify-between mb-3">
-                        <div class="flex justify-center items-center mb-3 w-full">
-                            <h5 class="text-2xl font-bold leading-none text-white text-center pe-2">
-                                Practical Progress
-                            </h5>
+                <div class="border-2 border-black rounded-3xl bg-gray-900 p-6 shadow-sm flex-1">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex-1"></div>
+                        <h5 class="flex-1 text-2xl font-bold leading-none text-white text-center whitespace-nowrap">
+                            KPP-02
+                        </h5>
+                        <div class="flex-1 flex justify-end">
+                            <div
+                                class="flex items-center justify-center w-10 h-10 rounded-full bg-red-600 text-white font-bold text-lg shadow-lg border border-blue-500/30">
+                                {{ $availableSlots }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-t border-white pb-4"></div>
+                    <!-- Indicator -->
+                    <div class="flex flex-col" id="devices">
+                        <div class="flex flex-col sm:flex-row justify-center items-center w-full gap-4 sm:gap-0">
+                            <div class="flex items-center gap-3">
+                                <!-- Done -->
+                                <div
+                                    class="flex items-center gap-2 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
+                                    <span
+                                        class="w-3 h-3 rounded-full bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"></span>
+                                    <span class="text-sm font-medium text-gray-300">Done</span>
+                                </div>
+
+                                <!-- Remaining -->
+                                <div
+                                    class="flex items-center gap-2 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
+                                    <span
+                                        class="w-3 h-3 rounded-full bg-[#0E1F8E] shadow-[0_0_10px_rgba(14,31,142,0.5)]"></span>
+                                    <span class="text-sm font-medium text-gray-300">Remaining</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Indicator -->
-                    <div class="flex flex-col" id="devices">
-                        <div class="flex justify-center items-center text-center">
-                            <span class="text-xl font-semibold text-gray-300">Total Slot:</span>
-                            <span class="text-xl font-bold text-blue-500 ms-2">5</span>
-                        </div>
-                    </div>
+
 
                     <!-- Chart -->
                     <div class="py-4" id="donut-chart"></div>
 
-                    <div class="flex flex-col" id="devices">
-                        <div class="flex items-center justify-center space-x-6 py-2">
-                            <!-- Done -->
-                            <div
-                                class="flex items-center gap-3 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
-                                <span
-                                    class="w-3 h-3 rounded-full bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"></span>
-                                <span class="text-sm font-medium text-gray-300">Done</span>
-                            </div>
-
-                            <!-- Remaining -->
-                            <div
-                                class="flex items-center gap-3 bg-gray-800/50 px-4 py-2 rounded-full border border-gray-700">
-                                <span
-                                    class="w-3 h-3 rounded-full bg-[#0E1F8E] shadow-[0_0_10px_rgba(14,31,142,0.5)]"></span>
-                                <span class="text-sm font-medium text-gray-300">Remaining</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Status booked -->
-                    <div class="border-t border-white mt-4 pt-5 pb-6">
-                        <div class="flex justify-center items-center gap-3 mb-6">
-                            <h5 class="text-2xl font-bold text-white">History</h5>
-                            <button id="historyDropdownButton" data-dropdown-toggle="historyDropdown"
-                                class="text-white bg-gray-700 hover:bg-gray-600 focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm px-3 py-1.5 inline-flex items-center">
-                                Filter
-                                <svg class="w-4 h-4 ml-1" aria-hidden="true" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-
-                            <div id="historyDropdown"
-                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-32">
-                                <ul class="py-2 text-sm text-gray-700">
-                                    <li><a href="#" data-filter="all"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">All</a></li>
-                                    <li><a href="#" data-filter="Completed"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Completed</a></li>
-                                    <li><a href="#" data-filter="Pending"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Pending</a></li>
-                                    <li><a href="#" data-filter="Absent"
-                                            class="filter-option block px-4 py-2 hover:bg-gray-100">Absent</a></li>
-                                </ul>
-                            </div>
+                    <div class="pb-6" x-data="{ historyOpen: true }">
+                        <div class="flex justify-center items-center gap-3 mb-6 cursor-pointer"
+                            @click="historyOpen = !historyOpen">
+                            <h5 class="nav-link text-white/90 hover:text-white font-bold text-xl transition-colors">
+                                History</h5>
+                            <!-- Dropdown Icon -->
+                            <svg x-show="!historyOpen" class="w-5 h-5 text-white/90 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                            <svg x-show="historyOpen" class="w-5 h-5 text-white/90 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 15l7-7 7 7" />
+                            </svg>
                         </div>
 
                         <!-- History List -->
-                        <div id="historyList" class="space-y-4">
+                        <div id="historyList" class="space-y-4 overflow-hidden" x-show="historyOpen"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform -translate-y-2"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-2">
                             @forelse($bookings as $booking)
                                 @php
                                     // Attendance / Logistics Status
@@ -224,41 +194,72 @@
                                         'Confirmed' => 'blue',
                                         default => 'gray'
                                     };
-
-
                                 @endphp
 
-                                <div class="history-item group flex flex-col sm:flex-row justify-between sm:items-center p-5 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
+                                <div class="history-item group flex flex-col sm:flex-row justify-between sm:items-center p-5 bg-white/10 backdrop-blur-md rounded-2xl shadow-sm hover:shadow-lg hover:bg-white/15 transition-all duration-300 border border-white/20"
                                     data-status="{{ $booking->booking_status }}">
 
                                     <!-- Left: Date & Info -->
                                     <div class="flex items-center gap-4 mb-4 sm:mb-0">
                                         <div class="flex flex-col">
                                             <span
-                                                class="text-[10px] text-gray-400 font-extrabold uppercase tracking-widest leading-none mb-1">Test
+                                                class="text-[10px] text-white/60 font-extrabold uppercase tracking-widest leading-none mb-1">Test
                                                 Date</span>
-                                            <span class="text-base font-bold text-gray-800 leading-none">
+                                            <span class="text-base font-bold text-white leading-none">
                                                 {{ \Carbon\Carbon::parse($booking->schedule->date)->format('d M Y') }}
+                                                <button type="button"
+                                                    class="ml-2 inline-flex items-center text-white/80 hover:text-white transition-colors cursor-pointer open-booking-details"
+                                                    data-date="{{ \Carbon\Carbon::parse($booking->schedule->date)->format('d M Y') }}"
+                                                    data-day="{{ $booking->schedule->day }}"
+                                                    data-start="{{ \Carbon\Carbon::parse($booking->schedule->start_time)->format('h:i A') }}"
+                                                    data-end="{{ \Carbon\Carbon::parse($booking->schedule->time_out)->format('h:i A') }}"
+                                                    data-duration="{{ $booking->schedule->duration }}"
+                                                    title="View Schedule Details">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                    </svg>
+                                                </button>
                                             </span>
                                         </div>
                                     </div>
 
                                     <!-- Right: Statuses -->
                                     <div
-                                        class="grid grid-cols-2 sm:flex sm:items-center gap-4 w-full sm:w-auto border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0 mt-2 sm:mt-0">
+                                        class="grid grid-cols-2 sm:flex sm:items-center gap-4 w-full sm:w-auto border-t sm:border-t-0 border-white/10 pt-3 sm:pt-0 mt-2 sm:mt-0">
 
                                         <!-- Attendance Status -->
                                         <div class="flex flex-col items-start sm:items-end">
                                             <span
-                                                class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Attendance</span>
+                                                class="text-[10px] text-white/60 font-bold uppercase tracking-wider mb-1">Attendance</span>
                                             <span
-                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider bg-{{ $statusColor }}-50 text-{{ $statusColor }}-700 border border-{{ $statusColor }}-100 whitespace-nowrap">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-{{ $statusColor }}-500"></span>
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap
+                                                                                                                                                        @if($booking->booking_status == 'Done' || $booking->booking_status == 'Completed')
+                                                                                                                                                            bg-[#0BCE83] text-black border border-white/20
+                                                                                                                                                        @elseif($booking->booking_status == 'Failed' || $booking->booking_status == 'Absent')
+                                                                                                                                                            bg-red-600 text-white border border-white/20
+                                                                                                                                                        @else
+                                                                                                                                                            bg-{{ $statusColor }}-50 text-{{ $statusColor }}-700 border border-{{ $statusColor }}-100
+                                                                                                                                                        @endif">
+                                                @if($booking->booking_status == 'Done' || $booking->booking_status == 'Completed')
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                @elseif($booking->booking_status == 'Failed' || $booking->booking_status == 'Absent')
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M6 18L18 6M6 6l12 12"></path>
+                                                    </svg>
+                                                @else
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-{{ $statusColor }}-500"></span>
+                                                @endif
                                                 {{ $booking->booking_status }}
                                             </span>
                                         </div>
-
-
                                     </div>
                                 </div>
                             @empty
@@ -273,19 +274,6 @@
             </aside>
 
             <main class="lg:col-span-8 flex flex-col">
-                <h1
-                    class="text-xl sm:text-2xl font-bold mb-6 text-white text-center flex justify-center items-center gap-3">
-                    <span>Practical Training Slot</span>
-                    <span class="w-0.5 h-6 bg-white/30 hidden sm:block"></span>
-                    <span class="hidden sm:block">
-                        {{ optional($application->class)->class_code ?? 'N/A' }} -
-                        {{ optional($application->class)->class_name ?? 'N/A' }}
-                    </span>
-                    <span class="sm:hidden block">
-                        - {{ optional($application->class)->class_code ?? 'N/A' }}
-                    </span>
-                </h1>
-
                 @if(session('success'))
                     <div x-data="{ show: true, progress: 0 }"
                         x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
@@ -573,21 +561,19 @@
 
                                     <!-- Header -->
                                     <div
-                                        class="flex items-center justify-between p-3 border-b border-gray-100 bg-gray-50">
+                                        class="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100/50">
                                         <button @click="prevMonth()" type="button"
-                                            class="p-1 hover:bg-gray-200 rounded-lg transition-colors">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
+                                            class="p-1.5 text-gray-400 hover:text-gray-900 hover:bg-gray-50 rounded-full transition-all">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15 19l-7-7 7-7" />
                                             </svg>
                                         </button>
-                                        <span class="font-bold text-gray-800"
+                                        <span class="text-sm font-semibold text-gray-900 tracking-wide"
                                             x-text="monthNames[month] + ' ' + year"></span>
                                         <button @click="nextMonth()" type="button"
-                                            class="p-1 hover:bg-gray-200 rounded-lg transition-colors">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
+                                            class="p-1.5 text-gray-400 hover:text-gray-900 hover:bg-gray-50 rounded-full transition-all">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9 5l7 7-7 7" />
                                             </svg>
@@ -780,7 +766,7 @@
 
                         @forelse($schedules as $schedule)
                             <div
-                                class="bg-white border rounded-lg shadow p-4 px-4 md:grid md:grid-cols-7 md:items-center md:text-center hover:border-blue-900 hover:border-[3px]">
+                                class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 md:grid md:grid-cols-7 md:items-center md:text-center transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-600">
                                 <!-- Academy -->
                                 <div class="flex items-center gap-4 md:px-4 text-left md:col-span-2">
                                     <img src="/image/icon/logo.png" class="h-14" alt="MDA Logo" />
@@ -1207,6 +1193,82 @@
         </div>
     </div>
 
+    <!-- Booking Details Modal -->
+    <div id="bookingDetailsModal" tabindex="-1" aria-hidden="true"
+        class="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 backdrop-blur-sm hidden opacity-0 transition-opacity duration-200">
+        <div id="bookingDetailsContent"
+            class="relative bg-white rounded-3xl shadow-xl w-full max-w-sm mx-4 overflow-hidden transform scale-95 transition-transform duration-200">
+
+            <!-- Header -->
+            <div class="px-6 pt-6 pb-4 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">Schedule Details</h3>
+                    <button type="button"
+                        class="close-booking-details text-gray-400 hover:text-gray-600 transition-colors p-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="px-6 py-5 space-y-3">
+                <!-- Date Section -->
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs text-gray-500 font-medium mb-0.5">Date</p>
+                        <p class="text-base font-semibold text-gray-900" id="modalBookingDate">--</p>
+                        <p class="text-sm text-gray-600" id="modalBookingDay">--</p>
+                    </div>
+                </div>
+
+                <!-- Time & Duration -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-gray-50 rounded-2xl p-3">
+                        <p class="text-xs text-gray-500 font-medium mb-1">Time</p>
+                        <p class="text-sm font-semibold text-gray-900">
+                            <span id="modalBookingStart">--</span><br>
+                            <span id="modalBookingEnd">--</span>
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 rounded-2xl p-3">
+                        <p class="text-xs text-gray-500 font-medium mb-1">Duration</p>
+                        <p class="text-sm font-semibold text-gray-900">
+                            <span id="modalBookingDuration">--</span> Hours
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Academy -->
+                <div class="flex items-center gap-3 bg-gray-50 rounded-2xl p-3">
+                    <div class="flex-shrink-0 w-8 h-8 bg-white rounded-lg shadow-sm flex items-center justify-center">
+                        <img src="/image/icon/logo.png" class="w-5 h-5 object-contain" alt="MDA">
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs text-gray-500 font-medium">Academy</p>
+                        <p class="text-sm font-semibold text-gray-900">Molek Driving Academy</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 pb-6">
+                <button type="button"
+                    class="close-booking-details w-full py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-full transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const paymentModal = document.getElementById('paymentModal');
@@ -1273,6 +1335,10 @@
 
 
             function openModal(btn) {
+                // Reset modal to normal width for single bookings
+                modalContent.classList.remove('max-w-2xl');
+                modalContent.classList.add('max-w-md');
+
                 // Ensure Single View is active
                 document.getElementById('singleSlotDetails').classList.remove('hidden');
                 document.getElementById('bulkSlotDetails').classList.add('hidden');
@@ -1437,6 +1503,13 @@
                     [available[i], available[j]] = [available[j], available[i]];
                 }
                 selected = available.slice(0, count);
+
+                // Sort selected schedules by date to ensure chronological attempt numbers
+                selected.sort((a, b) => {
+                    const dateA = new Date(a.date + ' ' + a.start_time);
+                    const dateB = new Date(b.date + ' ' + b.start_time);
+                    return dateA - dateB;
+                });
             }
 
             if (selected.length === 0) {
@@ -1447,9 +1520,61 @@
             openBulkConfirmModal(selected, type);
         }
 
+        function updateHiddenInputs(schedules) {
+            const formContainer = document.getElementById('bulkInputs');
+            formContainer.innerHTML = '';
+            schedules.forEach(sched => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'schedule_ids[]';
+                input.value = sched.schedule_id;
+                formContainer.appendChild(input);
+            });
+        }
+
+        function changeScheduleSlot(index) {
+            // Get available schedules (excluding already selected ones)
+            const selectedIds = window.currentSelectedSchedules.map(s => s.schedule_id);
+            let available = window.schedulesData.filter(s => {
+                return s.slot > 0 &&
+                    !window.bookedScheduleIds.includes(s.schedule_id) &&
+                    !selectedIds.includes(s.schedule_id);
+            });
+
+            if (available.length === 0) {
+                showNotification('No more available schedules to swap with.');
+                return;
+            }
+
+            // Pick a random replacement
+            const randomIndex = Math.floor(Math.random() * available.length);
+            const replacement = available[randomIndex];
+
+            // Replace the schedule at the given index
+            window.currentSelectedSchedules[index] = replacement;
+
+            // Re-sort to maintain chronological order
+            window.currentSelectedSchedules.sort((a, b) => {
+                const dateA = new Date(a.date + ' ' + a.start_time);
+                const dateB = new Date(b.date + ' ' + b.start_time);
+                return dateA - dateB;
+            });
+
+            // Re-render the modal with updated schedules
+            openBulkConfirmModal(window.currentSelectedSchedules, window.currentAutomationType);
+        }
+
         function openBulkConfirmModal(selectedSchedules, type) {
             const confirmModal = document.getElementById('confirmModal');
             const modalContent = document.getElementById('modalContent');
+
+            // Store selected schedules globally for change functionality
+            window.currentSelectedSchedules = selectedSchedules;
+            window.currentAutomationType = type;
+
+            // Make modal narrower - revert to original width
+            modalContent.classList.remove('max-w-2xl');
+            modalContent.classList.add('max-w-md');
 
             // Toggle UI sections
             document.getElementById('singleSlotDetails').classList.add('hidden');
@@ -1459,36 +1584,51 @@
             const listContainer = document.getElementById('bulkSlotList');
             listContainer.innerHTML = '';
 
-            selectedSchedules.forEach(sched => {
+            selectedSchedules.forEach((sched, index) => {
                 // Create list item
                 const date = new Date(sched.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
                 const startTime = sched.start_time.substring(0, 5);
                 const endTime = sched.time_out.substring(0, 5);
 
                 const item = `
-                    <div class="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm">
-                        <div class="flex flex-col text-left">
-                            <span class="text-xs font-bold text-gray-500 uppercase">${sched.day}</span>
-                            <span class="font-bold text-gray-900">${date}</span>
+                    <div class="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm" data-index="${index}">
+                        <div class="flex items-center gap-2">
+                            <div class="flex flex-col text-left">
+                                <span class="text-xs font-bold text-gray-500 uppercase">${sched.day}</span>
+                                <span class="font-bold text-gray-900">${date}</span>
+                            </div>
+                            <button type="button" 
+                                class="open-booking-details p-2 text-gray-900 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                                data-date="${date}"
+                                data-day="${sched.day}"
+                                data-start="${startTime}"
+                                data-end="${endTime}"
+                                data-duration="${sched.duration}"
+                                title="View Schedule Details">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                            </button>
                         </div>
-                        <div class="text-right">
-                             <span class="block font-mono text-sm font-semibold text-blue-600">${startTime} - ${endTime}</span>
-                        </div>
+                        <button type="button" onclick="changeScheduleSlot(${index})" 
+                            class="px-3 py-1.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm">
+                            Change
+                        </button>
                     </div>
                 `;
                 listContainer.insertAdjacentHTML('beforeend', item);
             });
 
-            // Populate Hidden Inputs
-            const formContainer = document.getElementById('bulkInputs');
-            formContainer.innerHTML = '';
-            selectedSchedules.forEach(sched => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'schedule_ids[]';
-                input.value = sched.schedule_id;
-                formContainer.appendChild(input);
+            // Sort schedules by date before creating hidden inputs to ensure chronological DB insertion
+            selectedSchedules.sort((a, b) => {
+                const dateA = new Date(a.date + ' ' + a.start_time);
+                const dateB = new Date(b.date + ' ' + b.start_time);
+                return dateA - dateB;
             });
+
+            // Populate Hidden Inputs in chronological order
+            updateHiddenInputs(selectedSchedules);
 
             // Clear single input just in case
             document.getElementById('modalScheduleId').value = '';
@@ -1519,7 +1659,7 @@
             const mobileCardsContainer = document.getElementById("mobileCards");
 
             // Row Selectors (GET ALL rows, excluding header)
-            const allDesktopRows = Array.from(document.querySelectorAll("#desktopTable > div.hover\\:border-blue-900"));
+            const allDesktopRows = Array.from(document.querySelectorAll("#desktopTable > div.bg-white.rounded-xl"));
             const allMobileRows = Array.from(document.querySelectorAll("#mobileCards > div.bg-white"));
 
             // Pagination Elements (Class-based selection)
@@ -1800,31 +1940,175 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const filterOptions = document.querySelectorAll('.filter-option');
-            const historyItems = document.querySelectorAll('.history-item');
-            const dropdown = document.getElementById('historyDropdown');
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('bookingDetailsModal');
+            const modalContent = document.getElementById('bookingDetailsContent');
+            const openBtns = document.querySelectorAll('.open-booking-details');
+            const closeBtns = document.querySelectorAll('.close-booking-details');
 
-            filterOptions.forEach(option => {
-                option.addEventListener('click', function (e) {
+            // Fields
+            const dateEl = document.getElementById('modalBookingDate');
+            const dayEl = document.getElementById('modalBookingDay');
+            const startEl = document.getElementById('modalBookingStart');
+            const endEl = document.getElementById('modalBookingEnd');
+            const durationEl = document.getElementById('modalBookingDuration');
+
+            function openModal(btn) {
+                // Populate Data
+                dateEl.textContent = btn.dataset.date;
+                dayEl.textContent = btn.dataset.day;
+                startEl.textContent = btn.dataset.start;
+                endEl.textContent = btn.dataset.end;
+                durationEl.textContent = btn.dataset.duration;
+
+                modal.classList.remove('hidden');
+                void modal.offsetWidth; // Trigger reflow
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-90');
+                modalContent.classList.add('scale-100');
+            }
+
+            function closeModal() {
+                modal.classList.add('opacity-0');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 200);
+            }
+
+            // Event Delegation
+            document.body.addEventListener('click', (e) => {
+                const btn = e.target.closest('.open-booking-details');
+                if (btn) {
                     e.preventDefault();
-                    const filterValue = this.getAttribute('data-filter');
-
-                    historyItems.forEach(item => {
-                        const status = item.getAttribute('data-status');
-                        if (filterValue === 'all' || status === filterValue) {
-                            item.style.removeProperty('display');
-                        } else {
-                            item.style.display = 'none';
-                        }
-                    });
-
-                    // Close dropdown after selection
-                    if (dropdown) {
-                        dropdown.classList.add('hidden');
-                    }
-                });
+                    e.stopPropagation();
+                    openModal(btn);
+                }
             });
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', closeModal);
+            });
+
+            // Close on backdrop click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" tabindex="-1" aria-hidden="true"
+        class="fixed inset-0 z-[60] flex items-center justify-center bg-gray-900/60 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div id="paymentModalContent"
+            class="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-8 text-center transform scale-90 transition-transform duration-300 overflow-hidden">
+
+            <!-- Decorative circle -->
+            <div
+                class="absolute -top-10 -right-10 w-32 h-32 bg-blue-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
+            </div>
+            <div
+                class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-50 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000">
+            </div>
+
+            <!-- Close Button -->
+            <button type="button"
+                class="close-payment-modal absolute top-4 right-4 text-gray-400 hover:text-gray-600 bg-transparent hover:bg-gray-50 rounded-full p-2 transition-colors z-10">
+                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+
+            <!-- Modal Content -->
+            <div class="relative z-10 mt-2">
+                <div
+                    class="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-blue-50 mb-6 shadow-inner ring-4 ring-white">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                        </path>
+                    </svg>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Payment Required</h3>
+
+                @if(isset($stage3Payment) && $stage3Payment)
+                    <div class="bg-gray-100 rounded-2xl p-6 mb-8 border border-gray-100">
+                        <span class="block text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">Stage 3
+                            Installment</span>
+                        <div class="flex items-start justify-center text-gray-900 mb-1">
+                            <span class="text-xl font-bold mr-1 mt-1">RM</span>
+                            <span
+                                class="text-5xl font-extrabold tracking-tight">{{ number_format($stage3Payment->amount, 2) }}</span>
+                        </div>
+                        <p class="text-gray-400 text-sm">Please clear this amount to proceed.</p>
+                    </div>
+                @else
+                    <p class="text-gray-500 mb-8 leading-relaxed text-sm">
+                        Complete your payment to unlock the next stage of your driving course. Secure and instant.
+                    </p>
+                @endif
+
+                <a href="{{ route('payment', ['payment_id' => $application->payment->payment_id]) }}"
+                    class="block w-full text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 focus:ring-4 focus:ring-blue-300 font-bold rounded-2xl text-base px-5 py-4 text-center shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300">
+                    Proceed to Payment
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Payment Modal Logic
+            const paymentModal = document.getElementById('paymentModal');
+            const paymentModalContent = document.getElementById('paymentModalContent');
+            const closePaymentBtns = document.querySelectorAll('.close-payment-modal');
+
+            function openPaymentModal() {
+                if (!paymentModal) return;
+                paymentModal.classList.remove('hidden');
+
+                // Trigger reflow force
+                void paymentModal.offsetWidth;
+
+                paymentModal.classList.remove('opacity-0');
+                if (paymentModalContent) {
+                    paymentModalContent.classList.remove('scale-90');
+                    paymentModalContent.classList.add('scale-100');
+                }
+            }
+
+            function closePaymentModal() {
+                if (!paymentModal) return;
+                paymentModal.classList.add('opacity-0');
+                if (paymentModalContent) {
+                    paymentModalContent.classList.remove('scale-100');
+                    paymentModalContent.classList.add('scale-90');
+                }
+                setTimeout(() => {
+                    paymentModal.classList.add('hidden');
+                }, 300);
+            }
+
+            // Expose globally
+            window.openPaymentModal = openPaymentModal;
+            window.closePaymentModal = closePaymentModal;
+
+            // Close listeners
+            closePaymentBtns.forEach(btn => {
+                btn.addEventListener('click', closePaymentModal);
+            });
+
+            if (paymentModal) {
+                paymentModal.addEventListener('click', (e) => {
+                    if (e.target === paymentModal) closePaymentModal();
+                });
+            }
         });
     </script>
 </body>
