@@ -1019,17 +1019,33 @@
 
             const appId = document.getElementById('deleteAppId').value;
 
+            console.log('Attempting to delete application with ID:', appId);
+
             fetch('{{ route("admin.application.delete") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify({ app_id: appId })
             })
-                .then(response => response.json())
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            console.error('Error response:', text);
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('Response data:', data);
                     if (data.success) {
+                        closeDeleteModal();
+                        // Show success message before reload
+                        alert('Application deleted successfully!');
                         location.reload();
                     } else {
                         alert('Error: ' + (data.message || 'Failed to delete'));
@@ -1039,7 +1055,7 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An error occurred while deleting.');
+                    alert('An error occurred while deleting: ' + error.message);
                     btn.innerText = originalText;
                     btn.disabled = false;
                 });

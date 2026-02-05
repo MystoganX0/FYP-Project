@@ -100,11 +100,11 @@ class ApplyController extends Controller
                 $detail->status = 'pending';
                 $detail->save();
             } else {
-                // Installment logic: 3 stages (50%, 30%, 20%)
+                // Installment logic: 3 stages (25%, 25%, 50%)
                 $stages = [
-                    ['name' => 'Stage 1', 'rate' => 0.50],
-                    ['name' => 'Stage 2', 'rate' => 0.30],
-                    ['name' => 'Stage 3', 'rate' => 0.20],
+                    ['name' => 'Stage 1', 'rate' => 0.25],
+                    ['name' => 'Stage 2', 'rate' => 0.25],
+                    ['name' => 'Stage 3', 'rate' => 0.50],
                 ];
 
                 foreach ($stages as $stage) {
