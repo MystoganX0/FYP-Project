@@ -85,7 +85,7 @@
             <div class="relative z-10 flex justify-center py-10">
                 <!-- Enlarged/Modernized Car Icon or Illustration -->
                 <div class="bg-white/10 p-6 rounded-full backdrop-blur-sm shadow-inner border border-white/20">
-                    <img src="./image/icon/car icon.png" class="w-24 h-24 object-contain drop-shadow-2xl translate-x-1"
+                    <img src="{{ asset('image/icon/logo.png') }}" class="w-24 h-24 object-contain drop-shadow-2xl"
                         alt="Car Icon" />
                 </div>
             </div>
@@ -102,7 +102,7 @@
         <!-- Right Side: Form -->
         <div class="w-full md:w-7/12 p-8 md:p-12 bg-white/50 md:bg-white">
             <div class="md:hidden flex justify-center mb-6">
-                <img src="./image/icon/car icon.png" class="w-16 h-16" />
+                <img src="{{ asset('image/icon/logo.png') }}" class="w-16 h-16" />
             </div>
 
             <div class="text-center md:text-left mb-8">

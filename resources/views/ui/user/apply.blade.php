@@ -473,8 +473,8 @@
                                         UPLOAD
                                     </span>
                                 </div>
-                                <p class="text-sm text-gray-500 mb-6">Please upload a clear photo or scan of your MyKad
-                                    (JPG, PNG, or PDF, MAX. 2MB)</p>
+                                <p class="text-sm text-gray-500 mb-6">Please upload a clear scan of your MyKad
+                                    (PDF ONLY, MAX. 2MB)</p>
 
                                 <div class="flex items-center justify-center w-full">
                                     <label for="myKad"
@@ -500,12 +500,35 @@
                                                 <span class="font-bold text-gray-700">Click to upload</span> or drag and
                                                 drop
                                             </p>
-                                            <p class="text-xs text-gray-400">JPG, PNG or PDF (MAX. 2MB)</p>
+                                            <p class="text-xs text-gray-400">PDF ONLY (MAX. 2MB)</p>
                                         </div>
-                                        <input id="myKad" name="ic_file" type="file" class="hidden"
-                                            accept="image/*,.pdf" />
+                                        <input id="myKad" name="ic_file" type="file" class="hidden" accept=".pdf" />
                                     </label>
                                 </div>
+
+                                <!-- File Name Display & View Link -->
+                                <div id="myKadFileDisplay"
+                                    class="hidden mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-between">
+                                    <div class="flex items-center gap-3 overflow-hidden">
+                                        <div class="p-2 bg-blue-100 rounded-lg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </div>
+                                        <div class="flex flex-col min-w-0">
+                                            <span id="myKadFileName"
+                                                class="text-sm font-medium text-blue-900 truncate block max-w-xs"></span>
+                                            <span id="myKadFileSize" class="text-xs text-blue-500"></span>
+                                        </div>
+                                    </div>
+                                    <a id="myKadFileView" href="#" target="_blank"
+                                        class="px-3 py-1.5 text-xs font-semibold text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors whitespace-nowrap">
+                                        View File
+                                    </a>
+                                </div>
+
                                 <p id="myKadICNotification" class="text-red-500 text-xs mt-2 hidden">IC number not found
                                     in
                                     the uploaded file. Please check your document.</p>
@@ -670,85 +693,91 @@
             </button>
 
             <ul class="space-y-3">
-                <!-- 1. Format Scan -->
-                <li>
-                    <div
-                        class="group p-4 bg-white border border-gray-200 rounded-xl cursor-default hover:border-blue-500 hover:shadow-sm transition-all duration-200">
+                <!-- 1. Format Validation Summary -->
+                <li id="formatValidationCard">
+                    <div class="group p-4 bg-white border-2 border-gray-200 rounded-xl transition-all duration-300">
                         <div class="flex items-start gap-3">
-                            <div class="flex-shrink-0 text-gray-400 group-hover:text-blue-500 transition-colors">
+                            <div class="flex-shrink-0 text-gray-400 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h4 class="text-sm font-semibold text-gray-900 mb-1">Format Validation</h4>
-                                <p class="text-xs text-gray-500 leading-relaxed">The system will instantly scan the
-                                    format of information entered.</p>
+                                <p class="text-xs text-gray-500 leading-relaxed mb-2">Scanning format of information
+                                    entered</p>
+                                <div id="formatValidationStatus" class="text-xs font-medium text-gray-400">
+                                    Pending verification...
+                                </div>
                             </div>
                         </div>
                     </div>
                 </li>
 
-                <!-- 2. Document Integrity -->
-                <li>
-                    <div
-                        class="group p-4 bg-white border border-gray-200 rounded-xl cursor-default hover:border-blue-500 hover:shadow-sm transition-all duration-200">
+                <!-- 2. Document Integrity Summary -->
+                <li id="documentIntegrityCard">
+                    <div class="group p-4 bg-white border-2 border-gray-200 rounded-xl transition-all duration-300">
                         <div class="flex items-start gap-3">
-                            <div class="flex-shrink-0 text-gray-400 group-hover:text-blue-500 transition-colors">
+                            <div class="flex-shrink-0 text-gray-400 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h4 class="text-sm font-semibold text-gray-900 mb-1">Document Integrity</h4>
-                                <p class="text-xs text-gray-500 leading-relaxed">Ensures the integrity and validity of
-                                    uploaded IC documents.</p>
+                                <p class="text-xs text-gray-500 leading-relaxed mb-2">Checking uploaded IC document</p>
+                                <div id="documentIntegrityStatus" class="text-xs font-medium text-gray-400">
+                                    Pending verification...
+                                </div>
                             </div>
                         </div>
                     </div>
                 </li>
 
-                <!-- 3. OCR Extraction -->
-                <li>
-                    <div
-                        class="group p-4 bg-white border border-gray-200 rounded-xl cursor-default hover:border-blue-500 hover:shadow-sm transition-all duration-200">
+                <!-- 3. Identity Matching (OCR) Summary -->
+                <li id="identityMatchingCard">
+                    <div class="group p-4 bg-white border-2 border-gray-200 rounded-xl transition-all duration-300">
                         <div class="flex items-start gap-3">
-                            <div class="flex-shrink-0 text-gray-400 group-hover:text-blue-500 transition-colors">
+                            <div class="flex-shrink-0 text-gray-400 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h4 class="text-sm font-semibold text-gray-900 mb-1">Identity Matching (OCR)</h4>
-                                <p class="text-xs text-gray-500 leading-relaxed">The system extracts text via OCR to
-                                    ensure the name and IC number match the typed details.</p>
+                                <p class="text-xs text-gray-500 leading-relaxed mb-2">Verifying IC & Name via OCR</p>
+                                <div id="identityMatchingStatus" class="text-xs font-medium text-gray-400">
+                                    Pending verification...
+                                </div>
                             </div>
                         </div>
                     </div>
                 </li>
 
-                <!-- 4. Age Verification -->
-                <li>
-                    <div
-                        class="group p-4 bg-white border border-gray-200 rounded-xl cursor-default hover:border-blue-500 hover:shadow-sm transition-all duration-200">
+                <!-- 4. Age Eligibility Summary -->
+                <li id="ageEligibilityCard">
+                    <div class="group p-4 bg-white border-2 border-gray-200 rounded-xl transition-all duration-300">
                         <div class="flex items-start gap-3">
-                            <div class="flex-shrink-0 text-gray-400 group-hover:text-blue-500 transition-colors">
+                            <div class="flex-shrink-0 text-gray-400 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h4 class="text-sm font-semibold text-gray-900 mb-1">Age Eligibility</h4>
-                                <p class="text-xs text-gray-500 leading-relaxed">Automatically determines applicant age
-                                    from IC number to meet requirements.</p>
+                                <p class="text-xs text-gray-500 leading-relaxed mb-2">Checking minimum age requirement
+                                </p>
+                                <div id="ageEligibilityStatus" class="text-xs font-medium text-gray-400">
+                                    Pending verification...
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -757,14 +786,8 @@
 
             <!-- Verify Results Section -->
             <div class="mt-6 pt-6 border-t border-gray-200">
-                <h3 class="text-sm font-semibold text-gray-500 mb-4 uppercase tracking-wide">Verification Results</h3>
-
-                <div id="verifyLoader" class="w-full flex justify-center py-8 hidden">
-                    <div class="loader"></div>
-                </div>
 
                 <div id="verifyResults" class="flex flex-col gap-3 hidden opacity-0 transition-all duration-500">
-                    <!-- Results will be dynamically inserted here with card styling -->
                 </div>
             </div>
         </aside>
@@ -1022,7 +1045,7 @@
             });
 
 
-            async function validateICWithOCR(file, icNumber) {
+            async function validateICWithOCR(file, icNumber, userName) {
                 const validTypes = ["application/pdf", "image/jpeg", "image/png"];
                 if (!validTypes.includes(file.type)) {
                     return {
@@ -1033,12 +1056,14 @@
 
                 // Normalize user input IC: keep digits only
                 const normalizedUserIC = String(icNumber || "").replace(/\D/g, "");
-                if (normalizedUserIC.length !== 12) {
-                    return {
-                        valid: false,
-                        message: "Provided IC must be 12 digits."
-                    };
-                }
+                // Removed early return to allow Name matching even if IC is missing
+                // if (normalizedUserIC.length !== 12) ...
+
+                // Normalize user input name (remove extra spaces, convert to uppercase)
+                const normalizedUserName = String(userName || "")
+                    .trim()
+                    .toUpperCase()
+                    .replace(/\s+/g, " ");
 
                 try {
                     let text = "";
@@ -1091,16 +1116,13 @@
                     }
 
                     // 1. KEYWORD CHECK (Enforce it is a MyKad)
-                    // We check for typical MyKad words. We convert to uppercase for matching.
                     const upperText = text.toUpperCase();
                     const keywords = ["MALAYSIA", "KAD", "PENGENALAN", "MYKAD", "WARGANEGARA"];
 
-                    // Count how many keywords appear
                     const keywordCount = keywords.reduce((count, word) => {
                         return upperText.includes(word) ? count + 1 : count;
                     }, 0);
 
-                    // If fewer than 1 keyword found, reject it as "not a MyKad"
                     if (keywordCount < 1) {
                         return {
                             valid: false,
@@ -1108,7 +1130,7 @@
                         };
                     }
 
-                    // 2. CLEAN & NORMALIZE OCR TEXT -> keep digits only, fix common confusions
+                    // 2. CLEAN & NORMALIZE OCR TEXT for IC matching
                     let cleaned = String(text || "")
                         .replace(/O/g, "0")
                         .replace(/o/g, "0")
@@ -1123,30 +1145,104 @@
 
                     console.log("OCR cleaned digits:", cleaned);
 
-                    if (cleaned.includes(normalizedUserIC)) {
-                        return {
-                            valid: true,
-                            message: "MyKad is valid — IC number detected."
-                        };
-                    }
+                    // 3. CHECK IC MATCH
+                    // 3. CHECK IC MATCH
+                    let icMatched = false;
 
-                    // ---------------------- FIRST-12 CHECK (common case for MyKad) ----------------------
-                    // If OCR produced e.g. 16 digits like 0306120103630201, first 12 might be IC
-                    if (cleaned.length >= 12) {
-                        const first12 = cleaned.substring(0, 12);
-                        if (first12 === normalizedUserIC) {
-                            return {
-                                valid: true,
-                                message: "MyKad is valid — IC number detected."
-                            };
+                    // Only check IC match if the user provided a valid 12-digit IC
+                    if (normalizedUserIC.length === 12) {
+                        if (cleaned.includes(normalizedUserIC)) {
+                            icMatched = true;
+                        } else if (cleaned.length >= 12) {
+                            const first12 = cleaned.substring(0, 12);
+                            if (first12 === normalizedUserIC) {
+                                icMatched = true;
+                            }
                         }
                     }
 
-                    // Nothing matched
-                    return {
-                        valid: false,
-                        message: "IC number not found or does not match the IC you entered."
+                    // 4. CHECK NAME MATCH
+                    // Remove special characters from OCR text for better matching
+                    const normalizedOcrText = upperText.replace(/[^A-Z\s]/g, " ").replace(/\s+/g, " ");
+                    let nameMatched = false;
+
+                    if (normalizedUserName.length > 0) {
+                        // Split name into parts and filter out common Malay words
+                        const nameParts = normalizedUserName.split(" ").filter(part =>
+                            part.length >= 2 && !["BIN", "BINTI", "A/L", "A/P"].includes(part)
+                        );
+
+                        console.log("Name parts to match:", nameParts);
+                        console.log("OCR text (normalized):", normalizedOcrText.substring(0, 300));
+
+                        // Fuzzy matching function - checks if at least 80% of characters match
+                        // Fuzzy matching function - checks against tokens (words) to avoid partial substring false positives
+                        const fuzzyMatch = (searchTerm, text) => {
+                            // Split text into tokens (words)
+                            const tokens = text.split(/\s+/);
+
+                            // 1. Exact Token Match
+                            if (tokens.includes(searchTerm)) return true;
+
+                            // 2. Strict Prefix Match (only for long words > 4 chars)
+                            // Require at least 80% match AND matching prefix
+                            // HAKIMI (6) vs HAKIM (5) = 83% -> PASS
+                            // ROSLI (5) vs ROSL (4) = 80% -> PASS
+                            if (searchTerm.length > 4) {
+                                const minLength = Math.ceil(searchTerm.length * 0.8);
+                                const prefix = searchTerm.substring(0, minLength);
+
+                                return tokens.some(token => {
+                                    if (!token.startsWith(prefix)) return false;
+
+                                    // Check if token is substring of searchTerm OR searchTerm is substring of token
+                                    return token.includes(searchTerm) || searchTerm.includes(token);
+                                });
+                            }
+
+                            return false;
+                        };
+
+                        // Count how many significant parts are found (fuzzy match)
+                        const matchedParts = nameParts.filter(part =>
+                            fuzzyMatch(part, normalizedOcrText)
+                        );
+
+                        console.log("Matched parts:", matchedParts);
+
+                        // Strict Matching Logic
+                        // 1. If 3 parts or fewer (e.g. "Ali bin Ahmad"), require 100% match.
+                        // 2. If > 3 parts, allow modest fuzzy tolerance (e.g. 3/4 passed).
+
+                        const matchRate = nameParts.length > 0 ? matchedParts.length / nameParts.length : 0;
+
+                        if (nameParts.length <= 3) {
+                            nameMatched = matchRate === 1.0;
+                        } else {
+                            nameMatched = matchRate >= 0.75;
+                        }
+
+                        console.log("Match rate:", matchRate, "Total matched:", matchedParts.length, "/", nameParts.length);
+                    }
+
+                    console.log("IC Matched:", icMatched, "Name Matched:", nameMatched);
+
+                    // 5. RETURN RESULTS BASED ON MATCHES
+                    const resultData = {
+                        valid: icMatched && nameMatched,
+                        icMatched: icMatched,
+                        nameMatched: nameMatched
                     };
+
+                    if (icMatched && nameMatched) {
+                        return { ...resultData, message: "MyKad valid — IC and Name matched." };
+                    } else if (icMatched && !nameMatched) {
+                        return { ...resultData, message: "IC matched but Name does not match." };
+                    } else if (!icMatched && nameMatched) {
+                        return { ...resultData, message: "Name matched but IC does not match." };
+                    } else {
+                        return { ...resultData, message: "Neither IC nor Name found in document." };
+                    }
 
                 } catch (err) {
                     console.error(err);
@@ -1155,6 +1251,45 @@
                         message: "Error processing MyKad file."
                     };
                 }
+            }
+
+
+
+            // File Upload UI Handler
+            const myKadInput = document.getElementById('myKad');
+            const fileDisplay = document.getElementById('myKadFileDisplay');
+            const fileNameSpan = document.getElementById('myKadFileName');
+            const fileSizeSpan = document.getElementById('myKadFileSize');
+            const fileViewLink = document.getElementById('myKadFileView');
+
+            if (myKadInput) {
+                console.log("MyKad input found, attaching listener.");
+                myKadInput.addEventListener('change', function (e) {
+                    console.log("File changed");
+                    if (this.files && this.files[0]) {
+                        console.log("File selected:", this.files[0].name);
+                        const file = this.files[0];
+
+                        // Update File Name
+                        fileNameSpan.textContent = file.name;
+
+                        // Update File Size
+                        const size = (file.size / 1024 / 1024).toFixed(2);
+                        fileSizeSpan.textContent = `${size} MB`;
+
+                        // Create View Link
+                        const objectUrl = URL.createObjectURL(file);
+                        fileViewLink.href = objectUrl;
+
+                        // Show Display
+                        fileDisplay.classList.remove('hidden');
+                    } else {
+                        console.log("No file selected");
+                        fileDisplay.classList.add('hidden');
+                    }
+                });
+            } else {
+                console.error("MyKad input NOT found in DOM");
             }
 
             // VERIFY BUTTON CLICK
@@ -1176,10 +1311,9 @@
 
                 // Start loading
                 setButtonLoading(true);
-                const loader = document.getElementById("verifyLoader");
-                loader.classList.remove("hidden");
 
-                await new Promise(r => setTimeout(r, 1000));
+                // Show processing for better UX (3 seconds)
+                await new Promise(r => setTimeout(r, 3000));
 
                 let messages = [];
 
@@ -1227,6 +1361,19 @@
                         text: "Address too short."
                     });
 
+                // Age eligibility check
+                const calculatedAge = parseInt(ageInput.value) || 0;
+                if (calculatedAge >= 17) {
+                    messages.push({
+                        type: "success",
+                        text: `Age requirement met (${calculatedAge} years).`
+                    });
+                } else {
+                    messages.push({
+                        type: "error",
+                        text: `Age must be at least 17 years. Current age: ${calculatedAge}.`
+                    });
+                }
 
                 // Check if any license class radio button is selected
                 const selectedLicenseClass = document.querySelector('input[name="class_id"]:checked');
@@ -1268,28 +1415,45 @@
 
                 // OCR VALIDATION
                 if (myKad.files.length) {
-                    // Update button text for OCR
-                    setButtonLoading(true, "OCR SCANNING...");
+                    const file = myKad.files[0];
 
-                    resultsDiv.innerHTML = `<div class="flex flex-col items-center gap-2 py-3 mt-4"><div class="loader"></div><span class="mt-8 text-green-600">Checking MyKad with OCR...</span></div>`;
+                    // STRICT CHECK: Only PDF allowed
+                    if (file.type !== "application/pdf") {
+                        messages.push({
+                            type: "error",
+                            text: "Invalid MyKad file format. Only PDF allowed.",
+                            details: { icMatched: false, nameMatched: false }
+                        });
+                    } else {
+                        // Update button text for OCR
+                        setButtonLoading(true, "OCR SCANNING...");
 
-                    resultsDiv.classList.remove("hidden");
-                    resultsDiv.classList.remove("opacity-0");
+                        // Show OCR processing animation (3 seconds)
+                        await new Promise(r => setTimeout(r, 3000));
 
-                    // Wait while OCR loads
-                    await new Promise(r => setTimeout(r, 2000));
+                        const icNumber = ic.value.trim();
 
+                        // Always run OCR if file exists (even if IC input is incomplete) 
+                        // validateICWithOCR handles the logic of matching what is provided
+                        // WRAP IN TIMEOUT: Prevent hanging on "Processing..." if Tesseract fails silently
+                        const ocrTimeout = new Promise(resolve =>
+                            setTimeout(() => resolve({
+                                valid: false,
+                                message: "Error processing MyKad: Timed out. Please try a clearer image.",
+                                details: { icMatched: false, nameMatched: false }
+                            }), 15000) // 15 seconds
+                        );
 
-
-                    const icNumber = ic.value.trim();
-
-                    if (icNumber.length === 12) {
-                        const result = await validateICWithOCR(myKad.files[0], icNumber);
+                        const result = await Promise.race([
+                            validateICWithOCR(file, icNumber, nameInput.value.trim()),
+                            ocrTimeout
+                        ]);
 
                         // Add OCR result message (success or error)
                         messages.push({
                             type: result.valid ? "success" : "error",
-                            text: result.message
+                            text: result.message,
+                            details: result // Pass full result object including icMatched/nameMatched
                         });
                     }
                 } else {
@@ -1303,64 +1467,237 @@
                     messages.push({
                         type: "success",
                         text: "Terms accepted."
+                        ,
+                        category: "format"
                     });
                 else
                     messages.push({
                         type: "error",
-                        text: "You must accept the terms."
+                        text: "You must accept the terms.",
+                        category: "format"
                     });
 
-                // SHOW RESULTS
-                // SHOW RESULTS
-                resultsDiv.innerHTML = messages.map((msg, index) => {
-                    const isSuccess = msg.type === "success";
-                    const isError = msg.type === "error";
+                // UPDATE VERIFICATION SUMMARY CARDS
+                // UPDATE VERIFICATION SUMMARY CARDS
+                const updateSummaryCard = (cardId, statusId, passed, summary) => {
+                    const card = document.getElementById(cardId);
+                    const statusDiv = document.getElementById(statusId);
+                    const cardDiv = card.querySelector('div');
+                    const icon = card.querySelector('svg');
 
-                    // iOS Minimalist Style with Color Backgrounds
-                    // Using subtle pastel backgrounds with darker borders and text
-                    const cardBg = isSuccess ? "bg-green-50" : (isError ? "bg-red-50" : "bg-blue-50");
-                    const cardBorder = isSuccess ? "border-green-100" : (isError ? "border-red-100" : "border-blue-100");
-                    const iconBgDetails = isSuccess ? "bg-green-100 text-green-600" : (isError ? "bg-red-100 text-red-600" : "bg-blue-100 text-blue-600");
-                    const textColor = isSuccess ? "text-green-800" : (isError ? "text-red-800" : "text-blue-800");
+                    // Reset all color classes
+                    cardDiv.classList.remove('border-gray-200', 'bg-white', 'border-green-500', 'bg-green-50', 'border-red-300', 'bg-red-50');
+                    icon.classList.remove('text-gray-400', 'text-green-600', 'text-red-500');
 
-                    // Icons (SVG)
-                    const iconSvg = isSuccess ?
-                        `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>` :
-                        (isError ?
-                            `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>` :
-                            `<svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
-                        );
+                    if (passed) {
+                        cardDiv.classList.add('border-green-500', 'bg-green-50');
+                        icon.classList.add('text-green-600');
+                        statusDiv.className = 'text-xs font-semibold text-green-700';
+                        statusDiv.innerHTML = summary;
+                    } else {
+                        cardDiv.classList.add('border-red-300', 'bg-red-50');
+                        icon.classList.add('text-red-500');
+                        statusDiv.className = 'text-xs font-semibold text-red-700';
+                        statusDiv.innerHTML = summary;
+                    }
+                };
 
-                    return `
-                        <div class="group flex items-center gap-3.5 p-3 pr-4 ${cardBg} border ${cardBorder} rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300 animate-fadeIn" style="animation-delay: ${index * 75}ms">
-                            <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full ${iconBgDetails} transition-colors">
-                                ${iconSvg}
+                // Categorize messages with robust string matching
+                const formatChecks = messages.filter(m =>
+                    m.text.includes('IC number') || m.text.includes('IC must be') || // Catch both IC messages
+                    m.text.includes('Full name') ||
+                    m.text.includes('Phone') ||
+                    m.text.includes('Address') ||
+                    m.text.includes('License Class') || m.text.includes('Package') ||
+                    m.text.includes('Payment Type') ||
+                    m.text.toLowerCase().includes('terms') // Case insensitive for Terms
+                );
+
+                // Catch ALL MyKad errors (missing file, invalid type, missing keywords, processing error)
+                const documentChecks = messages.filter(m =>
+                    m.text.includes('MyKad') && !m.text.includes('IC and Name') && !m.text.includes('IC matched')
+                );
+
+                // Catch ALL identity related messages including generic failures
+                const ocrChecks = messages.filter(m =>
+                    m.text.includes('IC and Name') || m.text.includes('IC matched') ||
+                    m.text.includes('Name matched') || m.text.includes('Neither IC') ||
+                    m.text.includes('Provided IC') || m.text.includes('Identity matching') ||
+                    m.text.includes('Error processing') // Catch "Error processing MyKad file"
+                );
+
+                const ageChecks = messages.filter(m => m.text.includes('Age'));
+
+                // Update Format Validation Card
+                // Update Format Validation Card
+                const formatPassed = formatChecks.every(m => m.type === 'success');
+
+                let formatSummaryHtml = '<div class="flex flex-col gap-1 mt-1">';
+                if (formatChecks.length > 0) {
+                    formatChecks.forEach(m => {
+                        const isSuccess = m.type === 'success';
+                        const icon = isSuccess
+                            ? '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>'
+                            : '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                        const colorClass = isSuccess ? 'text-green-600' : 'text-red-500';
+
+                        formatSummaryHtml += `
+                            <div class="flex items-center gap-1 ${colorClass}">
+                                ${icon} ${m.text}
                             </div>
-                            <div class="flex-1">
-                                <p class="text-[13px] font-medium ${textColor} leading-tight">${msg.text}</p>
+                        `;
+                    });
+                } else {
+                    formatSummaryHtml += '<div class="text-gray-500">Pending validation...</div>';
+                }
+                formatSummaryHtml += '</div>';
+
+                updateSummaryCard(
+                    'formatValidationCard',
+                    'formatValidationStatus',
+                    formatPassed,
+                    formatSummaryHtml
+                );
+
+                // Update Document Integrity Card
+                const docPassed = documentChecks.length === 0 || documentChecks.every(m => m.type === 'success');
+                updateSummaryCard(
+                    'documentIntegrityCard',
+                    'documentIntegrityStatus',
+                    docPassed,
+                    docPassed ? '✓ Document verified as valid MyKad' : '✗ Document verification failed'
+                );
+
+                // Update Identity Matching (OCR) Card
+                // Fix: empty array.every() returns true, so check length first
+                const ocrPassed = ocrChecks.length > 0 && ocrChecks.every(m => m.type === 'success');
+
+                // Construct detailed HTML summary
+                let ocrSummaryHtml = '';
+                const ocrDetailCheck = ocrChecks.find(m => m.details); // Find the one with detailed results
+
+                // Fallback: Default to "failed" state for both if no details exist but we want split view
+                // This ensures UI consistency requested by user (always show NAME and IC status)
+                const d = ocrDetailCheck ? ocrDetailCheck.details : { icMatched: false, nameMatched: false };
+
+                // If we ran any OCR checks, show the split view. 
+                // OR if messages.length > 0 (meaning we clicked verify), but ocrChecks is empty (e.g. invalid IC skipped OCR),
+                // we should still show the split view (as failed) rather than "Pending".
+                if (ocrChecks.length > 0 || messages.length > 0) {
+                    ocrSummaryHtml = `
+                        <div class="flex flex-col gap-1 mt-1">
+                            <div class="flex items-center gap-1 ${d.icMatched ? 'text-green-600' : 'text-red-500'}">
+                                ${d.icMatched ? '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>'} IC Number ${d.icMatched ? 'matched' : 'not matched'}
+                            </div>
+                            <div class="flex items-center gap-1 ${d.nameMatched ? 'text-green-600' : 'text-red-500'}">
+                                ${d.nameMatched ? '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>'} Name ${d.nameMatched ? 'matched' : 'not matched'}
                             </div>
                         </div>
                     `;
-                }).join("");
+                } else {
+                    ocrSummaryHtml = 'Pending verification...';
+                }
+
+                updateSummaryCard(
+                    'identityMatchingCard',
+                    'identityMatchingStatus',
+                    ocrPassed,
+                    ocrSummaryHtml
+                );
+
+                updateSummaryCard(
+                    'identityMatchingCard',
+                    'identityMatchingStatus',
+                    ocrPassed,
+                    ocrSummaryHtml
+                );
+
+                // Update Age Eligibility Card
+                const agePassed = ageChecks.every(m => m.type === 'success');
+                const ageValue = ageChecks.find(m => m.text.includes('Age')) ?
+                    ageChecks.find(m => m.text.includes('Age')).text.match(/\d+/) : null;
+                updateSummaryCard(
+                    'ageEligibilityCard',
+                    'ageEligibilityStatus',
+                    agePassed,
+                    agePassed ?
+                        `✓ Age requirement met (${ageValue ? ageValue[0] + ' years' : 'verified'})` :
+                        `✗ Minimum age is 17 years`
+                );
 
                 // Stop loading
                 setButtonLoading(false);
-                loader.classList.add("hidden");
+                const loader = document.getElementById("loader");
+                if (loader) loader.classList.add("hidden");
 
                 // ENABLE/DISABLE APPLY BUTTON
-                const hasErrors = messages.some(msg => msg.type === "error");
-                applyBtn.disabled = hasErrors;
+                const allPassed = formatPassed && docPassed && ocrPassed && agePassed;
 
                 // Toggle Lock Icon
                 const lockIcon = document.getElementById("applyLockIcon");
-                if (hasErrors) {
-                    lockIcon.classList.remove("hidden");
+
+                if (allPassed) {
+                    applyBtn.disabled = false;
+                    applyBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
+                    applyBtn.classList.add('bg-primary', 'hover:bg-blue-800', 'transform', 'hover:scale-[1.02]');
+                    if (lockIcon) lockIcon.classList.add("hidden");
                 } else {
-                    lockIcon.classList.add("hidden");
+                    applyBtn.disabled = true;
+                    applyBtn.classList.add('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
+                    applyBtn.classList.remove('bg-primary', 'hover:bg-blue-800', 'transform', 'hover:scale-[1.02]');
+                    if (lockIcon) lockIcon.classList.remove("hidden");
                 }
 
-                resultsDiv.classList.remove("hidden");
-                resultsDiv.classList.remove("opacity-0");
+                // -------------------------------------------------------------
+                // PERCENTAGE CALCULATION & UI UPDATE
+                // -------------------------------------------------------------
+                const totalChecks = messages.length;
+                const passedChecks = messages.filter(m => m.type === 'success').length;
+                const percentage = totalChecks > 0 ? Math.round((passedChecks / totalChecks) * 100) : 0;
+
+                // Color Logic: passed 100% -> Green, otherwise -> Red
+                const isPerfect = percentage === 100;
+                const colorText = isPerfect ? 'text-green-600' : 'text-red-500';
+                const colorBg = isPerfect ? 'bg-green-500' : 'bg-red-500';
+                const containerStyle = isPerfect ? 'border-green-200 bg-green-50/50' : 'border-red-100 bg-red-50/50';
+                const labelColor = isPerfect ? 'text-green-800' : 'text-red-800';
+
+                // Generate HTML for Percentage Display
+                resultsDiv.innerHTML = `
+                    <div class="p-5 rounded-xl border ${containerStyle} transition-all duration-500 animate-fade-in-up">
+                        <div class="flex justify-between items-end mb-3">
+                            <div>
+                                <h4 class="text-xs font-bold uppercase tracking-widest ${labelColor} mb-1">Verification Score</h4>
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-4xl font-extrabold ${colorText}">${percentage}%</span>
+                                    <span class="text-sm font-medium text-gray-400">passed</span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold ${isPerfect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                    ${passedChecks}/${totalChecks} Criteria
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar Container -->
+                        <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
+                            <div class="${colorBg} h-full rounded-full transition-all duration-1000 ease-out relative" style="width: ${percentage}%">
+                                <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                            </div>
+                        </div>
+
+                        <!-- Status Message -->
+                        <div class="mt-4 flex items-center gap-2 text-sm ${isPerfect ? 'text-green-700' : 'text-red-600'} font-medium">
+                            ${isPerfect
+                        ? '<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span>All requirements met. You can now apply!</span>'
+                        : '<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg> <span>Please resolve remaining issues.</span>'}
+                        </div>
+                    </div>
+                `;
+
+                resultsDiv.classList.remove("hidden", "opacity-0");
+                resultsDiv.classList.add("flex", "opacity-100");
             });
 
             // Dynamic Summary Logic

@@ -109,7 +109,7 @@
 
 <body class="bg-gray-100 p-8">
 
-    <div class="max-w-4xl mx-auto bg-white p-8 receipt-container shadow-lg">
+    <div class="max-w-[29.7cm] mx-auto bg-white p-12 receipt-container shadow-lg min-h-[21cm]">
 
         <!-- Header -->
         <div class="text-center mb-8">
@@ -122,7 +122,7 @@
             <div class="space-y-3">
                 <div class="flex">
                     <span class="font-semibold w-24">Paid by</span>
-                    <span class="flex-1">: {{ $paymentDetail->payment->application->student->name }}</span>
+                    <span class="flex-1">: {{ $paymentDetail->payment->application->student->full_name }}</span>
                 </div>
                 <div class="flex">
                     <span class="font-semibold w-24">Address</span>
