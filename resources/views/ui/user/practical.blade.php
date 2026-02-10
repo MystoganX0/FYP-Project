@@ -85,9 +85,10 @@
             @if($stage3Pending)
                 <button onclick="openPaymentModal()"
                     class="flex shrink-0 items-center gap-2 px-7 py-3.5 bg-[#0BCE83] hover:bg-green-400 text-black text-base font-bold rounded-full shadow-lg shadow-green-900/20 hover:shadow-green-900/40 transition-all hover:-translate-y-0.5 active:scale-95">
-                    <span>Next Phase</span>
+                    <span>Pay Stage 3</span>
                     <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                 </button>
             @else
@@ -237,13 +238,13 @@
                                                 class="text-[10px] text-white/60 font-bold uppercase tracking-wider mb-1">Attendance</span>
                                             <span
                                                 class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap
-                                                                                                                                                        @if($booking->booking_status == 'Done' || $booking->booking_status == 'Completed')
-                                                                                                                                                            bg-[#0BCE83] text-black border border-white/20
-                                                                                                                                                        @elseif($booking->booking_status == 'Failed' || $booking->booking_status == 'Absent')
-                                                                                                                                                            bg-red-600 text-white border border-white/20
-                                                                                                                                                        @else
-                                                                                                                                                            bg-{{ $statusColor }}-50 text-{{ $statusColor }}-700 border border-{{ $statusColor }}-100
-                                                                                                                                                        @endif">
+                                                                                                                                                                @if($booking->booking_status == 'Done' || $booking->booking_status == 'Completed')
+                                                                                                                                                                    bg-[#0BCE83] text-black border border-white/20
+                                                                                                                                                                @elseif($booking->booking_status == 'Failed' || $booking->booking_status == 'Absent')
+                                                                                                                                                                    bg-red-600 text-white border border-white/20
+                                                                                                                                                                @else
+                                                                                                                                                                    bg-{{ $statusColor }}-50 text-{{ $statusColor }}-700 border border-{{ $statusColor }}-100
+                                                                                                                                                                @endif">
                                                 @if($booking->booking_status == 'Done' || $booking->booking_status == 'Completed')
                                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

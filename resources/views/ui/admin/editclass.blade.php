@@ -299,8 +299,8 @@
 
                 <!-- Right Side: Edit/Add Form -->
                 <aside class="w-full xl:w-1/3">
-                    <form action="{{ route('classes.store') }}" method="POST" enctype="multipart/form-data"
-                        class="space-y-6">
+                    <form id="classForm" action="{{ route('classes.store') }}" method="POST"
+                        enctype="multipart/form-data" class="space-y-6">
 
                         <!-- Pricing Card -->
                         <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6">
@@ -633,7 +633,7 @@
                 document.getElementById('dropzone-file').removeAttribute('required');
 
                 // Update Form Action
-                const form = document.querySelector('form');
+                const form = document.getElementById('classForm');
                 form.action = "{{ route('classes.update') }}";
                 document.getElementById('class-code').value = code;
                 document.getElementById('class-price').value = price;
@@ -667,14 +667,15 @@
         // --- Reset Form ---
         document.getElementById('resetFormBtn').addEventListener('click', function (e) {
             e.preventDefault();
-            document.querySelector('form').reset();
+            const form = document.getElementById('classForm');
+            form.reset();
             document.getElementById('class-id').value = '';
 
             // Re-add required to image input
             document.getElementById('dropzone-file').setAttribute('required', 'required');
 
             // Reset Action
-            document.querySelector('form').action = "{{ route('classes.store') }}";
+            form.action = "{{ route('classes.store') }}";
 
             // Reset Image Preview
             document.getElementById('image-preview').classList.add('hidden');

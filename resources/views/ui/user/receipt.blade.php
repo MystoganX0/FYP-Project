@@ -132,6 +132,10 @@
                     <span class="font-semibold w-24">Remark</span>
                     <span class="flex-1">: {{ $paymentDetail->stage }}</span>
                 </div>
+                <div class="flex">
+                    <span class="font-semibold w-24">Method</span>
+                    <span class="flex-1">: {{ ucfirst($paymentDetail->payment->payment_type) }} Plan</span>
+                </div>
             </div>
 
             <!-- Right Column -->
@@ -153,7 +157,7 @@
                 <div class="flex">
                     <span class="font-semibold w-32">Date</span>
                     <span class="flex-1">:
-                        {{ \Carbon\Carbon::parse($paymentDetail->updated_at)->format('d/m/Y') }}</span>
+                        {{ \Carbon\Carbon::parse($paymentDetail->updated_at)->format('d/m/Y h:i A') }}</span>
                 </div>
             </div>
         </div>
@@ -180,7 +184,11 @@
                         <td class="p-2 border-r border-black align-top text-xs whitespace-nowrap">
                             {{ str_pad($paymentDetail->detail_id, 8, '0', STR_PAD_LEFT) }}
                         </td>
-                        <td class="p-2 border-r border-black align-top text-xs">{{ $paymentDetail->stage }}</td>
+                        <td class="p-2 border-r border-black align-top text-xs">
+                            {{ $paymentDetail->stage }} -
+                            {{ $paymentDetail->payment->application->class->class_code }}
+                            ({{ $paymentDetail->payment->application->package->package_type }})
+                        </td>
                         <td class="p-2 text-right border-r border-black align-top text-xs whitespace-nowrap">
                             {{ number_format($paymentDetail->amount, 2) }}
                         </td>
@@ -188,7 +196,8 @@
                         <td class="p-2 text-right border-r border-black align-top text-xs whitespace-nowrap">1.000000
                         </td>
                         <td class="p-2 text-right align-top text-xs whitespace-nowrap">
-                            {{ number_format($paymentDetail->amount, 2) }}</td>
+                            {{ number_format($paymentDetail->amount, 2) }}
+                        </td>
                     </tr>
                     <!-- Empty rows for spacing -->
                     <tr style="height: 150px;">

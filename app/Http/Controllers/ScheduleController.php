@@ -32,16 +32,10 @@ class ScheduleController extends Controller
             'duration' => 'required|string',
         ]);
 
-        $user = Auth::user();
+        $user = Auth::guard('admin')->user();
         if (!$user) {
             return redirect()->back()->with('error', 'You must be logged in to create a schedule.');
         }
-
-        // Ensure an Admin record exists for this user
-        $admin = Admin::firstOrCreate(
-            ['admin_email' => $user->email],
-            ['admin_pass' => $user->password ?? 'default']
-        );
 
         Schedule::create([
             'date' => $request->date,
@@ -51,7 +45,7 @@ class ScheduleController extends Controller
             'phase_id' => $request->phase_id,
             'slot' => $request->slot,
             'duration' => $request->duration,
-            'admin_id' => $admin->admin_id,
+            'admin_id' => $user->admin_id,
         ]);
 
         return redirect()->back()->with('success', 'Schedule created successfully.');

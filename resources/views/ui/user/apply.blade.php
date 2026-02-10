@@ -610,6 +610,15 @@
                                 </div>
                                 <span id="summaryPackagePrice" class="font-semibold text-gray-900">RM 0.00</span>
                             </div>
+                            <!-- Payment Method Item -->
+                            <div class="flex justify-between items-start">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500">Payment Method</span>
+                                    <span id="summaryPaymentMethod" class="font-medium text-gray-900 text-base">Select a
+                                        method</span>
+                                </div>
+                                <span id="summaryPaymentTotal" class="font-semibold text-gray-900">RM 0.00</span>
+                            </div>
                         </div>
 
                         <!-- Divider -->
@@ -813,6 +822,8 @@
             const summaryClassPrice = document.getElementById('summaryClassPrice');
             const summaryPackageName = document.getElementById('summaryPackageName');
             const summaryPackagePrice = document.getElementById('summaryPackagePrice');
+            const summaryPaymentMethod = document.getElementById('summaryPaymentMethod');
+            const summaryPaymentTotal = document.getElementById('summaryPaymentTotal');
             const paymentTypeLabel = document.getElementById('paymentTypeLabel');
 
             function calculateTotal() {
@@ -899,8 +910,25 @@
                 console.log('Package:', packageName, 'Price:', packagePrice);
                 console.log('Total:', total);
 
-                // Update Payment Type Label in Summary
+                // Update Payment Type Label and Method in Summary
                 if (paymentTypeLabel) paymentTypeLabel.textContent = paymentLabelText;
+
+                // Update Payment Method Row
+                if (summaryPaymentMethod) {
+                    if (selectedPaymentType) {
+                        // Map value to readable text
+                        if (selectedPaymentType.value === 'installment') {
+                            summaryPaymentMethod.textContent = "Installment Plan";
+                        } else {
+                            summaryPaymentMethod.textContent = "Full Payment";
+                        }
+                    } else {
+                        summaryPaymentMethod.textContent = "Select a method";
+                    }
+                }
+
+                // Update Payment Total (Full Plan Cost)
+                if (summaryPaymentTotal) summaryPaymentTotal.textContent = 'RM ' + total.toFixed(2);
 
                 // Update Summary Box Total
                 if (summaryAmount) summaryAmount.textContent = displayAmount.toFixed(2);
@@ -1117,16 +1145,49 @@
 
                     // 1. KEYWORD CHECK (Enforce it is a MyKad)
                     const upperText = text.toUpperCase();
-                    const keywords = ["MALAYSIA", "KAD", "PENGENALAN", "MYKAD", "WARGANEGARA"];
 
-                    const keywordCount = keywords.reduce((count, word) => {
-                        return upperText.includes(word) ? count + 1 : count;
-                    }, 0);
+                    // A. NEGATIVE KEYWORD CHECK (Immediate Failure)
+                    // Reject if it looks like a Birth Certificate or other common doc
+                    const negativeKeywords = [
+                        "SIJIL KELAHIRAN", "BIRTH CERTIFICATE", "DAFTAR KELAHIRAN",
+                        "PASSPORT", "LESEN MEMANDU", "DRIVING LICENSE"
+                    ];
 
-                    if (keywordCount < 1) {
+                    const foundNegative = negativeKeywords.find(word => upperText.includes(word));
+                    if (foundNegative) {
                         return {
                             valid: false,
-                            message: "Document does not look like a MyKad (missing keywords)."
+                            message: `Document rejected. Detected: ${foundNegative}. Please upload a MyKad.`
+                        };
+                    }
+
+                    // B. POSITIVE SCORING SYSTEM
+                    // We need a certain "confidence score" to accept it as MyKad
+                    // Threshold: 4 points
+                    let score = 0;
+                    const debugScores = [];
+
+                    // High Value Keywords (+3)
+                    if (upperText.includes("KAD PENGENALAN")) { score += 3; debugScores.push("KAD PENGENALAN (+3)"); }
+                    if (upperText.includes("MYKAD")) { score += 3; debugScores.push("MYKAD (+3)"); }
+                    if (upperText.includes("IDENTITY CARD")) { score += 3; debugScores.push("IDENTITY CARD (+3)"); }
+
+                    // Medium Value Keywords (+1)
+                    if (upperText.includes("MALAYSIA")) { score += 1; debugScores.push("MALAYSIA (+1)"); }
+                    if (upperText.includes("WARGANEGARA")) { score += 1; debugScores.push("WARGANEGARA (+1)"); }
+                    if (upperText.includes("LELAKI") || upperText.includes("PEREMPUAN")) {
+                        score += 1; debugScores.push("GENDER (+1)");
+                    }
+                    if (upperText.includes("ISLAM") || upperText.includes("AGAMA")) {
+                        score += 1; debugScores.push("RELIGION (+1)");
+                    }
+
+                    console.log("MyKad Score:", score, debugScores);
+
+                    if (score < 4) {
+                        return {
+                            valid: false,
+                            message: "Document does not look like a MyKad. (Keywords invalid)"
                         };
                     }
 
@@ -1707,6 +1768,74 @@
             const packageSelect = document.getElementById('package');
 
             // Legacy code removed to allow calculateTotal() to work correctly
+
+            // Reset Verification Logic
+            function resetVerification() {
+                // 1. Disable Apply Button
+                applyBtn.disabled = true;
+                applyBtn.classList.add('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
+                applyBtn.classList.remove('bg-primary', 'hover:bg-blue-800', 'transform', 'hover:scale-[1.02]');
+
+                const lockIcon = document.getElementById("applyLockIcon");
+                if (lockIcon) lockIcon.classList.remove("hidden");
+
+                // 2. Hide Results
+                resultsDiv.classList.add("hidden", "opacity-0");
+                resultsDiv.classList.remove("flex", "opacity-100");
+
+                // 3. Reset Summary Cards to Pending
+                const resetCard = (cardId, statusId, defaultText) => {
+                    const card = document.getElementById(cardId);
+                    const statusDiv = document.getElementById(statusId);
+                    const cardDiv = card.querySelector('div');
+                    const icon = card.querySelector('svg');
+
+                    // Remove success/error classes
+                    cardDiv.classList.remove('border-green-500', 'bg-green-50', 'border-red-300', 'bg-red-50');
+                    cardDiv.classList.add('border-gray-200', 'bg-white'); // Default state
+
+                    icon.classList.remove('text-green-600', 'text-red-500');
+                    icon.classList.add('text-gray-400');
+
+                    statusDiv.className = 'text-xs font-medium text-gray-400';
+                    statusDiv.innerHTML = defaultText;
+                };
+
+                resetCard('formatValidationCard', 'formatValidationStatus', 'Pending verification...');
+                resetCard('documentIntegrityCard', 'documentIntegrityStatus', 'Pending verification...');
+                resetCard('identityMatchingCard', 'identityMatchingStatus', 'Pending verification...');
+                resetCard('ageEligibilityCard', 'ageEligibilityStatus', 'Pending verification...');
+            }
+
+            // Attach resetVerification to all inputs
+            const inputsToWatch = [
+                ic, nameInput, phone, address, ageInput
+            ];
+
+            inputsToWatch.forEach(input => {
+                if (input) {
+                    input.addEventListener('input', resetVerification);
+                }
+            });
+
+            const changesToWatch = [
+                myKad, terms
+            ];
+
+            changesToWatch.forEach(input => {
+                if (input) {
+                    input.addEventListener('change', resetVerification);
+                }
+            });
+
+            // Radio buttons needed to be watched by name
+            const radioNames = ['class_id', 'package_id', 'payment_type'];
+            radioNames.forEach(name => {
+                const radios = document.querySelectorAll(`input[name="${name}"]`);
+                radios.forEach(radio => {
+                    radio.addEventListener('change', resetVerification);
+                });
+            });
 
             // REDIRECT TO PAYMENT PAGE
             applyBtn.addEventListener("click", () => {

@@ -20,7 +20,7 @@ class BookingController extends Controller
             $stage2Payment = $application->payment->details->where('stage', 'Stage 2')->first();
         }
 
-        $schedules = \App\Models\Schedule::with('phase')->where('phase_id', 1)->orderBy('date')->get();
+        $schedules = \App\Models\Schedule::with('phase')->where('phase_id', 1)->where('date', '>=', now()->toDateString())->orderBy('date')->get();
 
         // Generate next 12 months for filter
         $availableMonths = [];
@@ -142,7 +142,7 @@ class BookingController extends Controller
             $stage3Payment = $application->payment->details->where('stage', 'Stage 3')->first();
         }
 
-        $schedules = \App\Models\Schedule::with('phase')->where('phase_id', 2)->orderBy('date')->get();
+        $schedules = \App\Models\Schedule::with('phase')->where('phase_id', 2)->where('date', '>=', now()->toDateString())->orderBy('date')->get();
 
         // Generate next 12 months for filter
         $availableMonths = [];
@@ -178,7 +178,7 @@ class BookingController extends Controller
         if (!$application) {
             return view('errors.no-application');
         }
-        $schedules = \App\Models\Schedule::with('phase')->where('phase_id', 3)->orderBy('date')->get();
+        $schedules = \App\Models\Schedule::with('phase')->where('phase_id', 3)->where('date', '>=', now()->toDateString())->orderBy('date')->get();
 
         // Generate next 12 months for filter
         $availableMonths = [];

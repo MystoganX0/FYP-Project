@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Share history notification count with header view
-        \Illuminate\Support\Facades\View::composer('ui.user.header', function ($view) {
+        \Illuminate\Support\Facades\View::composer(['ui.user.header', 'ui.user.history'], function ($view) {
             $historyNotificationCount = 0;
 
             if (\Illuminate\Support\Facades\Auth::check()) {
@@ -88,16 +88,59 @@ class AppServiceProvider extends ServiceProvider
                 if ($computerTestPassed) {
                     $bookingRoute = 'practical';
 
-                    // Check if Practical Completed (>= 5 slots)
-                    $practicalCount = \App\Models\Booking::where('student_id', $studentId)
-                        ->whereHas('schedule', function ($q) {
-                            $q->where('phase_id', 2);
+                    // CHECK STAGE 2 PAYMENT for Installment Users
+                    // If they passed computer test but haven't paid Stage 2, force them back to 'computer' page (to pay)
+                    if ($application && $application->payment && $application->payment->payment_type === 'installment') {
+                        $stage2Paid = \App\Models\PaymentDetail::whereHas('payment', function ($q) use ($application) {
+                            $q->where('app_id', $application->app_id);
                         })
-                        ->whereIn('booking_status', ['Done', 'Completed'])
-                        ->count();
+                            ->where('stage', 'Stage 2')
+                            ->where('status', 'paid')
+                            ->exists();
 
-                    if ($practicalCount >= 5) {
-                        $bookingRoute = 'jpj';
+                        \Illuminate\Support\Facades\Log::info('Header Booking Logic Check', [
+                            'student_id' => $studentId,
+                            'payment_type' => $application->payment->payment_type,
+                            'stage2Paid' => $stage2Paid,
+                            'bookingRoute_before' => $bookingRoute
+                        ]);
+
+                        if (!$stage2Paid) {
+                            $bookingRoute = 'computer';
+                        }
+                    } else {
+                        \Illuminate\Support\Facades\Log::info('Header Booking Logic Check - Not Installment or No Payment', [
+                            'student_id' => $studentId,
+                            'has_payment' => ($application && $application->payment) ? 'yes' : 'no',
+                            'payment_type' => ($application && $application->payment) ? $application->payment->payment_type : 'null'
+                        ]);
+                    }
+
+                    if ($bookingRoute === 'practical') {
+                        $practicalCount = \App\Models\Booking::where('student_id', $studentId)
+                            ->whereHas('schedule', function ($q) {
+                                $q->where('phase_id', 2);
+                            })
+                            ->whereIn('booking_status', ['Done', 'Completed'])
+                            ->count();
+
+                        if ($practicalCount >= 5) {
+                            $bookingRoute = 'jpj';
+
+                            // CHECK STAGE 3 PAYMENT for Installment Users
+                            if ($application && $application->payment && $application->payment->payment_type === 'installment') {
+                                $stage3Paid = \App\Models\PaymentDetail::whereHas('payment', function ($q) use ($application) {
+                                    $q->where('app_id', $application->app_id);
+                                })
+                                    ->where('stage', 'Stage 3')
+                                    ->where('status', 'paid')
+                                    ->exists();
+
+                                if (!$stage3Paid) {
+                                    $bookingRoute = 'practical';
+                                }
+                            }
+                        }
                     }
                 }
             } else {

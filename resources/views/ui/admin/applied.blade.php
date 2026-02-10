@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -62,6 +63,71 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Flash Messages -->
+            @if(session('success'))
+                <div x-data="{ show: true, progress: 0 }"
+                    x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                    x-show="show" x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="mb-6 bg-emerald-500 border border-emerald-600 rounded-2xl p-6 flex items-start gap-4 shadow-lg shadow-emerald-500/20 relative overflow-hidden"
+                    role="alert">
+                    <div class="p-3 bg-white/20 rounded-xl text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-white font-bold text-lg mb-1">Success</h4>
+                        <p class="text-emerald-50 text-sm font-medium">{{ session('success') }}</p>
+                    </div>
+                    <button @click="show = false" type="button"
+                        class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-emerald-100 hover:text-white rounded-lg hover:bg-white/20 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <!-- Progress Bar -->
+                    <div class="absolute bottom-0 left-0 h-1 bg-white/30 rounded-b-2xl transition-all duration-100"
+                        :style="`width: ${progress}%`"></div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div x-data="{ show: true, progress: 0 }"
+                    x-init="setTimeout(() => show = false, 5000); let interval = setInterval(() => { progress += 2; if (progress >= 100) clearInterval(interval); }, 100)"
+                    x-show="show" x-transition:leave="transition ease-in duration-300"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="mb-6 bg-rose-500 border border-rose-600 rounded-2xl p-6 flex items-start gap-4 shadow-lg shadow-rose-500/20 relative overflow-hidden"
+                    role="alert">
+                    <div class="p-3 bg-white/20 rounded-xl text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-white font-bold text-lg mb-1">Error</h4>
+                        <p class="text-rose-50 text-sm font-medium">{{ session('error') }}</p>
+                    </div>
+                    <button @click="show = false" type="button"
+                        class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-rose-100 hover:text-white rounded-lg hover:bg-white/20 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <!-- Progress Bar -->
+                    <div class="absolute bottom-0 left-0 h-1 bg-white/30 rounded-b-2xl transition-all duration-100"
+                        :style="`width: ${progress}%`"></div>
+                </div>
+            @endif
 
             <!-- Content Grid: Table -->
             <div class="flex flex-col gap-8 mb-8 relative">
@@ -1045,7 +1111,7 @@
                     if (data.success) {
                         closeDeleteModal();
                         // Show success message before reload
-                        alert('Application deleted successfully!');
+                        // alert('Application deleted successfully!');
                         location.reload();
                     } else {
                         alert('Error: ' + (data.message || 'Failed to delete'));

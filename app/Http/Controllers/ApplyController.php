@@ -170,6 +170,7 @@ class ApplyController extends Controller
         }
 
         $application->delete();
+        session()->flash('success', 'Application deleted successfully');
 
         return response()->json(['success' => true, 'message' => 'Application deleted successfully']);
     }
